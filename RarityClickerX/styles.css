@@ -1,0 +1,262 @@
+/* Global styling with a chill pastel gradient background */
+body {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+  padding: 20px;
+  margin: 0;
+}
+
+/* Header – timer on the left, settings icon on the right */
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+#timer {
+  font-size: 24px;
+  margin: 10px;
+}
+#settingsIcon {
+  font-size: 32px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+/* Modal overlay for the settings */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 10px;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+}
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover,
+.close:focus {
+  color: black;
+}
+
+/* Shop Upgrade Buttons (inside settings) */
+button {
+  font-size: 18px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  margin: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#autoClickerBtn {
+  background: linear-gradient(145deg, #e53935, #d32f2f);
+  color: white;
+}
+#autoClickerBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+#doublePointsBtn {
+  background: linear-gradient(145deg, #1e88e5, #1565c0);
+  color: white;
+}
+#doublePointsBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+#goldenClickBtn {
+  background: linear-gradient(145deg, #ffeb3b, #fbc02d);
+  color: black;
+}
+#goldenClickBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+#luckBoostBtn {
+  background: linear-gradient(145deg, #7b1fa2, #6a1b9a);
+  color: white;
+}
+#luckBoostBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+#timeFreezeBtn {
+  background: linear-gradient(145deg, #00897b, #00695c);
+  color: white;
+}
+#timeFreezeBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+#goldenModeBtn {
+  background: linear-gradient(145deg, #ffb300, #ffa000);
+  color: black;
+}
+#goldenModeBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+/* Main clickable game button styling */
+#clickButton {
+  font-size: 32px;
+  padding: 20px 40px;
+  cursor: pointer;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #ffeb3b, #fbc02d);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 20px;
+}
+#clickButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+#clickButton:active {
+  transform: scale(0.98);
+}
+
+/* Result pop-up styling */
+#resultContainer {
+  margin-top: 20px;
+}
+#result {
+  font-size: 36px;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 20px 40px;
+  border-radius: 10px;
+}
+
+/* Color classes for each rarity */
+.common { background-color: #808080; color: white; }
+.uncommon { background-color: #90ee90; color: black; }
+.rare { background-color: #add8e6; color: black; }
+.super-rare { background-color: blue; color: white; }
+.ultra-rare { background-color: #00008b; color: white; }
+.epic { background-color: #e6e6fa; color: black; }
+.very-epic { background-color: #800080; color: white; }
+.legendary { background-color: yellow; color: black; }
+.mythic { background-color: red; color: white; }
+.chroma { 
+  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+  color: white;
+}
+.godly { background-color: #ffffe0; color: black; }
+.impossible { background-color: #8b0000; color: white; }
+.ethereal { background-color: #2e0854; color: white; }
+.extraordinary { background-color: #ffa500; color: white; }
+.secret { background-color: white; color: black; border: 2px solid black; }
+
+/* Log styling for unique finds */
+#log {
+  list-style-type: none;
+  padding: 0;
+  max-width: 500px;
+  margin: 20px auto;
+}
+#log li {
+  margin: 5px 0;
+  font-size: 20px;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+/* Background Shop Section styling inside the settings modal */
+.background-shop-section {
+  text-align: left;
+  margin: 10px 0;
+}
+#backgroundShopList {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+#backgroundShopList li {
+  margin: 10px 0;
+  padding: 10px;
+  background: #f2f2f2;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#backgroundShopList li.disabled {
+  opacity: 0.5;
+}
+#backgroundShopList li span {
+  font-size: 16px;
+}
+#backgroundShopList li button {
+  font-size: 14px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #1e88e5;
+  color: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#backgroundShopList li button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Stats for Nerds Section styling */
+.stats-section {
+  text-align: left;
+  margin: 10px 0;
+}
+.stats-section h5 {
+  margin-bottom: 5px;
+}
+.stats-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Style for the RESET button */
+#resetButton {
+  background: #ff4d4d;
+  color: white;
+  font-size: 18px;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#resetButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
