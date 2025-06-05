@@ -128,7 +128,7 @@
         document.getElementById("score").innerHTML = "Score: " + score;
         localStorage.setItem("score", score);
         
-        // Always record the rarity in the log in fixed order.
+        // Always record the rarity in the log (in fixed order).
         if (!logObj[outcome]) {
           logObj[outcome] = true;
           localStorage.setItem("rarityLog", JSON.stringify(logObj));
@@ -142,9 +142,8 @@
         var bg = getQueryVariable("bg");
         if (bg != null && bg != "") {
           if (bg == "rainbow") {
-            // If rainbow, set a background image (simulating a rainbow background).
-            document.body.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Rainbow_gradient.jpg/320px-Rainbow_gradient.jpg')";
-            document.body.style.backgroundColor = "";
+            // Instead of an image, set a gradient background with chosen hex codes.
+            document.body.style.background = "linear-gradient(45deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #8F00FF)";
             localStorage.setItem("bg", "rainbow");
           } else {
             document.body.style.backgroundImage = "";
@@ -155,8 +154,7 @@
           var savedBg = localStorage.getItem("bg");
           if (savedBg) {
             if (savedBg == "rainbow") {
-              document.body.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Rainbow_gradient.jpg/320px-Rainbow_gradient.jpg')";
-              document.body.style.backgroundColor = "";
+              document.body.style.background = "linear-gradient(45deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #8F00FF)";
             } else {
               document.body.style.backgroundColor = savedBg;
               document.body.style.backgroundImage = "";
@@ -175,7 +173,7 @@
           updateLogDisplay();
         }
         
-        // Check for the easter egg: if all 5 standard backgrounds have been purchased, turn the button blue.
+        // Check for the easter egg: if all 5 standard backgrounds are purchased, turn the button blue.
         var purchased = localStorage.getItem("purchasedBackgrounds");
         if (purchased) {
           purchased = JSON.parse(purchased);
