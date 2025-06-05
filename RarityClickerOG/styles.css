@@ -167,16 +167,14 @@ button {
 .very-epic { background-color: #800080; color: white; }
 .legendary { background-color: yellow; color: black; }
 .mythic { background-color: red; color: white; }
-.chroma { 
-  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
-  color: white;
-}
+.chroma { background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet); color: white; }
 .godly { background-color: #ffffe0; color: black; }
 .impossible { background-color: #8b0000; color: white; }
 .ethereal { background-color: #2e0854; color: white; }
 .extraordinary { background-color: #ffa500; color: white; }
-.secret { background-color: white; color: black; border: 2px solid black; }
-
+.stellar { background-color: white; color: black; border: 2px solid black; }
+.unknown { background-color: black; color: white; } /* If needed */
+  
 /* Log styling for unique finds */
 #log {
   list-style-type: none;
@@ -201,21 +199,16 @@ button {
   padding: 0;
   margin-top: 10px;
 }
+/* Styling for each background shop item */
 #backgroundShopList li {
   margin: 10px 0;
   padding: 10px;
-  background: #f2f2f2;
   border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
+  /* Inline background from JS takes full control */
 }
-#backgroundShopList li.disabled {
-  opacity: 0.5;
-}
-#backgroundShopList li span {
-  font-size: 16px;
-}
+
+/* Buttons inside the shop */
 #backgroundShopList li button {
   font-size: 14px;
   padding: 5px 10px;
@@ -225,18 +218,11 @@ button {
   background: #1e88e5;
   color: white;
   transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 5px;
 }
 #backgroundShopList li button:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* New: Style for background preview spans */
-.background-preview {
-  display: inline-block;
-  width: 40px;
-  height: 20px;
-  margin-right: 10px;
 }
 
 /* Stats for Nerds Section styling */
@@ -262,9 +248,4 @@ button {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-#resetButton:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-}
+  transition: transform 0.2s,
