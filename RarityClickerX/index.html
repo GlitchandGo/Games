@@ -3,41 +3,123 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Rarity Clicker</title>
+    <style type="text/css">
+      body {
+        background-color: white;
+        font-family: Arial, sans-serif;
+        color: black;
+        margin: 20px;
+        padding: 0;
+      }
+      /* Shopping cart at top right */
+      #cart {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+      a.cart-link {
+        text-decoration: none;
+        font-weight: bold;
+        color: blue;
+        font-size: 12px;
+      }
+      button {
+        font-size: 16px;
+        padding: 8px 16px;
+      }
+      #score {
+        font-weight: bold;
+        margin-top: 10px;
+      }
+      #log {
+        border: 1px solid #000;
+        padding: 4px;
+        margin-top: 10px;
+        height: 150px;
+        overflow: auto;
+      }
+    </style>
     <script type="text/javascript">
+      // Check for a background color parameter in the URL (e.g., index.html?bg=%23FFCCCC)
+      function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+          var pair = vars[i].split("=");
+          if (pair[0] == variable) { return pair[1]; }
+        }
+        return null;
+      }
+      var chosenBg = getQueryVariable("bg");
+      if (chosenBg != null && chosenBg != "") {
+        // Use document.write early to inject a style block that overrides the background color.
+        document.write('<style type="text/css">body { background-color: ' + chosenBg + '; }</style>');
+      }
+
+      // Global score and log variables.
+      var score = 0;
+      var logStr = "";
+
+      // The main function: run when you click the button.
       function getRarity() {
-        var r = Math.random() * 100; // generates a value between 0 (inclusive) and 100 (exclusive)
+        var r = Math.random() * 100; // r will be in the range [0, 100)
         var outcome = "";
+        var points = 0;
+        // Using your specified intervals:
         if (r < 50) {
           outcome = "Common";
-        } else if (r < 76) {
+          points = 0;
+        } else if (r < 76) {  // 50 <= r < 76 --> Uncommon
           outcome = "Uncommon";
-        } else if (r < 89) {
+          points = 1;
+        } else if (r < 89) {  // 76 <= r < 89 --> Rare
           outcome = "Rare";
-        } else if (r < 95) {
+          points = 2;
+        } else if (r < 95) {  // 89 <= r < 95 --> Epic
           outcome = "Epic";
-        } else if (r < 98) {
+          points = 4;
+        } else if (r < 98) {  // 95 <= r < 98 --> Legendary
           outcome = "Legendary";
-        } else if (r >= 98.1 && r < 99) {
+          points = 8;
+        } else if (r >= 98.1 && r < 99) {  // 98.1 <= r < 99 --> Mythic
           outcome = "Mythic";
-        } else if (r >= 99.1 && r < 99.5) {
+          points = 20;
+        } else if (r >= 99.1 && r < 99.5) {  // 99.1 <= r < 99.5 --> Chroma
           outcome = "Chroma";
-        } else if (r >= 99.6 && r < 99.8) {
+          points = 50;
+        } else if (r >= 99.6 && r < 99.8) {  // 99.6 <= r < 99.8 --> Impossible
           outcome = "Impossible";
-        } else if (r >= 99.8 && r < 99.95) {
+          points = 80;
+        } else if (r >= 99.8 && r < 99.95) {  // 99.8 <= r < 99.95 --> Ethereal
           outcome = "Ethereal";
-        } else if (r >= 99.95 && r < 100) {
+          points = 150;
+        } else if (r >= 99.95 && r < 100) {  // 99.95 <= r < 100 --> Secret
           outcome = "Secret";
+          points = 300;
         } else {
-          // Fallback for any small gaps (like values in [98, 98.1), [99, 99.1), or [99.5, 99.6))
+          // If r falls into one of the tiny gaps, default to Legendary.
           outcome = "Legendary";
+          points = 8;
         }
-        document.getElementById("result").innerHTML = "You got: " + outcome;
+        score += points;
+        document.getElementById("score").innerHTML = "Score: " + score;
+        logStr += outcome + " (" + points + " points)<br>";
+        document.getElementById("log").innerHTML = logStr;
+        document.getElementById("result").innerHTML = "You got: " + outcome + " (" + points + " points)";
       }
     </script>
   </head>
-  <body style="background-color: white; font-family: Arial, sans-serif; color: black;">
+  <body>
+    <!-- Shopping cart link -->
+    <div id="cart">
+      <a class="cart-link" href="shop.html">[Shopping Cart]</a>
+    </div>
     <h1>Rarity Clicker</h1>
     <button onclick="getRarity()">Click me!</button>
     <p id="result">&nbsp;</p>
+    <p id="score">Score: 0</p>
+    <div id="log">
+      <!-- The log of finds will appear here -->
+    </div>
   </body>
 </html>
