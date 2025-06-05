@@ -126,12 +126,12 @@
         
         score += points;
         document.getElementById("score").innerHTML = "Score: " + score;
-        localStorage.setItem("score", score);
+        localStorage.setItem("score_for_model_X", score);
         
         // Always record the rarity in the log (in fixed order).
         if (!logObj[outcome]) {
           logObj[outcome] = true;
-          localStorage.setItem("rarityLog", JSON.stringify(logObj));
+          localStorage.setItem("rarityLog_for_model_X", JSON.stringify(logObj));
           updateLogDisplay();
         }
         document.getElementById("result").innerHTML = "You got: " + outcome + " (" + points + " points)";
@@ -144,14 +144,14 @@
           if (bg == "rainbow") {
             // Instead of an image, set a gradient background with chosen hex codes.
             document.body.style.background = "linear-gradient(45deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #8F00FF)";
-            localStorage.setItem("bg", "rainbow");
+            localStorage.setItem("bg_for_model_X", "rainbow");
           } else {
             document.body.style.backgroundImage = "";
             document.body.style.backgroundColor = bg;
-            localStorage.setItem("bg", bg);
+            localStorage.setItem("bg_for_model_X", bg);
           }
         } else {
-          var savedBg = localStorage.getItem("bg");
+          var savedBg = localStorage.getItem("bg_for_model_X");
           if (savedBg) {
             if (savedBg == "rainbow") {
               document.body.style.background = "linear-gradient(45deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #8F00FF)";
@@ -162,19 +162,19 @@
           }
         }
         
-        var storedScore = localStorage.getItem("score");
+        var storedScore = localStorage.getItem("score_for_model_X");
         if (storedScore) {
           score = parseInt(storedScore, 10);
           document.getElementById("score").innerHTML = "Score: " + score;
         }
-        var storedLog = localStorage.getItem("rarityLog");
+        var storedLog = localStorage.getItem("rarityLog_for_model_X");
         if (storedLog) {
           logObj = JSON.parse(storedLog);
           updateLogDisplay();
         }
         
         // Check for the easter egg: if all 5 standard backgrounds are purchased, turn the button blue.
-        var purchased = localStorage.getItem("purchasedBackgrounds");
+        var purchased = localStorage.getItem("purchasedBackgrounds_for_model_X");
         if (purchased) {
           purchased = JSON.parse(purchased);
           if (purchased.length >= 5) {
