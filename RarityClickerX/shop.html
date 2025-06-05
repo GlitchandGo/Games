@@ -22,24 +22,96 @@
         color: blue;
       }
     </style>
+    <script type="text/javascript">
+      // Purchase a background if the user has enough points (200 points required)
+      function purchase(bgColor) {
+        var currentScore = parseInt(localStorage.getItem("score"),10);
+        if(isNaN(currentScore)) { currentScore = 0; }
+        if(currentScore < 200) {
+          alert("You need at least 200 points to buy a background.");
+          return false;
+        }
+        // Deduct 200 points.
+        var newScore = currentScore - 200;
+        localStorage.setItem("score", newScore);
+        // Update purchased backgrounds.
+        var purchased = localStorage.getItem("purchasedBackgrounds");
+        if(!purchased) {
+          purchased = [];
+        } else {
+          purchased = JSON.parse(purchased);
+        }
+        // Only add if not already purchased.
+        if(purchased.indexOf(bgColor) === -1) {
+          purchased.push(bgColor);
+          localStorage.setItem("purchasedBackgrounds", JSON.stringify(purchased));
+        }
+        // Redirect back to index.html with the selected background.
+        window.location.href = "index.html?bg=" + encodeURIComponent(bgColor);
+        return false;
+      }
+      
+      // On page load, check which backgrounds have already been purchased.
+      function loadPurchased() {
+        var purchased = localStorage.getItem("purchasedBackgrounds");
+        if(!purchased) { return []; }
+        return JSON.parse(purchased);
+      }
+    </script>
   </head>
   <body>
     <h1>Buy a Background</h1>
-    <p>Choose a background color for your Rarity Clicker:</p>
+    <p>Each background costs 200 points. You must accumulate at least 200 points to buy one. (Total cost for all 5: 1000 points)</p>
     <div class="bg-option">
-      <a href="index.html?bg=%23FFCCCC">Light Red (#FFCCCC)</a>
+      <!-- Light Red: #FFCCCC -->
+      <script type="text/javascript">
+        var purchased = loadPurchased();
+        if(purchased.indexOf("#FFCCCC") === -1) {
+          document.write('<a href="#" onclick="return purchase(\'#FFCCCC\');">Buy Light Red (#FFCCCC) for 200 points</a>');
+        } else {
+          document.write('Light Red (#FFCCCC) - Purchased');
+        }
+      </script>
     </div>
     <div class="bg-option">
-      <a href="index.html?bg=%23CCCCFF">Light Blue (#CCCCFF)</a>
+      <!-- Light Blue: #CCCCFF -->
+      <script type="text/javascript">
+        if(purchased.indexOf("#CCCCFF") === -1) {
+          document.write('<a href="#" onclick="return purchase(\'#CCCCFF\');">Buy Light Blue (#CCCCFF) for 200 points</a>');
+        } else {
+          document.write('Light Blue (#CCCCFF) - Purchased');
+        }
+      </script>
     </div>
     <div class="bg-option">
-      <a href="index.html?bg=%23CCFFCC">Light Green (#CCFFCC)</a>
+      <!-- Light Green: #CCFFCC -->
+      <script type="text/javascript">
+        if(purchased.indexOf("#CCFFCC") === -1) {
+          document.write('<a href="#" onclick="return purchase(\'#CCFFCC\');">Buy Light Green (#CCFFCC) for 200 points</a>');
+        } else {
+          document.write('Light Green (#CCFFCC) - Purchased');
+        }
+      </script>
     </div>
     <div class="bg-option">
-      <a href="index.html?bg=%23FFFFCC">Light Yellow (#FFFFCC)</a>
+      <!-- Light Yellow: #FFFFCC -->
+      <script type="text/javascript">
+        if(purchased.indexOf("#FFFFCC") === -1) {
+          document.write('<a href="#" onclick="return purchase(\'#FFFFCC\');">Buy Light Yellow (#FFFFCC) for 200 points</a>');
+        } else {
+          document.write('Light Yellow (#FFFFCC) - Purchased');
+        }
+      </script>
     </div>
     <div class="bg-option">
-      <a href="index.html?bg=%23FFCC99">Light Orange (#FFCC99)</a>
+      <!-- Light Orange: #FFCC99 -->
+      <script type="text/javascript">
+        if(purchased.indexOf("#FFCC99") === -1) {
+          document.write('<a href="#" onclick="return purchase(\'#FFCC99\');">Buy Light Orange (#FFCC99) for 200 points</a>');
+        } else {
+          document.write('Light Orange (#FFCC99) - Purchased');
+        }
+      </script>
     </div>
     <p><a href="index.html">Back to Rarity Clicker</a></p>
   </body>
