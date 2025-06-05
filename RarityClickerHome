@@ -1,1 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rarity Clicker - Home</title>
+  <!-- Using the Chewy font for that playful vibe -->
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset defaults */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* Background: gradient red to blue to yellow */
+    body {
+      background: linear-gradient(90deg, red, blue, yellow);
+      font-family: 'Chewy', cursive, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    /* Header styling */
+    header {
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 4rem;
+      margin-bottom: 10px;
+    }
+    .sub-header {
+      font-size: 1.5rem;
+    }
+    /* Container for all game options arranged vertically */
+    .button-container {
+      margin-top: 30px;
+    }
+    .game-option {
+      margin-bottom: 30px;
+    }
+    /* Button styling */
+    .game-option a.btn {
+      padding: 15px 30px;
+      min-width: 250px;
+      text-decoration: none;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      transition: transform 0.2s ease-in-out;
+      display: inline-block;
+    }
+    .game-option a.btn:hover {
+      transform: scale(1.05);
+    }
+    /* Specific button color schemes */
+    .btn-og {
+      background: linear-gradient(to right, red, blue);
+      color: black;
+    }
+    .btn-x {
+      background-color: white;
+      color: black;
+    }
+    .btn-y {
+      background: linear-gradient(to right, red, yellow);
+      color: black;
+    }
+    .btn-z {
+      background: linear-gradient(to right, blue, yellow);
+      color: black;
+    }
+    /* Description text styling: Black Chewy font */
+    .description {
+      color: black;
+      font-size: 1.1rem;
+      margin-top: 10px;
+    }
+    /* Footer styling */
+    footer {
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+    /* For header, sub-header, & footer alternating colored letters */
+    .colored-letter {
+      display: inline;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="header-text">Hello!</h1>
+    <p id="sub-header-text" class="sub-header">Welcome to Rarity Clicker. Please select your game:</p>
+  </header>
+
+  <div class="button-container">
+    <!-- Rarity Clicker OG -->
+    <div class="game-option" id="game-og">
+      <a href="https://example.com" class="btn btn-og">Rarity Clicker OG</a>
+      <p class="description">
+        This is the original version of Rarity Clicker. You click a button and it gives you a rarity. The main function of the game is to test your luck. There is also a shop full of items and custom backgrounds.
+      </p>
+    </div>
+    <!-- Rarity Clicker X -->
+    <div class="game-option" id="game-x">
+      <a href="https://example.com" class="btn btn-x">Rarity Clicker X</a>
+      <p class="description">
+        This version of Rarity Clicker is a watered down version of the classic Rarity Clicker. It still maintains the main functions of the classic Rarity Clicker, but it is meant for old devices that may not be able to run the classic Rarity Clicker.
+      </p>
+    </div>
+    <!-- Rarity Clicker Y -->
+    <div class="game-option" id="game-y">
+      <a href="https://example.com" class="btn btn-y">Rarity Clicker Y</a>
+      <p class="description">
+        Rarity Clicker Y takes the classic experience and cranks it up! With expanded rarities, a bigger shop stocked with new items, and more customization options, this version lets you fine-tune your luck like never before.
+      </p>
+    </div>
+    <!-- Rarity Clicker Z -->
+    <div class="game-option" id="game-z">
+      <a href="https://example.com" class="btn btn-z">Rarity Clicker Z</a>
+      <p class="description">
+        Rarity Clicker Z introduces a fresh take on the classic formula, developed by a different creator. With more rarities and unique mechanics, this version brings new challenges and unexpected twists to test your luck in exciting ways.
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <p id="footer-text">©2025 sirco-team and INNOVEXA</p>
+  </footer>
+
+  <script>
+    // Function to wrap each character in a span with alternating colors (for header, sub-header & footer)
+    function colorizeText(elementId, colors) {
+      var element = document.getElementById(elementId);
+      if (!element) return;
+      var text = element.textContent;
+      var coloredText = "";
+      var colorIndex = 0;
+      for (var i = 0; i < text.length; i++) {
+        var char = text.charAt(i);
+        coloredText += '<span class="colored-letter" style="color:' + colors[colorIndex] + ';">' + char + '</span>';
+        colorIndex = (colorIndex + 1) % colors.length;
+      }
+      element.innerHTML = coloredText;
+    }
+
+    // Colors used for the header, sub-header, and footer alternating effect
+    var colors = ["#B22222", "#4169E1", "#DAA520"];
+    colorizeText("header-text", colors);
+    colorizeText("sub-header-text", colors);
+    colorizeText("footer-text", colors);
+
+    // Device detection: redirect old devices to Rarity Clicker X
+    function isOldDevice() {
+      var ua = navigator.userAgent;
+      var isOld = false;
+      
+      // iOS detection: OS 11 or earlier
+      var iOSMatch = ua.match(/OS (\d+)_?(\d+)?/);
+      if (iOSMatch && parseInt(iOSMatch[1], 10) <= 11) {
+        isOld = true;
+      }
+      
+      // Windows detection: Windows 7 is NT 6.1 or earlier
+      var winMatch = ua.match(/Windows NT (\d+\.\d+)/);
+      if (winMatch) {
+        var version = parseFloat(winMatch[1]);
+        if (version <= 6.1) {
+          isOld = true;
+        }
+      }
+      
+      // Android detection: Android 7 or earlier
+      var androidMatch = ua.match(/Android (\d+)\.?(\d+)?/);
+      if (androidMatch && parseInt(androidMatch[1], 10) <= 7) {
+        isOld = true;
+      }
+      
+      return isOld;
+    }
+    
+    if (isOldDevice()) {
+      window.location.href = "https://example.com";
+    }
+  </script>
+</body>
+</html>
 
