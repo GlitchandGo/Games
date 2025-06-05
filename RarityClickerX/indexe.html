@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simplified Rarity Clicker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* Basic Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background: #e0f7fa;
+      margin: 0;
+      padding: 10px;
+      text-align: center;
+    }
+    /* Header with Timer and Shop Toggle */
+    #header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #timer {
+      font-size: 18px;
+    }
+    #settingsIcon {
+      font-size: 24px;
+      cursor: pointer;
+    }
+    /* Main Clickable Button */
+    #clickButton {
+      padding: 10px 20px;
+      font-size: 24px;
+      margin: 20px;
+    }
+    /* Result Message */
+    #resultContainer {
+      margin: 15px 0;
+    }
+    #result {
+      font-size: 20px;
+    }
+    /* Log of Finds and Stats */
+    #log {
+      list-style: none;
+      padding: 0;
+      margin: 10px auto;
+      max-width: 300px;
+    }
+    #log li {
+      border: 1px solid #aaa;
+      margin: 3px;
+      padding: 3px;
+      font-size: 14px;
+    }
+    #stats {
+      text-align: left;
+      max-width: 300px;
+      margin: 10px auto;
+      border: 1px solid #aaa;
+      padding: 10px;
+      font-size: 14px;
+    }
+    /* Minimal Modal (Shop & Settings) */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -20%);
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 15px;
+      width: 90%;
+      max-width: 400px;
+      z-index: 1000;
+    }
+    .modal .close {
+      float: right;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .modal button {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      padding: 8px;
+      font-size: 16px;
+    }
+    /* Original Rarity Classes (Light Colors) */
+    .common { background: #ddd; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .uncommon { background: #a8e6cf; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .rare { background: #dcedc1; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .super-rare { background: #ffd3b6; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .ultra-rare { background: #ffaaa5; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .epic { background: #ff8b94; color: #fff; padding: 2px 4px; border-radius: 3px; }
+    .very-epic { background: #f48fb1; color: #fff; padding: 2px 4px; border-radius: 3px; }
+    .legendary { background: #ffeb3b; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .mythic { background: #ffcc80; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .chroma { background: #fce4ec; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .godly { background: #fff9c4; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .impossible { background: #ffcdd2; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .ethereal { background: #d1c4e9; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .extraordinary { background: #ffe0b2; color: #000; padding: 2px 4px; border-radius: 3px; }
+    .secret { background: #fff; color: #000; padding: 2px 4px; border-radius: 3px; border: 1px solid #000; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div id="header">
+    <div id="timer">Time: 0s</div>
+    <div id="settingsIcon" onclick="toggleModal()">☰</div>
+  </div>
+
+  <!-- Main Click Button -->
+  <button id="clickButton">Click Me!</button>
+
+  <!-- Result Display -->
+  <div id="resultContainer">
+    <p id="result"></p>
+  </div>
+
+  <!-- Log of Finds -->
+  <h2>Log of Finds</h2>
+  <ul id="log"></ul>
+
+  <!-- Stats for Nerds -->
+  <div id="stats">
+    <h3>Stats for Nerds</h3>
+    <p>Total Clicks: <span id="totalClicks">0</span></p>
+    <p>Rarest Find: <span id="rarestFind">None</span></p>
+    <h4>Rarity Chances:</h4>
+    <ul id="chancesList"></ul>
+  </div>
+
+  <!-- Shop & Settings Modal -->
+  <div id="shopModal" class="modal">
+    <span class="close" onclick="toggleModal()">×</span>
+    <h3>Shop & Settings</h3>
+    <p>Points: <span id="pointsDisplay">0</span></p>
+    <button onclick="purchaseAutoClicker()">Buy Auto Clicker (50 pts)</button>
+    <button onclick="purchaseDoublePoints()">Buy Double Points (150 pts)</button>
+    <button onclick="purchaseGoldenClick()">Buy Golden Click (200 pts)</button>
+    <!-- Background shop: only two backgrounds -->
+    <h4>Background Shop</h4>
+    <button onclick="purchaseBackground('Light Blue')">Buy Light Blue (100 pts)</button>
+    <button onclick="purchaseBackground('Light Pink')">Buy Light Pink (100 pts)</button>
+    <hr>
+    <button onclick="resetGame()">RESET</button>
+  </div>
+
+  <script>
+    // --- Original Rarity Definitions (Common through Secret) ---
+    const rarities = [
+      { name: "Common", chance: 50 },
+      { name: "Uncommon", chance: 25 },
+      { name: "Rare", chance: 12.5 },
+      { name: "Super Rare", chance: 6.25 },
+      { name: "Ultra Rare", chance: 3.13 },
+      { name: "Epic", chance: 1.56 },
+      { name: "Very Epic", chance: 0.78 },
+      { name: "Legendary", chance: 0.39 },
+      { name: "Mythic", chance: 0.2 },
+      { name: "Chroma", chance: 0.1 },
+      { name: "Godly", chance: 0.05 },
+      { name: "Impossible", chance: 0.03 },
+      { name: "Ethereal", chance: 0.02 },
+      { name: "Extraordinary", chance: 0.01 },
+      { name: "Secret", chance: 0.005 }
+    ];
+    
+    // --- Rarity Points (simple mapping) ---
+    const rarityPoints = {
+      "Common": 0,
+      "Uncommon": 0,
+      "Rare": 1,
+      "Super Rare": 2,
+      "Ultra Rare": 3,
+      "Epic": 5,
+      "Very Epic": 7,
+      "Legendary": 10,
+      "Mythic": 15,
+      "Chroma": 25,
+      "Godly": 40,
+      "Impossible": 75,
+      "Ethereal": 100,
+      "Extraordinary": 200,
+      "Secret": 500
+    };
+
+    // --- Global State Variables ---
+    let points = 0;
+    let totalClicks = 0;
+    let autoClickersCount = 0;
+    let autoInterval = null;
+    let doublePointsActive = false;
+    let goldenClickReady = false;
+
+    // --- Backgrounds (Simpler, Only Light Colors) ---
+    const backgrounds = {
+      "Light Blue": { cost: 100, color: "#e0f7fa" },
+      "Light Pink": { cost: 100, color: "#ffe4e1" }
+    };
+    let ownedBackgrounds = { "Light Blue": true };
+    let activeBackground = "Light Blue";
+
+    // --- Timer ---
+    let startTime = Date.now();
+    function updateTimer() {
+      const seconds = Math.floor((Date.now() - startTime) / 1000);
+      document.getElementById("timer").innerText = "Time: " + seconds + "s";
+    }
+    setInterval(updateTimer, 1000);
+
+    // --- Update Displays ---
+    function updateDisplays() {
+      document.getElementById("pointsDisplay").innerText = points;
+      document.getElementById("totalClicks").innerText = totalClicks;
+      updateStats();
+    }
+
+    // --- Rarity Generation (Standard) ---
+    function generateRarity(isManual = true) {
+      totalClicks++;
+      let roll = Math.random() * 100;
+      let cumulative = 0;
+      let found = "";
+      for (let r of rarities) {
+        cumulative += r.chance;
+        if (roll <= cumulative) {
+          found = r.name;
+          break;
+        }
+      }
+      let multiplier = doublePointsActive ? 2 : 1;
+      let pts = (rarityPoints[found] || 0) * multiplier;
+      points += pts;
+      updateDisplays();
+      document.getElementById("result").innerText = "You got: " + found + " (+" + pts + " pts)";
+      addToLog(found);
+    }
+
+    // --- Log Function (append new rarity found) ---
+    function addToLog(rarity) {
+      const logEl = document.getElementById("log");
+      let li = document.createElement("li");
+      li.innerText = rarity;
+      li.className = rarity.toLowerCase().replace(/ /g, "-");
+      logEl.appendChild(li);
+    }
+
+    // --- Stats for Nerds ---
+    function updateStats() {
+      const chancesList = document.getElementById("chancesList");
+      chancesList.innerHTML = "";
+      // For each rarity, if it has been found at least once (found in the log), show its chance; otherwise show ???.
+      rarities.forEach(r => {
+        let li = document.createElement("li");
+        // Here we check if the rarity exists in any log entry (very simple check)
+        li.innerText = (document.getElementsByClassName(r.name.toLowerCase().replace(/ /g, "-")).length > 0) 
+                        ? (r.name + ": " + r.chance + "%") 
+                        : "???";
+        chancesList.appendChild(li);
+      });
+      // Update rarest find (the one with the highest points among those in the log)
+      let rarest = "None", maxPoints = 0;
+      for (let r of rarities) {
+        if (document.getElementsByClassName(r.name.toLowerCase().replace(/ /g, "-")).length > 0) {
+          if ((rarityPoints[r.name] || 0) > maxPoints) {
+            maxPoints = rarityPoints[r.name] || 0;
+            rarest = r.name;
+          }
+        }
+      }
+      document.getElementById("rarestFind").innerText = rarest;
+    }
+
+    // --- Shop Purchase Functions ---
+    function purchaseAutoClicker() {
+      if (points >= 50) {
+        points -= 50;
+        autoClickersCount++;
+        updateDisplays();
+        if (autoClickersCount === 1) {
+          autoInterval = setInterval(() => { generateRarity(false); }, 2000);
+        }
+      } else { alert("Not enough points for Auto Clicker!"); }
+    }
+    function purchaseDoublePoints() {
+      if (points >= 150) {
+        points -= 150;
+        doublePointsActive = true;
+        updateDisplays();
+        setTimeout(() => { doublePointsActive = false; updateDisplays(); }, 60000);
+      } else { alert("Not enough points for Double Points!"); }
+    }
+    function purchaseGoldenClick() {
+      if (points >= 200) {
+        points -= 200;
+        goldenClickReady = true;
+        updateDisplays();
+        // Next manual click will behave as standard (no extra modifications here)
+      } else { alert("Not enough points for Golden Click!"); }
+    }
+    // --- Background Shop Functions ---
+    function purchaseBackground(name) {
+      let bg = backgrounds[name];
+      if (points >= bg.cost) {
+        points -= bg.cost;
+        ownedBackgrounds[name] = true;
+        activeBackground = name;
+        document.body.style.background = bg.color;
+        updateDisplays();
+      } else { alert("Not enough points for background!"); }
+    }
+    // --- Modal Toggle ---
+    function toggleModal() {
+      let modal = document.getElementById("shopModal");
+      modal.style.display = (modal.style.display === "block") ? "none" : "block";
+    }
+    // --- Reset Function ---
+    function resetGame() {
+      if (confirm("Reset game?")) {
+        points = 0;
+        totalClicks = 0;
+        autoClickersCount = 0;
+        doublePointsActive = false;
+        goldenClickReady = false;
+        ownedBackgrounds = { "Light Blue": true };
+        activeBackground = "Light Blue";
+        startTime = Date.now();
+        document.getElementById("log").innerHTML = "";
+        updateDisplays();
+        document.body.style.background = backgrounds["Light Blue"].color;
+        if (autoInterval) { clearInterval(autoInterval); autoInterval = null; }
+      }
+    }
+
+    // --- Main Click Event ---
+    document.getElementById("clickButton").addEventListener("click", generateRarity);
+    updateDisplays();
+  </script>
+</body>
+</html>
