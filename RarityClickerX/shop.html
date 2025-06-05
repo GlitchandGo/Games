@@ -21,11 +21,16 @@
         font-size: 16px;
         color: blue;
       }
+      button {
+        font-size: 14px;
+        padding: 6px 12px;
+        margin-top: 20px;
+      }
     </style>
     <script type="text/javascript">
-      // Purchase a background if the user has enough points (200 points required)
+      // Purchase a background if the user has enough points (200 required)
       function purchase(bgColor) {
-        var currentScore = parseInt(localStorage.getItem("score"),10);
+        var currentScore = parseInt(localStorage.getItem("score"), 10);
         if(isNaN(currentScore)) { currentScore = 0; }
         if(currentScore < 200) {
           alert("You need at least 200 points to buy a background.");
@@ -57,6 +62,17 @@
         if(!purchased) { return []; }
         return JSON.parse(purchased);
       }
+      
+      // Reset localStorage and redirect to index.html.
+      function resetStorage() {
+        if(confirm("Are you sure you want to reset all data? This will clear your score, log, and purchased backgrounds.")) {
+          localStorage.clear();
+          window.location.href = "index.html";
+        }
+      }
+      
+      // Prepare the purchased array for document.write calls.
+      var purchased = loadPurchased();
     </script>
   </head>
   <body>
@@ -65,7 +81,6 @@
     <div class="bg-option">
       <!-- Light Red: #FFCCCC -->
       <script type="text/javascript">
-        var purchased = loadPurchased();
         if(purchased.indexOf("#FFCCCC") === -1) {
           document.write('<a href="#" onclick="return purchase(\'#FFCCCC\');">Buy Light Red (#FFCCCC) for 200 points</a>');
         } else {
@@ -113,6 +128,8 @@
         }
       </script>
     </div>
+    <!-- RESET Button -->
+    <button onclick="resetStorage();">RESET</button>
     <p><a href="index.html">Back to Rarity Clicker</a></p>
   </body>
 </html>
