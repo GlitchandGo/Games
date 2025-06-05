@@ -95,7 +95,9 @@
       { name: "Impossible", chance: 0.03 },
       { name: "Ethereal", chance: 0.02 },
       { name: "Extraordinary", chance: 0.01 },
-      { name: "Secret", chance: 0.005 }
+      { name: "Secret", chance: 0.005 },
+      { name: "Unknown", chance: 0.25 },
+      { name: "Glitched", chance: 0.25 }
     ];
     
     const rarityPoints = {
@@ -113,18 +115,57 @@
       "Impossible": 75,
       "Ethereal": 100,
       "Extraordinary": 200,
-      "Secret": 500
+      "Secret": 500,
+      "Unknown": 600,
+      "Glitched": 1000
     };
     
-    /* Background shop definitions */
+    /* Background shop definitions (all permanent backgrounds now cost 200 pts) */
     const backgrounds = {
-      "Light Yellow": { cost: 100, requiredRarity: "Legendary", color: "#fffacd" },
-      "Dark Green": { cost: 100, requiredRarity: "Epic", color: "#006400" },
-      "Light Purple": { cost: 100, requiredRarity: "Chroma", color: "#d8bfd8" },
-      "Light Red": { cost: 100, requiredRarity: "Mythic", color: "#ffcccb" },
-      "Dark Blue": { cost: 100, requiredRarity: "Godly", color: "#00008b" },
+      "White": { cost: 200, requiredRarity: "Common", color: "#ffffff" },
+      
+      // Primary: Red
+      "Light Red": { cost: 200, requiredRarity: "Mythic", color: "#ffcccb" },
+      "Medium Red": { cost: 200, requiredRarity: "Mythic", color: "#ff6666" },
+      "Dark Red": { cost: 200, requiredRarity: "Mythic", color: "#8b0000" },
+      
+      // Primary: Blue
+      "Light Blue": { cost: 200, requiredRarity: "Legendary", color: "#add8e6" },
+      "Medium Blue": { cost: 200, requiredRarity: "Legendary", color: "#6495ed" },
+      "Dark Blue": { cost: 200, requiredRarity: "Godly", color: "#00008b" },
+      
+      // Primary: Yellow
+      "Light Yellow": { cost: 200, requiredRarity: "Legendary", color: "#fffacd" },
+      "Medium Yellow": { cost: 200, requiredRarity: "Legendary", color: "#f0e68c" },
+      "Dark Yellow": { cost: 200, requiredRarity: "Legendary", color: "#ffd700" },
+      
+      // Secondary: Orange
+      "Light Orange": { cost: 200, requiredRarity: "Epic", color: "#ffdab9" },
+      "Medium Orange": { cost: 200, requiredRarity: "Epic", color: "#ffa500" },
+      "Dark Orange": { cost: 200, requiredRarity: "Epic", color: "#ff8c00" },
+      
+      // Secondary: Green
+      "Light Green": { cost: 200, requiredRarity: "Epic", color: "#90ee90" },
+      "Medium Green": { cost: 200, requiredRarity: "Epic", color: "#32cd32" },
+      "Dark Green": { cost: 200, requiredRarity: "Epic", color: "#006400" },
+      
+      // Secondary: Purple
+      "Light Purple": { cost: 200, requiredRarity: "Chroma", color: "#d8bfd8" },
+      "Medium Purple": { cost: 200, requiredRarity: "Chroma", color: "#9370db" },
+      "Dark Purple": { cost: 200, requiredRarity: "Chroma", color: "#4b0082" },
+      
+      // Rainbow remains as before.
       "Rainbow": { cost: 200, requiredRarity: "Impossible", color: "linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)" }
     };
+    
+    /* New: Seasonal Backgrounds with gradients and color previews */
+    const seasonalBackgrounds = [
+      { name: "Cherry Blossom", availableMonths: [3], color: "#FFC0CB" },
+      { name: "Fireworks Night", availableMonths: [6], color: "#1A237E" },
+      { name: "Crisp Autumn", availableMonths: [8, 10], color: "#FFA500" },
+      { name: "Ocean Wave", availableMonths: [7], color: "#008080" },
+      { name: "Spooky Fog", availableDates: { start: new Date(new Date().getFullYear(), 9, 15), end: new Date(new Date().getFullYear(), 9, 31) }, color: "#555555" }
+    ];
     
     /* Luck Boost odds: omits Common */
     const luckBoostChances = [
@@ -421,14 +462,13 @@
         updateShopDisplays();
         if (!goldenModeActive) {
           goldenModeActive = true;
-          // Save the current background and override with gold.
           let previousBackground = document.body.style.background;
           document.body.style.background = "#FFD700"; // Deep gold.
           setTimeout(() => {
             goldenModeActive = false;
             setDefaultBackground();
             updateShopDisplays();
-          }, 5000); // Lasts for 5 seconds.
+          }, 5000);
         }
       } else {
         alert("Not enough pts for Golden Mode!");
@@ -440,10 +480,30 @@
     function updateBackgroundShop() {
       const list = document.getElementById("backgroundShopList");
       list.innerHTML = "";
+      
+      // Header for permanent backgrounds.
+      const headerFixed = document.createElement("h5");
+      headerFixed.textContent = "Permanent Backgrounds";
+      list.appendChild(headerFixed);
+      
       for (const bgName in backgrounds) {
         const bgData = backgrounds[bgName];
         const li = document.createElement("li");
-        li.innerHTML = `<span>${bgName} - ${bgData.cost} pts (Requires ${bgData.requiredRarity})</span>`;
+        
+        // Add a preview span showing the background color/gradient.
+        const preview = document.createElement("span");
+        preview.style.display = "inline-block";
+        preview.style.width = "40px";
+        preview.style.height = "20px";
+        preview.style.marginRight = "10px";
+        preview.style.background = bgData.color;
+        li.appendChild(preview);
+        
+        // Text info
+        const textSpan = document.createElement("span");
+        textSpan.textContent = `${bgName} - ${bgData.cost} pts (Requires ${bgData.requiredRarity})`;
+        li.appendChild(textSpan);
+        
         if (ownedBackgrounds[bgName]) {
           if (activeBackground === bgName) {
             const activeLabel = document.createElement("span");
@@ -467,6 +527,74 @@
         }
         list.appendChild(li);
       }
+      // Append seasonal backgrounds to the shop.
+      updateSeasonalBackgroundShop();
+    }
+    
+        function updateSeasonalBackgroundShop() {
+      const list = document.getElementById("backgroundShopList");
+      // Header for seasonal backgrounds.
+      const headerSeasonal = document.createElement("h5");
+      headerSeasonal.textContent = "Seasonal Backgrounds";
+      list.appendChild(headerSeasonal);
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      seasonalBackgrounds.forEach(bg => {
+        let available = false;
+        if (bg.availableMonths) {
+          if (bg.availableMonths.indexOf(currentMonth) !== -1) {
+            available = true;
+          }
+        } else if (bg.availableDates) {
+          if (now >= bg.availableDates.start && now <= bg.availableDates.end) {
+            available = true;
+          }
+        }
+        if (available) {
+          const li = document.createElement("li");
+          // Preview span for seasonal background.
+          const preview = document.createElement("span");
+          preview.style.display = "inline-block";
+          preview.style.width = "40px";
+          preview.style.height = "20px";
+          preview.style.marginRight = "10px";
+          preview.style.background = bg.color;
+          li.appendChild(preview);
+          li.innerHTML += `<span>${bg.name} - 200 pts</span>`;
+          if (!ownedBackgrounds[bg.name]) {
+            if (points >= 200) {
+              const buyBtn = document.createElement("button");
+              buyBtn.textContent = "Buy";
+              buyBtn.onclick = () => {
+                points -= 200;
+                ownedBackgrounds[bg.name] = true;
+                localStorage.setItem("ownedBackgrounds", JSON.stringify(ownedBackgrounds));
+                updateShopDisplays();
+                updateBackgroundShop();
+              };
+              li.appendChild(buyBtn);
+            } else {
+              li.classList.add("disabled");
+            }
+          } else {
+            if (activeBackground === bg.name) {
+              const activeLabel = document.createElement("span");
+              activeLabel.textContent = " Active";
+              li.appendChild(activeLabel);
+            } else {
+              const selectBtn = document.createElement("button");
+              selectBtn.textContent = "Select";
+              selectBtn.onclick = () => {
+                activeBackground = bg.name;
+                localStorage.setItem("activeBackground", bg.name);
+                document.body.style.background = bg.color;
+              };
+              li.appendChild(selectBtn);
+            }
+          }
+          list.appendChild(li);
+        }
+      });
     }
     
     function purchaseBackground(bgName) {
