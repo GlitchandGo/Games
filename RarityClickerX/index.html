@@ -1,86 +1,43 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Educational Hub</title>
-    <style type="text/css">
-      /* Basic styling */
-      body {
-        font-family: Arial, sans-serif;
-        /* Using a space-themed background image.
-           Note: Without CSS3 properties like background-size,
-           the image will appear in its natural size centered at the top. */
-        background: #000 url("https://images.unsplash.com/photo-1516259762387-47a080cf6028?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1600") no-repeat center top;
-        margin: 0;
-        padding: 20px;
-        color: #ffffff;
+    <title>Rarity Clicker</title>
+    <script type="text/javascript">
+      function getRarity() {
+        var r = Math.random() * 100; // generates a value between 0 (inclusive) and 100 (exclusive)
+        var outcome = "";
+        if (r < 50) {
+          outcome = "Common";
+        } else if (r < 76) {
+          outcome = "Uncommon";
+        } else if (r < 89) {
+          outcome = "Rare";
+        } else if (r < 95) {
+          outcome = "Epic";
+        } else if (r < 98) {
+          outcome = "Legendary";
+        } else if (r >= 98.1 && r < 99) {
+          outcome = "Mythic";
+        } else if (r >= 99.1 && r < 99.5) {
+          outcome = "Chroma";
+        } else if (r >= 99.6 && r < 99.8) {
+          outcome = "Impossible";
+        } else if (r >= 99.8 && r < 99.95) {
+          outcome = "Ethereal";
+        } else if (r >= 99.95 && r < 100) {
+          outcome = "Secret";
+        } else {
+          // Fallback for any small gaps (like values in [98, 98.1), [99, 99.1), or [99.5, 99.6))
+          outcome = "Legendary";
+        }
+        document.getElementById("result").innerHTML = "You got: " + outcome;
       }
-      h1, h2 {
-        color: #ffffff;
-      }
-      ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
-      li {
-        margin-bottom: 10px;
-      }
-      /* Style links to look like buttons */
-      a.btn {
-        background-color: #1a73e8;
-        color: #ffffff;
-        text-decoration: none;
-        padding: 10px 20px;
-        font-size: 14px;
-        display: inline-block;
-      }
-      a.btn:visited {
-        color: #ffffff;
-      }
-      a.btn:hover {
-        background-color: #0c52c4;
-      }
-      /* A simple container for readability */
-      .container {
-        background-color: #000;
-        /* For IE, use the Alpha filter to simulate opacity */
-        filter: alpha(opacity=70);
-        /* Other browsers supporting opacity (this line will be ignored by IE6) */
-        opacity: 0.7;
-        margin: 0 auto;
-        width: 800px;
-        padding: 20px;
-      }
-    </style>
+    </script>
   </head>
-  <body>
-    <div class="container">
-      <h1>Educational Hub</h1>
-      
-      <h2>Assignments &amp; Educational Websites</h2>
-      <ul>
-        <li><a class="btn" href="https://www.ixl.com" target="_blank">IXL</a></li>
-        <li><a class="btn" href="https://www.khanacademy.org" target="_blank">Khan Academy</a></li>
-        <li><a class="btn" href="https://powerschool.lsr7.org" target="_blank">PowerSchool</a></li>
-        <li><a class="btn" href="https://schoology.lsr7.org" target="_blank">Schoology</a></li>
-        <li><a class="btn" href="https://slms.lsr7.org" target="_blank">SLMS</a></li>
-        <li><a class="btn" href="https://www.youtube.com" target="_blank">YouTube</a></li>
-        <li><a class="btn" href="https://www.gmail.com" target="_blank">Gmail</a></li>
-        <li><a class="btn" href="https://www.zearn.org" target="_blank">Zearn</a></li>
-        <li><a class="btn" href="https://www.pebblego.com" target="_blank">PebbleGo</a></li>
-        <li><a class="btn" href="https://www.nystromworld.com" target="_blank">Nystrom World</a></li>
-      </ul>
-      
-      <h2>Math Games &amp; Interactive Learning</h2>
-      <ul>
-        <li><a class="btn" href="https://www.mathplayground.com" target="_blank">Math Playground</a></li>
-        <li><a class="btn" href="https://www.prodigygame.com" target="_blank">Prodigy Math</a></li>
-        <li><a class="btn" href="https://www.blooket.com" target="_blank">Blooket</a></li>
-        <li><a class="btn" href="https://www.kahoot.com" target="_blank">Kahoot</a></li>
-        <li><a class="btn" href="https://scratch.mit.edu" target="_blank">Scratch Coding</a></li>
-        <li><a class="btn" href="https://www.chess.com" target="_blank">Chess.com</a></li>
-      </ul>
-    </div>
+  <body style="background-color: white; font-family: Arial, sans-serif; color: black;">
+    <h1>Rarity Clicker</h1>
+    <button onclick="getRarity()">Click me!</button>
+    <p id="result">&nbsp;</p>
   </body>
 </html>
