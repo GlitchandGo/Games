@@ -231,6 +231,14 @@ button {
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* New: Style for background preview spans */
+.background-preview {
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  margin-right: 10px;
+}
+
 /* Stats for Nerds Section styling */
 .stats-section {
   text-align: left;
