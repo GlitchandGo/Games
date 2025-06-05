@@ -9,32 +9,32 @@
 <body>
   <!-- Header with timer (top left) and settings icon (top right) -->
   <div id="header">
-    <div id="timer">Time: 0s</div>
-    <div id="settingsIcon" onclick="toggleSettingsModal()">⚙️</div>
+    <div id="timer_og">Time: 0s</div>
+    <div id="settingsIcon_og" onclick="toggleSettingsModal_og()">⚙️</div>
   </div>
   
   <!-- SETTINGS Modal: Contains Shop Upgrades, Background Shop, Stats for Nerds, and a RESET button -->
-  <div id="settingsModal" class="modal">
+  <div id="settingsModal_og" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="toggleSettingsModal()">&times;</span>
+      <span class="close" onclick="toggleSettingsModal_og()">&times;</span>
       <h3>Settings</h3>
       
       <!-- Shop Upgrades Section -->
       <div class="shop-section">
         <h4>Shop Upgrades</h4>
-        <p>Points: <span id="pointsDisplay">0</span></p>
-        <button id="autoClickerBtn" onclick="purchaseAutoClicker()">Buy Auto Clicker (50 pts)</button>
-        <button id="doublePointsBtn" onclick="purchaseDoublePoints()">Buy Double Points (150 pts)</button>
-        <button id="goldenClickBtn" onclick="purchaseGoldenClick()">Buy Golden Click (200 pts)</button>
-        <button id="luckBoostBtn" onclick="purchaseLuckBoost()">Buy Luck Boost (300 pts)</button>
-        <button id="timeFreezeBtn" onclick="purchaseTimeFreeze()">Buy Time Freeze (200 pts)</button>
-        <button id="goldenModeBtn" onclick="purchaseGoldenMode()">Buy Golden Mode (1500 pts)</button>
-        <p>Auto Clickers: <span id="autoCount">0</span></p>
-        <p>Double Points: <span id="doubleStatus">Off</span></p>
-        <p>Golden Click: <span id="goldenStatus">Not Ready</span></p>
-        <p>Luck Boost: <span id="luckBoostStatus">Inactive</span></p>
-        <p>Time Freeze: <span id="timeFreezeStatus">Inactive</span></p>
-        <p>Golden Mode: <span id="goldenModeStatus">Inactive</span></p>
+        <p>Points: <span id="pointsDisplay_og">0</span></p>
+        <button id="autoClickerBtn_og" onclick="purchaseAutoClicker_og()">Buy Auto Clicker (50 pts)</button>
+        <button id="doublePointsBtn_og" onclick="purchaseDoublePoints_og()">Buy Double Points (150 pts)</button>
+        <button id="goldenClickBtn_og" onclick="purchaseGoldenClick_og()">Buy Golden Click (200 pts)</button>
+        <button id="luckBoostBtn_og" onclick="purchaseLuckBoost_og()">Buy Luck Boost (300 pts)</button>
+        <button id="timeFreezeBtn_og" onclick="purchaseTimeFreeze_og()">Buy Time Freeze (200 pts)</button>
+        <button id="goldenModeBtn_og" onclick="purchaseGoldenMode_og()">Buy Golden Mode (1500 pts)</button>
+        <p>Auto Clickers: <span id="autoCount_og">0</span></p>
+        <p>Double Points: <span id="doubleStatus_og">Off</span></p>
+        <p>Golden Click: <span id="goldenStatus_og">Not Ready</span></p>
+        <p>Luck Boost: <span id="luckBoostStatus_og">Inactive</span></p>
+        <p>Time Freeze: <span id="timeFreezeStatus_og">Inactive</span></p>
+        <p>Golden Mode: <span id="goldenModeStatus_og">Inactive</span></p>
       </div>
       
       <hr>
@@ -42,7 +42,7 @@
       <!-- Background Shop Section -->
       <div class="background-shop-section">
         <h4>Background Shop</h4>
-        <ul id="backgroundShopList"></ul>
+        <ul id="backgroundShopList_og"></ul>
       </div>
       
       <hr>
@@ -50,51 +50,51 @@
       <!-- Stats for Nerds Section -->
       <div class="stats-section">
         <h4>Stats for Nerds</h4>
-        <p>Total Clicks: <span id="totalClicks">0</span></p>
-        <p>Rarest Find: <span id="rarestFind">None</span></p>
+        <p>Total Clicks: <span id="totalClicks_og">0</span></p>
+        <p>Rarest Find: <span id="rarestFind_og">None</span></p>
         <div>
           <h5>Rarity Chances:</h5>
-          <ul id="chancesList"></ul>
+          <ul id="chancesList_og"></ul>
         </div>
       </div>
       
       <hr>
       
       <!-- Reset Button -->
-      <button id="resetButton" onclick="resetGame()">RESET</button>
+      <button id="resetButton_og" onclick="resetGame_og()">RESET</button>
     </div>
   </div>
   
   <!-- Main Clickable Game Button -->
-  <button id="clickButton">Click Me!</button>
+  <button id="clickButton_og">Click Me!</button>
   
   <!-- Container for the rarity result -->
-  <div id="resultContainer">
-    <p id="result"></p>
+  <div id="resultContainer_og">
+    <p id="result_og"></p>
   </div>
   
   <!-- Log of Unique Finds -->
   <h2>Log of Finds</h2>
-  <ul id="log"></ul>
+  <ul id="log_og"></ul>
   
   <!-- JavaScript -->
   <script>
-    // Initialize persistent variables at load
-    let points = localStorage.getItem("points") ? parseInt(localStorage.getItem("points")) : 0;
-    let startTime = localStorage.getItem("startTime") ? parseInt(localStorage.getItem("startTime")) : Date.now();
-    localStorage.setItem("startTime", startTime);
-    let autoClickersCount = 0;
-    let autoInterval = null;
-    let doublePointsActive = false;
-    let goldenClickReady = false;
-    let luckBoostActive = false;
-    let timeFreezeActive = false;
-    let goldenModeActive = false;
-    let totalClicks = localStorage.getItem("totalClicks") ? parseInt(localStorage.getItem("totalClicks")) : 0;
-    let logData = JSON.parse(localStorage.getItem("logData")) || [];
+    // Persistent variables (with _og suffix)
+    let points_og = localStorage.getItem("points_og") ? parseInt(localStorage.getItem("points_og")) : 0;
+    let startTime_og = localStorage.getItem("startTime_og") ? parseInt(localStorage.getItem("startTime_og")) : Date.now();
+    localStorage.setItem("startTime_og", startTime_og);
+    let autoClickersCount_og = 0;
+    let autoInterval_og = null;
+    let doublePointsActive_og = false;
+    let goldenClickReady_og = false;
+    let luckBoostActive_og = false;
+    let timeFreezeActive_og = false;
+    let goldenModeActive_og = false;
+    let totalClicks_og = localStorage.getItem("totalClicks_og") ? parseInt(localStorage.getItem("totalClicks_og")) : 0;
+    let logData_og = JSON.parse(localStorage.getItem("logData_og")) || [];
     
     // Rarity definitions and points mapping
-    const rarities = [
+    const rarities_og = [
       { name: "Common", chance: 50 },
       { name: "Uncommon", chance: 25 },
       { name: "Rare", chance: 12.5 },
@@ -112,7 +112,8 @@
       { name: "Stellar", chance: 0.005 },
       { name: "Unknown", chance: 0.002 }
     ];
-    const rarityPoints = {
+    
+    const rarityPoints_og = {
       "Common": 0,
       "Uncommon": 0,
       "Rare": 1,
@@ -131,8 +132,8 @@
       "Unknown": 600
     };
     
-    // Permanent background shop definitions with updated requirements
-    const backgrounds = {
+    // Background shop definitions with updated unlock requirements
+    const backgrounds_og = {
       "White": { cost: 200, requiredRarity: "Common", color: "#ffffff" },
       // Red backgrounds (require Mythic or higher)
       "Light Red": { cost: 200, requiredRarity: "Mythic", color: "#ffcccb" },
@@ -158,16 +159,15 @@
       "Light Purple": { cost: 200, requiredRarity: "Epic", color: "#d8bfd8" },
       "Medium Purple": { cost: 200, requiredRarity: "Epic", color: "#9370db" },
       "Dark Purple": { cost: 200, requiredRarity: "Epic", color: "#4b0082" },
-      // Gradient backgrounds added (each costs 400 pts, require Impossible or higher)
+      // Gradient backgrounds (each costs 400 pts, require Impossible or higher)
       "Red-Blue Gradient": { cost: 400, requiredRarity: "Impossible", color: "linear-gradient(45deg, red, blue)" },
       "Red-Yellow Gradient": { cost: 400, requiredRarity: "Impossible", color: "linear-gradient(45deg, red, yellow)" },
       "Blue-Yellow Gradient": { cost: 400, requiredRarity: "Impossible", color: "linear-gradient(45deg, blue, yellow)" }
     };
     
-    // Rainbow background is hidden until all the above backgrounds are purchased.
-    
-    // Seasonal backgrounds stay the same.
-    const seasonalBackgrounds = [
+    // Rainbow background is hidden until all permanent backgrounds are purchased
+    // Seasonal backgrounds
+    const seasonalBackgrounds_og = [
       { name: "Cherry Blossom", availableMonths: [3], color: "#FFC0CB" },
       { name: "Fireworks Night", availableMonths: [6], color: "#1A237E" },
       { name: "Crisp Autumn", availableMonths: [8, 10], color: "#FFA500" },
@@ -175,8 +175,8 @@
       { name: "Spooky Fog", availableDates: { start: new Date(new Date().getFullYear(), 9, 15), end: new Date(new Date().getFullYear(), 9, 31) }, color: "#555555" }
     ];
     
-    // Luck Boost odds (omitting Common)
-    const luckBoostChances = [
+    // Luck Boost odds
+    const luckBoostChances_og = [
       { name: "Uncommon", chance: 50 },
       { name: "Rare", chance: 25 },
       { name: "Super Rare", chance: 12.5 },
@@ -193,8 +193,8 @@
       { name: "Stellar", chance: 0.00609375 }
     ];
     
-    // Golden Mode weighted chances (using Stellar instead of Secret)
-    const goldenModeChances = {
+    // Golden Mode weighted chances
+    const goldenModeChances_og = {
       "Legendary": 50,
       "Mythic": 25,
       "Chroma": 15,
@@ -206,80 +206,80 @@
     };
     
     // Retrieve background shop state from localStorage
-    let ownedBackgrounds = JSON.parse(localStorage.getItem("ownedBackgrounds")) || {};
-    let activeBackground = localStorage.getItem("activeBackground") || "Light Blue";
+    let ownedBackgrounds_og = JSON.parse(localStorage.getItem("ownedBackgrounds_og")) || {};
+    let activeBackground_og = localStorage.getItem("activeBackground_og") || "Light Blue";
     
     // Timer update function
-    function updateTimer() {
-      if (!timeFreezeActive) {
+    function updateTimer_og() {
+      if (!timeFreezeActive_og) {
         const now = Date.now();
-        const secondsElapsed = Math.floor((now - startTime) / 1000);
-        document.getElementById("timer").innerText = "Time: " + secondsElapsed + "s";
-        localStorage.setItem("startTime", startTime);
+        const secondsElapsed = Math.floor((now - startTime_og) / 1000);
+        document.getElementById("timer_og").innerText = "Time: " + secondsElapsed + "s";
+        localStorage.setItem("startTime_og", startTime_og);
       }
     }
-    setInterval(updateTimer, 1000);
+    setInterval(updateTimer_og, 1000);
     
-    function updateShopDisplays() {
-      document.getElementById("pointsDisplay").innerText = points;
-      document.getElementById("autoCount").innerText = autoClickersCount;
-      document.getElementById("doubleStatus").innerText = doublePointsActive ? "On" : "Off";
-      document.getElementById("goldenStatus").innerText = goldenClickReady ? "Ready" : "Not Ready";
-      document.getElementById("luckBoostStatus").innerText = luckBoostActive ? "Active" : "Inactive";
-      document.getElementById("timeFreezeStatus").innerText = timeFreezeActive ? "Active" : "Inactive";
-      document.getElementById("goldenModeStatus").innerText = goldenModeActive ? "Active" : "Inactive";
+    function updateShopDisplays_og() {
+      document.getElementById("pointsDisplay_og").innerText = points_og;
+      document.getElementById("autoCount_og").innerText = autoClickersCount_og;
+      document.getElementById("doubleStatus_og").innerText = doublePointsActive_og ? "On" : "Off";
+      document.getElementById("goldenStatus_og").innerText = goldenClickReady_og ? "Ready" : "Not Ready";
+      document.getElementById("luckBoostStatus_og").innerText = luckBoostActive_og ? "Active" : "Inactive";
+      document.getElementById("timeFreezeStatus_og").innerText = timeFreezeActive_og ? "Active" : "Inactive";
+      document.getElementById("goldenModeStatus_og").innerText = goldenModeActive_og ? "Active" : "Inactive";
     }
     
-    function updateLogElement() {
-      const logElem = document.getElementById("log");
+    function updateLogElement_og() {
+      const logElem = document.getElementById("log_og");
       logElem.innerHTML = "";
-      logData.sort((a, b) => (rarityPoints[a] || 0) - (rarityPoints[b] || 0));
-      logData.forEach(rarity => {
+      logData_og.sort((a, b) => (rarityPoints_og[a] || 0) - (rarityPoints_og[b] || 0));
+      logData_og.forEach(rarity => {
         let li = document.createElement("li");
         li.textContent = rarity;
-        li.className = getClassName(rarity);
+        li.className = getClassName_og(rarity);
         logElem.appendChild(li);
       });
     }
-    updateLogElement();
+    updateLogElement_og();
     
-    function updateStats() {
-      document.getElementById("totalClicks").textContent = totalClicks;
+    function updateStats_og() {
+      document.getElementById("totalClicks_og").textContent = totalClicks_og;
       let rarestValue = 0, rarest = "None";
-      logData.forEach(rarityName => {
-        let value = rarityPoints[rarityName] || 0;
+      logData_og.forEach(rarityName => {
+        let value = rarityPoints_og[rarityName] || 0;
         if (value > rarestValue) {
           rarestValue = value;
           rarest = rarityName;
         }
       });
-      document.getElementById("rarestFind").textContent = rarest;
+      document.getElementById("rarestFind_og").textContent = rarest;
       
-      const chancesList = document.getElementById("chancesList");
+      const chancesList = document.getElementById("chancesList_og");
       chancesList.innerHTML = "";
-      rarities.forEach(rarity => {
-        if (rarity.name === "Stellar" && !logData.includes("Stellar")) return;
+      rarities_og.forEach(rarity => {
+        if (rarity.name === "Stellar" && !logData_og.includes("Stellar")) return;
         let li = document.createElement("li");
-        li.textContent = logData.includes(rarity.name)
+        li.textContent = logData_og.includes(rarity.name)
           ? (rarity.name + ": " + rarity.chance + "%")
           : "???";
         chancesList.appendChild(li);
       });
     }
     
-    function getClassName(rarity) {
+    function getClassName_og(rarity) {
       return rarity.toLowerCase().replace(/ /g, "-");
     }
     
-    function generateRarity(isManual = true) {
-      totalClicks++;
-      localStorage.setItem("totalClicks", totalClicks);
+    function generateRarity_og(isManual = true) {
+      totalClicks_og++;
+      localStorage.setItem("totalClicks_og", totalClicks_og);
       
       let foundRarity = "";
       let multiplier = 1;
       
-      if (isManual && goldenClickReady) {
-        let eligible = rarities.filter(r => (rarityPoints[r.name] || 0) >= rarityPoints["Legendary"]);
+      if (isManual && goldenClickReady_og) {
+        let eligible = rarities_og.filter(r => (rarityPoints_og[r.name] || 0) >= rarityPoints_og["Legendary"]);
         let totalChance = eligible.reduce((sum, r) => sum + r.chance, 0);
         let roll = Math.random() * totalChance;
         let cumulative = 0;
@@ -290,22 +290,22 @@
             break;
           }
         }
-        goldenClickReady = false;
+        goldenClickReady_og = false;
         console.log("Golden Click applied – result guaranteed to be Legendary or above.");
-      } else if (goldenModeActive) {
+      } else if (goldenModeActive_og) {
         let roll = Math.random() * 100;
         let cumulative = 0;
-        for (let rarity in goldenModeChances) {
-          cumulative += goldenModeChances[rarity];
+        for (let rarity in goldenModeChances_og) {
+          cumulative += goldenModeChances_og[rarity];
           if (roll <= cumulative) {
             foundRarity = rarity;
             break;
           }
         }
-      } else if (luckBoostActive) {
+      } else if (luckBoostActive_og) {
         let roll = Math.random() * 100;
         let cumulative = 0;
-        for (let r of luckBoostChances) {
+        for (let r of luckBoostChances_og) {
           cumulative += r.chance;
           if (roll <= cumulative) {
             foundRarity = r.name;
@@ -315,7 +315,7 @@
       } else {
         let roll = Math.random() * 100;
         let cumulative = 0;
-        for (let r of rarities) {
+        for (let r of rarities_og) {
           cumulative += r.chance;
           if (roll <= cumulative) {
             foundRarity = r.name;
@@ -324,37 +324,37 @@
         }
       }
       
-      if (doublePointsActive) {
+      if (doublePointsActive_og) {
         multiplier *= 2;
       }
       
-      let basePoints = rarityPoints[foundRarity] || 0;
+      let basePoints = rarityPoints_og[foundRarity] || 0;
       let earned = basePoints * multiplier;
-      points += earned;
-      localStorage.setItem("points", points);
-      updateShopDisplays();
+      points_og += earned;
+      localStorage.setItem("points_og", points_og);
+      updateShopDisplays_og();
       
-      const resultElem = document.getElementById("result");
+      const resultElem = document.getElementById("result_og");
       resultElem.innerText = "You got: " + foundRarity + " (+" + earned + " pts)";
-      resultElem.className = getClassName(foundRarity);
+      resultElem.className = getClassName_og(foundRarity);
       
-      if (!logData.includes(foundRarity)) {
-        logData.push(foundRarity);
-        localStorage.setItem("logData", JSON.stringify(logData));
-        updateLogElement();
+      if (!logData_og.includes(foundRarity)) {
+        logData_og.push(foundRarity);
+        localStorage.setItem("logData_og", JSON.stringify(logData_og));
+        updateLogElement_og();
       }
     }
     
-    function purchaseAutoClicker() {
-      if (points >= 50) {
-        points -= 50;
-        localStorage.setItem("points", points);
-        autoClickersCount++;
-        updateShopDisplays();
-        if (autoClickersCount === 1 && !timeFreezeActive) {
-          autoInterval = setInterval(() => {
-            for (let i = 0; i < autoClickersCount; i++) {
-              generateRarity(false);
+    function purchaseAutoClicker_og() {
+      if (points_og >= 50) {
+        points_og -= 50;
+        localStorage.setItem("points_og", points_og);
+        autoClickersCount_og++;
+        updateShopDisplays_og();
+        if (autoClickersCount_og === 1 && !timeFreezeActive_og) {
+          autoInterval_og = setInterval(() => {
+            for (let i = 0; i < autoClickersCount_og; i++) {
+              generateRarity_og(false);
             }
           }, 2000);
         }
@@ -363,69 +363,69 @@
       }
     }
     
-    function purchaseDoublePoints() {
-      if (points >= 150) {
-        points -= 150;
-        localStorage.setItem("points", points);
-        doublePointsActive = true;
-        updateShopDisplays();
+    function purchaseDoublePoints_og() {
+      if (points_og >= 150) {
+        points_og -= 150;
+        localStorage.setItem("points_og", points_og);
+        doublePointsActive_og = true;
+        updateShopDisplays_og();
         setTimeout(() => {
-          doublePointsActive = false;
-          updateShopDisplays();
+          doublePointsActive_og = false;
+          updateShopDisplays_og();
         }, 30000);
       } else {
         alert("Not enough pts for Double Points!");
       }
     }
     
-    function purchaseGoldenClick() {
-      if (points >= 200) {
-        points -= 200;
-        localStorage.setItem("points", points);
-        goldenClickReady = true;
-        updateShopDisplays();
+    function purchaseGoldenClick_og() {
+      if (points_og >= 200) {
+        points_og -= 200;
+        localStorage.setItem("points_og", points_og);
+        goldenClickReady_og = true;
+        updateShopDisplays_og();
       } else {
         alert("Not enough pts for Golden Click!");
       }
     }
     
-    function purchaseLuckBoost() {
-      if (points >= 300) {
-        points -= 300;
-        localStorage.setItem("points", points);
-        luckBoostActive = true;
-        updateShopDisplays();
+    function purchaseLuckBoost_og() {
+      if (points_og >= 300) {
+        points_og -= 300;
+        localStorage.setItem("points_og", points_og);
+        luckBoostActive_og = true;
+        updateShopDisplays_og();
         setTimeout(() => {
-          luckBoostActive = false;
-          updateShopDisplays();
+          luckBoostActive_og = false;
+          updateShopDisplays_og();
         }, 60000);
       } else {
         alert("Not enough pts for Luck Boost!");
       }
     }
     
-    function purchaseTimeFreeze() {
-      if (points >= 200) {
-        points -= 200;
-        localStorage.setItem("points", points);
-        updateShopDisplays();
-        if (!timeFreezeActive) {
-          timeFreezeActive = true;
+    function purchaseTimeFreeze_og() {
+      if (points_og >= 200) {
+        points_og -= 200;
+        localStorage.setItem("points_og", points_og);
+        updateShopDisplays_og();
+        if (!timeFreezeActive_og) {
+          timeFreezeActive_og = true;
           let freezeStart = Date.now();
-          if (autoInterval) {
-            clearInterval(autoInterval);
-            autoInterval = null;
+          if (autoInterval_og) {
+            clearInterval(autoInterval_og);
+            autoInterval_og = null;
           }
           setTimeout(() => {
-            timeFreezeActive = false;
+            timeFreezeActive_og = false;
             let freezeDuration = Date.now() - freezeStart;
-            startTime += freezeDuration;
-            localStorage.setItem("startTime", startTime);
-            updateShopDisplays();
-            if (autoClickersCount > 0) {
-              autoInterval = setInterval(() => {
-                for (let i = 0; i < autoClickersCount; i++) {
-                  generateRarity(false);
+            startTime_og += freezeDuration;
+            localStorage.setItem("startTime_og", startTime_og);
+            updateShopDisplays_og();
+            if (autoClickersCount_og > 0) {
+              autoInterval_og = setInterval(() => {
+                for (let i = 0; i < autoClickersCount_og; i++) {
+                  generateRarity_og(false);
                 }
               }, 2000);
             }
@@ -436,19 +436,19 @@
       }
     }
     
-    function purchaseGoldenMode() {
-      if (points >= 1500) {
-        points -= 1500;
-        localStorage.setItem("points", points);
-        updateShopDisplays();
-        if (!goldenModeActive) {
-          goldenModeActive = true;
+    function purchaseGoldenMode_og() {
+      if (points_og >= 1500) {
+        points_og -= 1500;
+        localStorage.setItem("points_og", points_og);
+        updateShopDisplays_og();
+        if (!goldenModeActive_og) {
+          goldenModeActive_og = true;
           let previousBackground = document.body.style.background;
           document.body.style.background = "#FFD700";
           setTimeout(() => {
-            goldenModeActive = false;
-            setDefaultBackground();
-            updateShopDisplays();
+            goldenModeActive_og = false;
+            setDefaultBackground_og();
+            updateShopDisplays_og();
           }, 3000);
         }
       } else {
@@ -456,8 +456,8 @@
       }
     }
     
-    function updateBackgroundShop() {
-      const list = document.getElementById("backgroundShopList");
+    function updateBackgroundShop_og() {
+      const list = document.getElementById("backgroundShopList_og");
       list.innerHTML = "";
       
       // Header for permanent backgrounds.
@@ -465,8 +465,8 @@
       headerFixed.textContent = "Permanent Backgrounds";
       list.appendChild(headerFixed);
       
-      for (const bgName in backgrounds) {
-        const bgData = backgrounds[bgName];
+      for (const bgName in backgrounds_og) {
+        const bgData = backgrounds_og[bgName];
         const li = document.createElement("li");
         li.style.background = bgData.color;
         const textOverlay = document.createElement("div");
@@ -475,8 +475,8 @@
         textOverlay.textContent = `${bgName} - ${bgData.cost} pts (Requires ${bgData.requiredRarity})`;
         li.appendChild(textOverlay);
         
-        if (ownedBackgrounds[bgName]) {
-          if (activeBackground === bgName) {
+        if (ownedBackgrounds_og[bgName]) {
+          if (activeBackground_og === bgName) {
             const activeLabel = document.createElement("div");
             activeLabel.textContent = "Active";
             activeLabel.style.backgroundColor = "rgba(0,0,0,0.7)";
@@ -486,14 +486,14 @@
           } else {
             const selectBtn = document.createElement("button");
             selectBtn.textContent = "Select";
-            selectBtn.onclick = () => setBackground(bgName);
+            selectBtn.onclick = () => setBackground_og(bgName);
             li.appendChild(selectBtn);
           }
         } else {
-          if (points >= bgData.cost && logHasRarity(bgData.requiredRarity)) {
+          if (points_og >= bgData.cost && logHasRarity_og(bgData.requiredRarity)) {
             const buyBtn = document.createElement("button");
             buyBtn.textContent = "Buy";
-            buyBtn.onclick = () => purchaseBackground(bgName);
+            buyBtn.onclick = () => purchaseBackground_og(bgName);
             li.appendChild(buyBtn);
           } else {
             li.classList.add("disabled");
@@ -502,8 +502,8 @@
         list.appendChild(li);
       }
       
-            // Check if all permanent backgrounds are purchased; if so, add Rainbow.
-      if (Object.keys(backgrounds).every(key => ownedBackgrounds[key])) {
+                      // Check if all permanent backgrounds are purchased; if so, add Rainbow.
+      if (Object.keys(backgrounds_og).every(key => ownedBackgrounds_og[key])) {
         const rainbow = { cost: 1000, requiredRarity: "Extraordinary", color: "linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)" };
         const li = document.createElement("li");
         li.style.background = rainbow.color;
@@ -513,8 +513,8 @@
         textOverlay.textContent = `Rainbow - ${rainbow.cost} pts (Requires ${rainbow.requiredRarity})`;
         li.appendChild(textOverlay);
         
-        if (ownedBackgrounds["Rainbow"]) {
-          if (activeBackground === "Rainbow") {
+        if (ownedBackgrounds_og["Rainbow"]) {
+          if (activeBackground_og === "Rainbow") {
             const activeLabel = document.createElement("div");
             activeLabel.textContent = "Active";
             activeLabel.style.backgroundColor = "rgba(0,0,0,0.7)";
@@ -524,20 +524,20 @@
           } else {
             const selectBtn = document.createElement("button");
             selectBtn.textContent = "Select";
-            selectBtn.onclick = () => setBackground("Rainbow");
+            selectBtn.onclick = () => setBackground_og("Rainbow");
             li.appendChild(selectBtn);
           }
         } else {
-          if (points >= rainbow.cost && logHasRarity(rainbow.requiredRarity)) {
+          if (points_og >= rainbow.cost && logHasRarity_og(rainbow.requiredRarity)) {
             const buyBtn = document.createElement("button");
             buyBtn.textContent = "Buy";
             buyBtn.onclick = () => {
-              points -= rainbow.cost;
-              localStorage.setItem("points", points);
-              ownedBackgrounds["Rainbow"] = true;
-              localStorage.setItem("ownedBackgrounds", JSON.stringify(ownedBackgrounds));
-              updateShopDisplays();
-              updateBackgroundShop();
+              points_og -= rainbow.cost;
+              localStorage.setItem("points_og", points_og);
+              ownedBackgrounds_og["Rainbow"] = true;
+              localStorage.setItem("ownedBackgrounds_og", JSON.stringify(ownedBackgrounds_og));
+              updateShopDisplays_og();
+              updateBackgroundShop_og();
             };
             li.appendChild(buyBtn);
           } else {
@@ -547,17 +547,17 @@
         list.appendChild(li);
       }
       
-      updateSeasonalBackgroundShop();
+      updateSeasonalBackgroundShop_og();
     }
     
-    function updateSeasonalBackgroundShop() {
-      const list = document.getElementById("backgroundShopList");
+    function updateSeasonalBackgroundShop_og() {
+      const list = document.getElementById("backgroundShopList_og");
       const headerSeasonal = document.createElement("h5");
       headerSeasonal.textContent = "Seasonal Backgrounds";
       list.appendChild(headerSeasonal);
       const now = new Date();
       const currentMonth = now.getMonth();
-      seasonalBackgrounds.forEach(bg => {
+      seasonalBackgrounds_og.forEach(bg => {
         let available = false;
         if (bg.availableMonths) {
           if (bg.availableMonths.indexOf(currentMonth) !== -1) {
@@ -576,24 +576,24 @@
           textOverlay.style.padding = "5px";
           textOverlay.innerHTML = `${bg.name} - 200 pts`;
           li.appendChild(textOverlay);
-          if (!ownedBackgrounds[bg.name]) {
-            if (points >= 200) {
+          if (!ownedBackgrounds_og[bg.name]) {
+            if (points_og >= 200) {
               const buyBtn = document.createElement("button");
               buyBtn.textContent = "Buy";
               buyBtn.onclick = () => {
-                points -= 200;
-                localStorage.setItem("points", points);
-                ownedBackgrounds[bg.name] = true;
-                localStorage.setItem("ownedBackgrounds", JSON.stringify(ownedBackgrounds));
-                updateShopDisplays();
-                updateBackgroundShop();
+                points_og -= 200;
+                localStorage.setItem("points_og", points_og);
+                ownedBackgrounds_og[bg.name] = true;
+                localStorage.setItem("ownedBackgrounds_og", JSON.stringify(ownedBackgrounds_og));
+                updateShopDisplays_og();
+                updateBackgroundShop_og();
               };
               li.appendChild(buyBtn);
             } else {
               li.classList.add("disabled");
             }
           } else {
-            if (activeBackground === bg.name) {
+            if (activeBackground_og === bg.name) {
               const activeLabel = document.createElement("div");
               activeLabel.textContent = "Active";
               activeLabel.style.backgroundColor = "rgba(0,0,0,0.7)";
@@ -604,8 +604,8 @@
               const selectBtn = document.createElement("button");
               selectBtn.textContent = "Select";
               selectBtn.onclick = () => {
-                activeBackground = bg.name;
-                localStorage.setItem("activeBackground", bg.name);
+                activeBackground_og = bg.name;
+                localStorage.setItem("activeBackground_og", bg.name);
                 document.body.style.background = bg.color;
               };
               li.appendChild(selectBtn);
@@ -616,85 +616,85 @@
       });
     }
     
-    function purchaseBackground(bgName) {
-      const bgData = backgrounds[bgName];
-      if (!bgData || points < bgData.cost || !logHasRarity(bgData.requiredRarity)) return;
-      points -= bgData.cost;
-      localStorage.setItem("points", points);
-      ownedBackgrounds[bgName] = true;
-      localStorage.setItem("ownedBackgrounds", JSON.stringify(ownedBackgrounds));
-      updateShopDisplays();
-      updateBackgroundShop();
+    function purchaseBackground_og(bgName) {
+      const bgData = backgrounds_og[bgName];
+      if (!bgData || points_og < bgData.cost || !logHasRarity_og(bgData.requiredRarity)) return;
+      points_og -= bgData.cost;
+      localStorage.setItem("points_og", points_og);
+      ownedBackgrounds_og[bgName] = true;
+      localStorage.setItem("ownedBackgrounds_og", JSON.stringify(ownedBackgrounds_og));
+      updateShopDisplays_og();
+      updateBackgroundShop_og();
     }
     
-    function setBackground(bgName) {
-      if (!ownedBackgrounds[bgName]) return;
-      activeBackground = bgName;
-      localStorage.setItem("activeBackground", bgName);
+    function setBackground_og(bgName) {
+      if (!ownedBackgrounds_og[bgName]) return;
+      activeBackground_og = bgName;
+      localStorage.setItem("activeBackground_og", bgName);
       if (bgName === "Rainbow") {
         document.body.style.background = "linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)";
-      } else if (backgrounds[bgName]) {
-        document.body.style.background = backgrounds[bgName].color;
+      } else if (backgrounds_og[bgName]) {
+        document.body.style.background = backgrounds_og[bgName].color;
       } else {
         document.body.style.background = "";
       }
     }
     
-    function logHasRarity(requiredRarity) {
-      return logData.includes(requiredRarity);
+    function logHasRarity_og(requiredRarity) {
+      return logData_og.includes(requiredRarity);
     }
     
-    function toggleSettingsModal() {
-      const modal = document.getElementById("settingsModal");
+    function toggleSettingsModal_og() {
+      const modal = document.getElementById("settingsModal_og");
       modal.style.display = (modal.style.display === "block") ? "none" : "block";
-      updateShopDisplays();
-      updateBackgroundShop();
-      updateStats();
+      updateShopDisplays_og();
+      updateBackgroundShop_og();
+      updateStats_og();
     }
     
-    function resetGame() {
+    function resetGame_og() {
       if (confirm("Are you sure you want to reset the game? This will clear all progress.")) {
-        points = 0;
-        localStorage.setItem("points", points);
-        autoClickersCount = 0;
-        doublePointsActive = false;
-        goldenClickReady = false;
-        luckBoostActive = false;
-        timeFreezeActive = false;
-        goldenModeActive = false;
-        ownedBackgrounds = {};
-        activeBackground = "Light Blue";
-        localStorage.removeItem("ownedBackgrounds");
-        localStorage.removeItem("activeBackground");
-        localStorage.removeItem("logData");
-        localStorage.removeItem("totalClicks");
-        logData = [];
-        totalClicks = 0;
-        if (autoInterval) {
-          clearInterval(autoInterval);
-          autoInterval = null;
+        points_og = 0;
+        localStorage.setItem("points_og", points_og);
+        autoClickersCount_og = 0;
+        doublePointsActive_og = false;
+        goldenClickReady_og = false;
+        luckBoostActive_og = false;
+        timeFreezeActive_og = false;
+        goldenModeActive_og = false;
+        ownedBackgrounds_og = {};
+        activeBackground_og = "Light Blue";
+        localStorage.removeItem("ownedBackgrounds_og");
+        localStorage.removeItem("activeBackground_og");
+        localStorage.removeItem("logData_og");
+        localStorage.removeItem("totalClicks_og");
+        logData_og = [];
+        totalClicks_og = 0;
+        if (autoInterval_og) {
+          clearInterval(autoInterval_og);
+          autoInterval_og = null;
         }
-        document.getElementById("log").innerHTML = "";
-        updateShopDisplays();
-        setDefaultBackground();
-        updateBackgroundShop();
-        updateStats();
+        document.getElementById("log_og").innerHTML = "";
+        updateShopDisplays_og();
+        setDefaultBackground_og();
+        updateBackgroundShop_og();
+        updateStats_og();
       }
     }
     
-    function setDefaultBackground() {
-      if (activeBackground === "Light Blue") {
+    function setDefaultBackground_og() {
+      if (activeBackground_og === "Light Blue") {
         document.body.style.background = "#e0f7fa";
-      } else if (backgrounds[activeBackground]) {
-        document.body.style.background = backgrounds[activeBackground].color;
-      } else if (activeBackground === "Rainbow") {
+      } else if (backgrounds_og[activeBackground_og]) {
+        document.body.style.background = backgrounds_og[activeBackground_og].color;
+      } else if (activeBackground_og === "Rainbow") {
         document.body.style.background = "linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)";
       }
     }
     
-    document.getElementById("clickButton").addEventListener("click", function() {
-      generateRarity(true);
+    document.getElementById("clickButton_og").addEventListener("click", function() {
+      generateRarity_og(true);
     });
-</script>
+  </script>
 </body>
 </html>
