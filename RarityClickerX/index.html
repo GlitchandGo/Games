@@ -5,13 +5,14 @@
     <title>Rarity Clicker</title>
     <style type="text/css">
       body {
+        /* Default background is white; it may be overridden by a purchase */
         background-color: white;
         font-family: Arial, sans-serif;
         color: black;
         margin: 20px;
         padding: 0;
       }
-      /* Shopping cart (using emoji) positioned at top right */
+      /* Shopping cart emoji in the top right */
       #cart {
         position: absolute;
         top: 10px;
@@ -41,18 +42,18 @@
       }
     </style>
     <script type="text/javascript">
-      // Helper: Get the value of a URL query parameter.
+      // Helper: Get the value of a URL query variable.
       function getQueryVariable(variable) {
         var query = window.location.search.substring(1);
         var vars = query.split("&");
-        for (var i = 0; i < vars.length; i++) {
+        for(var i = 0; i < vars.length; i++) {
           var pair = vars[i].split("=");
-          if (pair[0] == variable) { return decodeURIComponent(pair[1]); }
+          if(pair[0] == variable) { return decodeURIComponent(pair[1]); }
         }
         return null;
       }
-
-      // Mapping of rarities to point values.
+      
+      // Mapping rarities to their point values.
       var pointsMapping = {
         "Common": 0,
         "Uncommon": 1,
@@ -66,53 +67,53 @@
         "Secret": 300
       };
 
-      // Global variables for score and log.
+      // Global score and log array.
       var score = 0;
       var logArr = [];
 
-      // Update the log display based on logArr.
+      // Update the log display from logArr.
       function updateLogDisplay() {
         var s = "";
-        for (var i = 0; i < logArr.length; i++) {
+        for(var i = 0; i < logArr.length; i++) {
           var rarity = logArr[i];
           s += rarity + " (" + pointsMapping[rarity] + " points)" + "<br>";
         }
         document.getElementById("log").innerHTML = s;
       }
 
-      // Generate a rarity when the button is clicked.
+      // Main function when the button is clicked.
       function getRarity() {
-        var r = Math.random() * 100;  // r is in [0, 100)
+        var r = Math.random() * 100; // 0 <= r < 100
         var outcome = "";
         var points = 0;
-        if (r < 50) {
+        if(r < 50) {
           outcome = "Common";
           points = pointsMapping["Common"];
-        } else if (r < 76) {  // 0–50: Common; 50–76: Uncommon
+        } else if(r < 76) {  // 50 - 76: Uncommon
           outcome = "Uncommon";
           points = pointsMapping["Uncommon"];
-        } else if (r < 89) {  // 76–89: Rare
+        } else if(r < 89) {  // 76 - 89: Rare
           outcome = "Rare";
           points = pointsMapping["Rare"];
-        } else if (r < 95) {  // 89–95: Epic
+        } else if(r < 95) {  // 89 - 95: Epic
           outcome = "Epic";
           points = pointsMapping["Epic"];
-        } else if (r < 98) {  // 95–98: Legendary
+        } else if(r < 98) {  // 95 - 98: Legendary
           outcome = "Legendary";
           points = pointsMapping["Legendary"];
-        } else if (r >= 98.1 && r < 99) {  // 98.1–99: Mythic
+        } else if(r >= 98.1 && r < 99) {  // 98.1 - 99: Mythic
           outcome = "Mythic";
           points = pointsMapping["Mythic"];
-        } else if (r >= 99.1 && r < 99.5) {  // 99.1–99.5: Chroma
+        } else if(r >= 99.1 && r < 99.5) {  // 99.1 - 99.5: Chroma
           outcome = "Chroma";
           points = pointsMapping["Chroma"];
-        } else if (r >= 99.6 && r < 99.8) {  // 99.6–99.8: Impossible
+        } else if(r >= 99.6 && r < 99.8) {  // 99.6 - 99.8: Impossible
           outcome = "Impossible";
           points = pointsMapping["Impossible"];
-        } else if (r >= 99.8 && r < 99.95) {  // 99.8–99.95: Ethereal
+        } else if(r >= 99.8 && r < 99.95) {  // 99.8 - 99.95: Ethereal
           outcome = "Ethereal";
           points = pointsMapping["Ethereal"];
-        } else if (r >= 99.95 && r < 100) {  // 99.95–100: Secret
+        } else if(r >= 99.95 && r < 100) {  // 99.95 - 100: Secret
           outcome = "Secret";
           points = pointsMapping["Secret"];
         } else {
@@ -120,13 +121,13 @@
           points = pointsMapping["Legendary"];
         }
 
-        // Update score and persist it.
+        // Update score and persist.
         score += points;
         document.getElementById("score").innerHTML = "Score: " + score;
         localStorage.setItem("score", score);
 
-        // Add to the log only if this rarity isn't already logged.
-        if (logArr.indexOf(outcome) === -1) {
+        // Add to log only if it’s not already logged.
+        if(logArr.indexOf(outcome) === -1) {
           logArr.push(outcome);
           localStorage.setItem("rarityLog", JSON.stringify(logArr));
           updateLogDisplay();
@@ -134,41 +135,47 @@
         document.getElementById("result").innerHTML = "You got: " + outcome + " (" + points + " points)";
       }
 
-      // On page load, restore background, score, and log from localStorage.
+      // On page load, restore saved background, score, log, and check for easter egg.
       window.onload = function() {
-        // Change background if passed via URL, else restore saved bg.
+        // Background: if the URL has a "bg" parameter, use that. Otherwise, load saved bg.
         var bg = getQueryVariable("bg");
-        if (bg != null && bg != "") {
+        if(bg != null && bg != "") {
           document.body.style.backgroundColor = bg;
           localStorage.setItem("bg", bg);
         } else {
           var savedBg = localStorage.getItem("bg");
-          if (savedBg) {
-            document.body.style.backgroundColor = savedBg;
-          }
+          if(savedBg) { document.body.style.backgroundColor = savedBg; }
         }
-        // Restore saved score.
+        // Restore score.
         var storedScore = localStorage.getItem("score");
-        if (storedScore) {
+        if(storedScore) {
           score = parseInt(storedScore, 10);
           document.getElementById("score").innerHTML = "Score: " + score;
         }
-        // Restore saved log.
+        // Restore log.
         var storedLog = localStorage.getItem("rarityLog");
-        if (storedLog) {
+        if(storedLog) {
           logArr = JSON.parse(storedLog);
           updateLogDisplay();
+        }
+        // Check if all 5 backgrounds have been purchased; if so, turn the button blue.
+        var purchased = localStorage.getItem("purchasedBackgrounds");
+        if(purchased) {
+          purchased = JSON.parse(purchased);
+          if(purchased.length == 5) {
+            document.getElementById("clickButton").style.backgroundColor = "blue";
+          }
         }
       };
     </script>
   </head>
   <body>
-    <!-- Shopping cart emoji linking to the shop page -->
+    <!-- Shopping cart emoji linking to shop page -->
     <div id="cart">
       <a class="cart-link" href="shop.html">&#128722;</a>
     </div>
     <h1>Rarity Clicker</h1>
-    <button onclick="getRarity()">Click me!</button>
+    <button id="clickButton" onclick="getRarity()">Click me!</button>
     <p id="result">&nbsp;</p>
     <p id="score">Score: 0</p>
     <div id="log"></div>
