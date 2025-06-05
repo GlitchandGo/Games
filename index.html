@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rarity Clicker with Settings, Stats & New Items</title>
+  <title>Rarity Clicker – Expanded Rarities</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -74,13 +74,14 @@
   </div>
   
   <!-- Log of Unique Finds -->
-  <h2>Rarities you've unlocked</h2>
+  <h2>Log of Finds</h2>
   <ul id="log"></ul>
   
   <!-- JavaScript: Contains all game logic, shop functionality, stats, persistence, and new item handling -->
   <script>
-    /* Rarity definitions and point mappings */
+    /* Expanded rarity definitions and weights – ordered from most common to rarest */
     const rarities = [
+      { name: "Very Common", chance: 60 },
       { name: "Common", chance: 50 },
       { name: "Uncommon", chance: 25 },
       { name: "Rare", chance: 12.5 },
@@ -88,17 +89,31 @@
       { name: "Ultra Rare", chance: 3.13 },
       { name: "Epic", chance: 1.56 },
       { name: "Very Epic", chance: 0.78 },
+      { name: "Ultra Epic", chance: 0.5 },
       { name: "Legendary", chance: 0.39 },
+      { name: "Hella Legendary", chance: 0.3 },
       { name: "Mythic", chance: 0.2 },
+      { name: "Super Mythic", chance: 0.15 },
       { name: "Chroma", chance: 0.1 },
+      { name: "Extreme Chroma", chance: 0.08 },
       { name: "Godly", chance: 0.05 },
-      { name: "Impossible", chance: 0.03 },
-      { name: "Ethereal", chance: 0.02 },
+      { name: "Very Very Godly", chance: 0.04 },
+      { name: "Not-so-Impossible", chance: 0.025 },
+      { name: "Impossible", chance: 0.02 },
+      { name: "Ethereal", chance: 0.015 },
       { name: "Extraordinary", chance: 0.01 },
-      { name: "Secret", chance: 0.005 }
+      { name: "Unreal", chance: 0.008 },
+      { name: "Secret", chance: 0.005 },
+      { name: "Mystery", chance: 0.003 },
+      { name: "Divine", chance: 0.002 },
+      { name: "Cosmic", chance: 0.001 },
+      { name: "Unknown", chance: 0.0005 },
+      { name: "Glitched", chance: 0.0001 }
     ];
-    
+
+    /* Expanded rarity point values – points earned for a rarity */
     const rarityPoints = {
+      "Very Common": 0,
       "Common": 0,
       "Uncommon": 0,
       "Rare": 1,
@@ -106,17 +121,29 @@
       "Ultra Rare": 3,
       "Epic": 5,
       "Very Epic": 7,
+      "Ultra Epic": 9,
       "Legendary": 10,
+      "Hella Legendary": 12,
       "Mythic": 15,
+      "Super Mythic": 18,
       "Chroma": 25,
+      "Extreme Chroma": 30,
       "Godly": 40,
+      "Very Very Godly": 50,
+      "Not-so-Impossible": 60,
       "Impossible": 75,
       "Ethereal": 100,
       "Extraordinary": 200,
-      "Secret": 500
+      "Unreal": 250,
+      "Secret": 500,
+      "Mystery": 600,
+      "Divine": 700,
+      "Cosmic": 850,
+      "Unknown": 1000,
+      "Glitched": 5000
     };
-    
-    /* Background shop definitions */
+
+    /* Background shop definitions remain unchanged */
     const backgrounds = {
       "Light Yellow": { cost: 100, requiredRarity: "Legendary", color: "#fffacd" },
       "Dark Green": { cost: 100, requiredRarity: "Epic", color: "#006400" },
@@ -125,8 +152,8 @@
       "Dark Blue": { cost: 100, requiredRarity: "Godly", color: "#00008b" },
       "Rainbow": { cost: 200, requiredRarity: "Impossible", color: "linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)" }
     };
-    
-    /* Luck Boost odds: omits Common */
+
+    /* Luck Boost odds: similar to before but omitting "Common" */
     const luckBoostChances = [
       { name: "Uncommon", chance: 50 },
       { name: "Rare", chance: 25 },
@@ -141,10 +168,15 @@
       { name: "Impossible", chance: 0.04875 },
       { name: "Ethereal", chance: 0.024375 },
       { name: "Extraordinary", chance: 0.0121875 },
-      { name: "Secret", chance: 0.00609375 }
+      { name: "Secret", chance: 0.00609375 },
+      { name: "Mystery", chance: 0.003 },
+      { name: "Divine", chance: 0.002 },
+      { name: "Cosmic", chance: 0.001 },
+      { name: "Unknown", chance: 0.0005 }
+      // Glitched is not included in Luck Boost.
     ];
-    
-    /* Golden Mode weighted chances */
+
+    /* Golden Mode weighted chances – note: Glitched is omitted */
     const goldenModeChances = {
       "Legendary": 50,
       "Mythic": 25,
@@ -153,9 +185,14 @@
       "Impossible": 2.5,
       "Ethereal": 0.5,
       "Extraordinary": 0.3,
-      "Secret": 0.2
+      "Secret": 0.2,
+      "Mystery": 0.15,
+      "Divine": 0.1,
+      "Cosmic": 0.05,
+      "Unknown": 0.02
+      // "Glitched" is not allowed in Golden Mode.
     };
-    
+
     /* Global state variables and new flags */
     let points = 0;
     let autoClickersCount = 0;
@@ -165,13 +202,19 @@
     let luckBoostActive = false;
     let timeFreezeActive = false;
     let goldenModeActive = false;
-    
+
+    /* New purchase counters for shop items (require at least 2 each for Glitched) */
+    let doublePointsPurchased = 0;
+    let goldenClickPurchased = 0;
+    let luckBoostPurchased = 0;
+    let timeFreezePurchased = 0;
+    let goldenModePurchased = 0;
+    // autoClickersCount already tracks auto clicker purchases.
+
     /* Persisted stats */
     let totalClicks = localStorage.getItem("totalClicks") ? parseInt(localStorage.getItem("totalClicks")) : 0;
-    // logData stores an array of unique rarities discovered.
-    let logData = JSON.parse(localStorage.getItem("logData")) || [];
-    
-    /* Update the log DOM element from persisted logData */
+    let logData = JSON.parse(localStorage.getItem("logData")) || []; // Array of unique rarity names
+
     function updateLogElement() {
       const logElem = document.getElementById("log");
       logElem.innerHTML = "";
@@ -184,12 +227,11 @@
       });
     }
     updateLogElement();
-    
+
     /* Background shop state (persisted) */
     let ownedBackgrounds = JSON.parse(localStorage.getItem("ownedBackgrounds")) || {};
     let activeBackground = localStorage.getItem("activeBackground") || "Light Blue";
-    
-    /* Set the default background */
+
     function setDefaultBackground() {
       if (activeBackground === "Light Blue") {
         document.body.style.background = "#e0f7fa";
@@ -198,19 +240,18 @@
       }
     }
     setDefaultBackground();
-    
-    /* Timer: we adjust startTime when Time Freeze ends */
-    let startTime = Date.now();
+
+    /* Timer – we adjust startTime when Time Freeze ends */
+    let gameStartTime = Date.now();
     function updateTimer() {
       if (!timeFreezeActive) {
         const now = Date.now();
-        const secondsElapsed = Math.floor((now - startTime) / 1000);
+        const secondsElapsed = Math.floor((now - gameStartTime) / 1000);
         document.getElementById("timer").innerText = "Time: " + secondsElapsed + "s";
       }
     }
     setInterval(updateTimer, 1000);
-    
-    /* Update shop and boost displays */
+
     function updateShopDisplays() {
       document.getElementById("pointsDisplay").innerText = points;
       document.getElementById("autoCount").innerText = autoClickersCount;
@@ -220,8 +261,7 @@
       document.getElementById("timeFreezeStatus").innerText = timeFreezeActive ? "Active" : "Inactive";
       document.getElementById("goldenModeStatus").innerText = goldenModeActive ? "Active" : "Inactive";
     }
-    
-    /* Update the "Stats for Nerds" section */
+
     function updateStats() {
       document.getElementById("totalClicks").textContent = totalClicks;
       let rarestValue = 0, rarest = "None";
@@ -238,19 +278,32 @@
       chancesList.innerHTML = "";
       rarities.forEach(rarity => {
         if (rarity.name === "Secret" && !logData.includes("Secret")) return;
+        if (rarity.name === "Glitched" && !logData.includes("Glitched")) return;
         let li = document.createElement("li");
-        li.textContent = logData.includes(rarity.name) ?
-                         (rarity.name + ": " + rarity.chance + "%") : "???";
+        li.textContent = logData.includes(rarity.name)
+          ? (rarity.name + ": " + rarity.chance + "%")
+          : "???";
         chancesList.appendChild(li);
       });
     }
-    
-    /* Utility: Convert rarity string to a friendly CSS class */
+
     function getClassName(rarity) {
       return rarity.toLowerCase().replace(/ /g, "-");
     }
-    
-    /* Generate a rarity for a click (manual or auto) */
+
+    /* Helper: Check if Glitched is allowed. */
+    function glitchedAllowed() {
+      return (!goldenModeActive && !goldenClickReady &&
+              autoClickersCount >= 2 &&
+              doublePointsPurchased >= 2 &&
+              goldenClickPurchased >= 2 &&
+              luckBoostPurchased >= 2 &&
+              timeFreezePurchased >= 2 &&
+              goldenModePurchased >= 2 &&
+              Object.keys(backgrounds).every(key => ownedBackgrounds[key]));
+    }
+
+    /* Generation of a rarity on click (manual or auto) */
     function generateRarity(isManual = true) {
       totalClicks++;
       localStorage.setItem("totalClicks", totalClicks);
@@ -259,58 +312,53 @@
       let multiplier = 1;
       
       if (isManual && goldenClickReady) {
-        // Golden Click: guarantee a rarity of Legendary or above.
-        let eligible = rarities.filter(r => (rarityPoints[r.name] || 0) >= rarityPoints["Legendary"]);
+        // Golden Click: guarantee a rarity of Legendary or above (skip Glitched).
+        let eligible = rarities.filter(r => (rarityPoints[r.name] || 0) >= rarityPoints["Legendary"] && r.name !== "Glitched");
         let totalChance = eligible.reduce((sum, r) => sum + r.chance, 0);
         let roll = Math.random() * totalChance;
         let cumulative = 0;
         for (let r of eligible) {
           cumulative += r.chance;
-          if (roll <= cumulative) {
-            foundRarity = r.name;
-            break;
-          }
+          if (roll <= cumulative) { foundRarity = r.name; break; }
         }
         goldenClickReady = false;
         console.log("Golden Click applied – result guaranteed to be Legendary or above.");
       } else if (goldenModeActive) {
-        // Golden Mode: use weighted probabilities from goldenModeChances.
-        let roll = Math.random() * 100; // Sum of weights is 100.
+        // Golden Mode uses weighted chances (from goldenModeChances) – Glitched is never allowed.
+        let totalChance = 0;
+        for (let rarity in goldenModeChances) { totalChance += goldenModeChances[rarity]; }
+        let roll = Math.random() * totalChance;
         let cumulative = 0;
         for (let rarity in goldenModeChances) {
           cumulative += goldenModeChances[rarity];
-          if (roll <= cumulative) {
-            foundRarity = rarity;
-            break;
-          }
+          if (roll <= cumulative) { foundRarity = rarity; break; }
         }
       } else if (luckBoostActive) {
-        // Luck Boost: use modified odds (omitting Common).
-        let roll = Math.random() * 100;
+        // Luck Boost: use modified odds from luckBoostChances.
+        let totalChance = luckBoostChances.reduce((sum, r) => sum + r.chance, 0);
+        let roll = Math.random() * totalChance;
         let cumulative = 0;
         for (let r of luckBoostChances) {
           cumulative += r.chance;
-          if (roll <= cumulative) {
-            foundRarity = r.name;
-            break;
-          }
+          if (roll <= cumulative) { foundRarity = r.name; break; }
         }
       } else {
-        // Standard rarity generation.
-        let roll = Math.random() * 100;
+        // Standard generation: recalc effective total, skipping Glitched if not allowed.
+        let effectiveTotal = 0;
+        for (let r of rarities) {
+          if (r.name === "Glitched" && !glitchedAllowed()) continue;
+          effectiveTotal += r.chance;
+        }
+        let roll = Math.random() * effectiveTotal;
         let cumulative = 0;
         for (let r of rarities) {
+          if (r.name === "Glitched" && !glitchedAllowed()) continue;
           cumulative += r.chance;
-          if (roll <= cumulative) {
-            foundRarity = r.name;
-            break;
-          }
+          if (roll <= cumulative) { foundRarity = r.name; break; }
         }
       }
       
-      if (doublePointsActive) {
-        multiplier *= 2;
-      }
+      if (doublePointsActive) multiplier *= 2;
       
       let basePoints = rarityPoints[foundRarity] || 0;
       let earned = basePoints * multiplier;
@@ -327,9 +375,8 @@
         updateLogElement();
       }
     }
-    
+
     /* --- Shop Purchase Functions --- */
-    
     function purchaseAutoClicker() {
       if (points >= 50) {
         points -= 50;
@@ -351,6 +398,7 @@
       if (points >= 150) {
         points -= 150;
         doublePointsActive = true;
+        doublePointsPurchased++;
         updateShopDisplays();
         setTimeout(() => {
           doublePointsActive = false;
@@ -365,6 +413,7 @@
       if (points >= 200) {
         points -= 200;
         goldenClickReady = true;
+        goldenClickPurchased++;
         updateShopDisplays();
       } else {
         alert("Not enough pts for Golden Click!");
@@ -375,6 +424,7 @@
       if (points >= 300) {
         points -= 300;
         luckBoostActive = true;
+        luckBoostPurchased++;
         updateShopDisplays();
         setTimeout(() => {
           luckBoostActive = false;
@@ -388,18 +438,16 @@
     function purchaseTimeFreeze() {
       if (points >= 200) {
         points -= 200;
+        timeFreezePurchased++;
         updateShopDisplays();
         if (!timeFreezeActive) {
           timeFreezeActive = true;
           let freezeStart = Date.now();
-          if (autoInterval) {
-            clearInterval(autoInterval);
-            autoInterval = null;
-          }
+          if (autoInterval) { clearInterval(autoInterval); autoInterval = null; }
           setTimeout(() => {
             timeFreezeActive = false;
             let freezeDuration = Date.now() - freezeStart;
-            startTime += freezeDuration;
+            gameStartTime += freezeDuration;
             updateShopDisplays();
             if (autoClickersCount > 0) {
               autoInterval = setInterval(() => {
@@ -418,17 +466,17 @@
     function purchaseGoldenMode() {
       if (points >= 1000) {
         points -= 1000;
+        goldenModePurchased++;
         updateShopDisplays();
         if (!goldenModeActive) {
           goldenModeActive = true;
-          // Save the current background and override with gold.
           let previousBackground = document.body.style.background;
           document.body.style.background = "#FFD700"; // Deep gold.
           setTimeout(() => {
             goldenModeActive = false;
             setDefaultBackground();
             updateShopDisplays();
-          }, 5000); // Lasts for 5 seconds.
+          }, 5000);
         }
       } else {
         alert("Not enough pts for Golden Mode!");
@@ -436,7 +484,6 @@
     }
     
     /* --- Background Shop Functions --- */
-    
     function updateBackgroundShop() {
       const list = document.getElementById("backgroundShopList");
       list.innerHTML = "";
@@ -490,8 +537,7 @@
       return logData.includes(requiredRarity);
     }
     
-    /* --- Settings Modal & Reset Functionality --- */
-    
+        /* --- Settings Modal & Reset Functionality --- */
     function toggleSettingsModal() {
       const modal = document.getElementById("settingsModal");
       modal.style.display = (modal.style.display === "block") ? "none" : "block";
@@ -499,7 +545,7 @@
       updateBackgroundShop();
       updateStats();
     }
-    
+
     function resetGame() {
       if (confirm("Are you sure you want to reset the game? This will clear all progress.")) {
         points = 0;
@@ -511,16 +557,30 @@
         goldenModeActive = false;
         ownedBackgrounds = {};
         activeBackground = "Light Blue";
+
+        /* Reset purchases */
+        doublePointsPurchased = 0;
+        goldenClickPurchased = 0;
+        luckBoostPurchased = 0;
+        timeFreezePurchased = 0;
+        goldenModePurchased = 0;
+
+        /* Clear localStorage */
         localStorage.removeItem("ownedBackgrounds");
         localStorage.removeItem("activeBackground");
         localStorage.removeItem("logData");
         localStorage.removeItem("totalClicks");
+
+        /* Reset log */
         logData = [];
         totalClicks = 0;
-        if (autoInterval) {
-          clearInterval(autoInterval);
-          autoInterval = null;
+
+        /* Reset auto-clicker interval */
+        if (autoInterval) { 
+          clearInterval(autoInterval); 
+          autoInterval = null; 
         }
+
         document.getElementById("log").innerHTML = "";
         updateShopDisplays();
         setDefaultBackground();
@@ -528,8 +588,8 @@
         updateStats();
       }
     }
-    
-    /* Main click event */
+
+    /* --- Main Click Handling --- */
     document.getElementById("clickButton").addEventListener("click", function() {
       generateRarity(true);
     });
