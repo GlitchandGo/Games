@@ -1,30 +1,31 @@
-/* Global styling with a chill pastel gradient background */
+/* Use Bubblegum Sans for all text */
 body {
+  font-family: 'Bubblegum Sans', cursive;
   text-align: center;
-  font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #e0f7fa, #fce4ec);
   padding: 20px;
   margin: 0;
 }
 
-/* Header – timer on the left, settings icon on the right */
 #header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
+
 #timer {
   font-size: 24px;
   margin: 10px;
 }
+
 #settingsIcon {
   font-size: 32px;
   cursor: pointer;
   margin: 10px;
 }
 
-/* Modal overlay for the settings */
+/* Modal Styles */
 .modal {
   display: none;
   position: fixed;
@@ -36,6 +37,7 @@ body {
   overflow: auto;
   background-color: rgba(0,0,0,0.4);
 }
+
 .modal-content {
   background-color: #fefefe;
   margin: 10% auto;
@@ -46,6 +48,7 @@ body {
   text-align: center;
   position: relative;
 }
+
 .close {
   color: #aaa;
   position: absolute;
@@ -55,12 +58,13 @@ body {
   font-weight: bold;
   cursor: pointer;
 }
+
 .close:hover,
 .close:focus {
   color: black;
 }
 
-/* Shop Upgrade Buttons (inside settings) */
+/* Shop Upgrade Buttons */
 button {
   font-size: 18px;
   padding: 10px 20px;
@@ -77,7 +81,7 @@ button {
 }
 #autoClickerBtn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
 }
 
 #doublePointsBtn {
@@ -86,7 +90,7 @@ button {
 }
 #doublePointsBtn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
 }
 
 #goldenClickBtn {
@@ -95,7 +99,7 @@ button {
 }
 #goldenClickBtn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
 }
 
 #luckBoostBtn {
@@ -113,7 +117,7 @@ button {
 }
 #timeFreezeBtn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
 }
 
 #goldenModeBtn {
@@ -125,7 +129,7 @@ button {
   box-shadow: 0 8px 15px rgba(0,0,0,0.2);
 }
 
-/* Main clickable game button styling */
+/* Main Click Button */
 #clickButton {
   font-size: 32px;
   padding: 20px 40px;
@@ -145,7 +149,7 @@ button {
   transform: scale(0.98);
 }
 
-/* Result pop-up styling */
+/* Result Container */
 #resultContainer {
   margin-top: 20px;
 }
@@ -157,7 +161,7 @@ button {
   border-radius: 10px;
 }
 
-/* Color classes for each rarity */
+/* Rarity Color Classes */
 .common { background-color: #808080; color: white; }
 .uncommon { background-color: #90ee90; color: black; }
 .rare { background-color: #add8e6; color: black; }
@@ -173,9 +177,10 @@ button {
 .ethereal { background-color: #2e0854; color: white; }
 .extraordinary { background-color: #ffa500; color: white; }
 .stellar { background-color: white; color: black; border: 2px solid black; }
-.unknown { background-color: black; color: white; } /* If needed */
-  
-/* Log styling for unique finds */
+.unknown { background-color: black; color: white; }
+.glitched { background-color: darkgreen; color: white; }
+
+/* Log Styling */
 #log {
   list-style-type: none;
   padding: 0;
@@ -189,7 +194,7 @@ button {
   border-radius: 5px;
 }
 
-/* Background Shop Section styling inside the settings modal */
+/* Background Shop Section */
 .background-shop-section {
   text-align: left;
   margin: 10px 0;
@@ -199,16 +204,12 @@ button {
   padding: 0;
   margin-top: 10px;
 }
-/* Styling for each background shop item */
 #backgroundShopList li {
   margin: 10px 0;
   padding: 10px;
   border-radius: 5px;
   position: relative;
-  /* Inline background from JS takes full control */
 }
-
-/* Buttons inside the shop */
 #backgroundShopList li button {
   font-size: 14px;
   padding: 5px 10px;
@@ -222,10 +223,18 @@ button {
 }
 #backgroundShopList li button:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.2);
 }
 
-/* Stats for Nerds Section styling */
+/* Seasonal Event Icon */
+.seasonal-event-icon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 18px;
+}
+
+/* Stats Section */
 .stats-section {
   text-align: left;
   margin: 10px 0;
@@ -238,7 +247,7 @@ button {
   padding: 0;
 }
 
-/* Style for the RESET button */
+/* RESET Button */
 #resetButton {
   background: #ff4d4d;
   color: white;
@@ -248,5 +257,9 @@ button {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#resetButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
 }
