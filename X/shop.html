@@ -33,25 +33,25 @@
     </style>
     <script type="text/javascript">
       function loadPurchased() {
-        var purchased = localStorage.getItem("purchasedBackgrounds");
+        var purchased = localStorage.getItem("purchasedBackgrounds_for_model_X");
         if (!purchased) { return []; }
         return JSON.parse(purchased);
       }
       
       // For standard backgrounds (cost: 200 points)
       function purchase(bgColor, cost) {
-        var currentScore = parseInt(localStorage.getItem("score"), 10);
+        var currentScore = parseInt(localStorage.getItem("score_for_model_X"), 10);
         if (isNaN(currentScore)) { currentScore = 0; }
         if (currentScore < cost) {
           alert("You need at least " + cost + " points to buy this background.");
           return false;
         }
         var newScore = currentScore - cost;
-        localStorage.setItem("score", newScore);
+        localStorage.setItem("score_for_model_X", newScore);
         var purchased = loadPurchased();
         if (purchased.indexOf(bgColor) === -1) {
           purchased.push(bgColor);
-          localStorage.setItem("purchasedBackgrounds", JSON.stringify(purchased));
+          localStorage.setItem("purchasedBackgrounds_for_model_X", JSON.stringify(purchased));
         }
         window.location.href = "index.html?bg=" + encodeURIComponent(bgColor);
         return false;
@@ -65,7 +65,7 @@
       
       // For purchasing the Rainbow background (cost: 1000 points). It appears only after all 5 standard backgrounds are owned.
       function purchaseRainbow() {
-        var currentScore = parseInt(localStorage.getItem("score"), 10);
+        var currentScore = parseInt(localStorage.getItem("score_for_model_X"), 10);
         var cost = 1000;
         if (isNaN(currentScore)) { currentScore = 0; }
         if (currentScore < cost) {
@@ -73,11 +73,11 @@
           return false;
         }
         var newScore = currentScore - cost;
-        localStorage.setItem("score", newScore);
+        localStorage.setItem("score_for_model_X", newScore);
         var purchased = loadPurchased();
         if (purchased.indexOf("rainbow") === -1) {
           purchased.push("rainbow");
-          localStorage.setItem("purchasedBackgrounds", JSON.stringify(purchased));
+          localStorage.setItem("purchasedBackgrounds_for_model_X", JSON.stringify(purchased));
         }
         window.location.href = "index.html?bg=" + encodeURIComponent("rainbow");
         return false;
@@ -147,6 +147,6 @@
     </div>
     <p><a href="index.html">Back to Rarity Clicker</a></p>
     <!-- RESET button styled red -->
-    <button onclick="if(confirm('Are you sure you want to reset all data? This will clear your score, log, and purchased backgrounds.')) { localStorage.clear(); window.location.href='index.html'; };">RESET</button>
+    <button onclick="if(confirm('Are you sure you want to reset all data? This will clear your score, log, and purchased backgrounds.')) { localStorage.removeItem('score_for_model_X'); localStorage.removeItem('rarityLog_for_model_X'); localStorage.removeItem('purchasedBackgrounds_for_model_X'); localStorage.removeItem('bg_for_model_X'); window.location.href='index.html'; }">RESET</button>
   </body>
 </html>

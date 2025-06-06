@@ -360,9 +360,9 @@
     let goldenModePurchased = 0;
 
     // Persisted stats
-    let totalClicks = localStorage.getItem("totalClicks") ? parseInt(localStorage.getItem("totalClicks")) : 0;
+    let totalClicks = localStorage.getItem("totalClicks_for_model_Y") ? parseInt(localStorage.getItem("totalClicks_for_model_Y")) : 0;
     // logData stores an array of unique rarities discovered
-    let logData = JSON.parse(localStorage.getItem("logData")) || [];
+    let logData = JSON.parse(localStorage.getItem("logData_for_model_Y")) || [];
 
     function updateLogElement() {
       const logElem = document.getElementById("log");
@@ -380,8 +380,8 @@
     /* ============================================================
        Background Shop State
        ============================================================ */
-    let ownedBackgrounds = JSON.parse(localStorage.getItem("ownedBackgrounds")) || {};
-    let activeBackground = localStorage.getItem("activeBackground") || "Light Blue";
+    let ownedBackgrounds = JSON.parse(localStorage.getItem("ownedBackgrounds_for_model_Y")) || {};
+    let activeBackground = localStorage.getItem("activeBackground_for_model_Y") || "Light Blue";
 
     function setDefaultBackground() {
       if (activeBackground === "Light Blue") {
@@ -469,7 +469,7 @@
        ============================================================ */
     function generateRarity(isManual = true) {
       totalClicks++;
-      localStorage.setItem("totalClicks", totalClicks);
+      localStorage.setItem("totalClicks_for_model_Y", totalClicks);
       
       let foundRarity = "";
       let multiplier = 1;
@@ -542,7 +542,7 @@
     
     if (!logData.includes(foundRarity)) {
       logData.push(foundRarity);
-      localStorage.setItem("logData", JSON.stringify(logData));
+      localStorage.setItem("logData_for_model_Y", JSON.stringify(logData));
       updateLogElement();
     }
   }
@@ -696,15 +696,14 @@
     if (!bgData || points < bgData.cost || !logHasRarity(bgData.requiredRarity)) return;
     points -= bgData.cost;
     ownedBackgrounds[bgName] = true;
-    localStorage.setItem("ownedBackgrounds", JSON.stringify(ownedBackgrounds));
+    localStorage.setItem("ownedBackgrounds_for_model_Y", JSON.stringify(ownedBackgrounds));
     updateShopDisplays();
     updateBackgroundShop();
   }
-  
   function setBackground(bgName) {
     if (!ownedBackgrounds[bgName]) return;
     activeBackground = bgName;
-    localStorage.setItem("activeBackground", bgName);
+    localStorage.setItem("activeBackground_for_model_Y", bgName);
     document.body.style.background = backgrounds[bgName].color;
   }
   
@@ -732,22 +731,18 @@
       goldenModeActive = false;
       ownedBackgrounds = {};
       activeBackground = "Light Blue";
-  
       /* Reset purchase counters */
       doublePointsPurchased = 0;
       goldenClickPurchased = 0;
       luckBoostPurchased = 0;
       timeFreezePurchased = 0;
       goldenModePurchased = 0;
-  
-      localStorage.removeItem("ownedBackgrounds");
-      localStorage.removeItem("activeBackground");
-      localStorage.removeItem("logData");
-      localStorage.removeItem("totalClicks");
-  
+      localStorage.removeItem("ownedBackgrounds_for_model_Y");
+      localStorage.removeItem("activeBackground_for_model_Y");
+      localStorage.removeItem("logData_for_model_Y");
+      localStorage.removeItem("totalClicks_for_model_Y");
       logData = [];
       totalClicks = 0;
-  
       if (autoInterval) {
         clearInterval(autoInterval);
         autoInterval = null;

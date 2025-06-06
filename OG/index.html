@@ -80,9 +80,9 @@
   <!-- JavaScript -->
   <script>
     // Persistent variables (with _og suffix)
-    let points_og = localStorage.getItem("points_og") ? parseInt(localStorage.getItem("points_og")) : 0;
-    let startTime_og = localStorage.getItem("startTime_og") ? parseInt(localStorage.getItem("startTime_og")) : Date.now();
-    localStorage.setItem("startTime_og", startTime_og);
+    let points_og = localStorage.getItem("points_for_model_OG") ? parseInt(localStorage.getItem("points_for_model_OG")) : 0;
+    let startTime_og = localStorage.getItem("startTime_for_model_OG") ? parseInt(localStorage.getItem("startTime_for_model_OG")) : Date.now();
+    localStorage.setItem("startTime_for_model_OG", startTime_og);
     let autoClickersCount_og = 0;
     let autoInterval_og = null;
     let doublePointsActive_og = false;
@@ -90,8 +90,8 @@
     let luckBoostActive_og = false;
     let timeFreezeActive_og = false;
     let goldenModeActive_og = false;
-    let totalClicks_og = localStorage.getItem("totalClicks_og") ? parseInt(localStorage.getItem("totalClicks_og")) : 0;
-    let logData_og = JSON.parse(localStorage.getItem("logData_og")) || [];
+    let totalClicks_og = localStorage.getItem("totalClicks_for_model_OG") ? parseInt(localStorage.getItem("totalClicks_for_model_OG")) : 0;
+    let logData_og = JSON.parse(localStorage.getItem("logData_for_model_OG")) || [];
     
     // Rarity definitions and points mapping
     const rarities_og = [
@@ -206,8 +206,8 @@
     };
     
     // Retrieve background shop state from localStorage
-    let ownedBackgrounds_og = JSON.parse(localStorage.getItem("ownedBackgrounds_og")) || {};
-    let activeBackground_og = localStorage.getItem("activeBackground_og") || "Light Blue";
+    let ownedBackgrounds_og = JSON.parse(localStorage.getItem("ownedBackgrounds_for_model_OG")) || {};
+    let activeBackground_og = localStorage.getItem("activeBackground_for_model_OG") || "Light Blue";
     
     // Timer update function
     function updateTimer_og() {
@@ -215,7 +215,7 @@
         const now = Date.now();
         const secondsElapsed = Math.floor((now - startTime_og) / 1000);
         document.getElementById("timer_og").innerText = "Time: " + secondsElapsed + "s";
-        localStorage.setItem("startTime_og", startTime_og);
+        localStorage.setItem("startTime_for_model_OG", startTime_og);
       }
     }
     setInterval(updateTimer_og, 1000);
@@ -273,7 +273,7 @@
     
     function generateRarity_og(isManual = true) {
       totalClicks_og++;
-      localStorage.setItem("totalClicks_og", totalClicks_og);
+      localStorage.setItem("totalClicks_for_model_OG", totalClicks_og);
       
       let foundRarity = "";
       let multiplier = 1;
@@ -331,7 +331,7 @@
       let basePoints = rarityPoints_og[foundRarity] || 0;
       let earned = basePoints * multiplier;
       points_og += earned;
-      localStorage.setItem("points_og", points_og);
+      localStorage.setItem("points_for_model_OG", points_og);
       updateShopDisplays_og();
       
       const resultElem = document.getElementById("result_og");
@@ -340,7 +340,7 @@
       
       if (!logData_og.includes(foundRarity)) {
         logData_og.push(foundRarity);
-        localStorage.setItem("logData_og", JSON.stringify(logData_og));
+        localStorage.setItem("logData_for_model_OG", JSON.stringify(logData_og));
         updateLogElement_og();
       }
     }
@@ -348,7 +348,7 @@
     function purchaseAutoClicker_og() {
       if (points_og >= 50) {
         points_og -= 50;
-        localStorage.setItem("points_og", points_og);
+        localStorage.setItem("points_for_model_OG", points_og);
         autoClickersCount_og++;
         updateShopDisplays_og();
         if (autoClickersCount_og === 1 && !timeFreezeActive_og) {
@@ -362,11 +362,10 @@
         alert("Not enough pts for Auto Clicker!");
       }
     }
-    
     function purchaseDoublePoints_og() {
       if (points_og >= 150) {
         points_og -= 150;
-        localStorage.setItem("points_og", points_og);
+        localStorage.setItem("points_for_model_OG", points_og);
         doublePointsActive_og = true;
         updateShopDisplays_og();
         setTimeout(() => {
@@ -377,22 +376,20 @@
         alert("Not enough pts for Double Points!");
       }
     }
-    
     function purchaseGoldenClick_og() {
       if (points_og >= 200) {
         points_og -= 200;
-        localStorage.setItem("points_og", points_og);
+        localStorage.setItem("points_for_model_OG", points_og);
         goldenClickReady_og = true;
         updateShopDisplays_og();
       } else {
         alert("Not enough pts for Golden Click!");
       }
     }
-    
     function purchaseLuckBoost_og() {
       if (points_og >= 300) {
         points_og -= 300;
-        localStorage.setItem("points_og", points_og);
+        localStorage.setItem("points_for_model_OG", points_og);
         luckBoostActive_og = true;
         updateShopDisplays_og();
         setTimeout(() => {
@@ -403,11 +400,10 @@
         alert("Not enough pts for Luck Boost!");
       }
     }
-    
     function purchaseTimeFreeze_og() {
       if (points_og >= 200) {
         points_og -= 200;
-        localStorage.setItem("points_og", points_og);
+        localStorage.setItem("points_for_model_OG", points_og);
         updateShopDisplays_og();
         if (!timeFreezeActive_og) {
           timeFreezeActive_og = true;
@@ -420,7 +416,7 @@
             timeFreezeActive_og = false;
             let freezeDuration = Date.now() - freezeStart;
             startTime_og += freezeDuration;
-            localStorage.setItem("startTime_og", startTime_og);
+            localStorage.setItem("startTime_for_model_OG", startTime_og);
             updateShopDisplays_og();
             if (autoClickersCount_og > 0) {
               autoInterval_og = setInterval(() => {
@@ -435,11 +431,10 @@
         alert("Not enough pts for Time Freeze!");
       }
     }
-    
     function purchaseGoldenMode_og() {
       if (points_og >= 1500) {
         points_og -= 1500;
-        localStorage.setItem("points_og", points_og);
+        localStorage.setItem("points_for_model_OG", points_og);
         updateShopDisplays_og();
         if (!goldenModeActive_og) {
           goldenModeActive_og = true;
@@ -455,7 +450,6 @@
         alert("Not enough pts for Golden Mode!");
       }
     }
-    
     function updateBackgroundShop_og() {
       const list = document.getElementById("backgroundShopList_og");
       list.innerHTML = "";
@@ -533,9 +527,9 @@
             buyBtn.textContent = "Buy";
             buyBtn.onclick = () => {
               points_og -= rainbow.cost;
-              localStorage.setItem("points_og", points_og);
+              localStorage.setItem("points_for_model_OG", points_og);
               ownedBackgrounds_og["Rainbow"] = true;
-              localStorage.setItem("ownedBackgrounds_og", JSON.stringify(ownedBackgrounds_og));
+              localStorage.setItem("ownedBackgrounds_for_model_OG", JSON.stringify(ownedBackgrounds_og));
               updateShopDisplays_og();
               updateBackgroundShop_og();
             };
@@ -549,7 +543,6 @@
       
       updateSeasonalBackgroundShop_og();
     }
-    
     function updateSeasonalBackgroundShop_og() {
       const list = document.getElementById("backgroundShopList_og");
       const headerSeasonal = document.createElement("h5");
@@ -582,9 +575,9 @@
               buyBtn.textContent = "Buy";
               buyBtn.onclick = () => {
                 points_og -= 200;
-                localStorage.setItem("points_og", points_og);
+                localStorage.setItem("points_for_model_OG", points_og);
                 ownedBackgrounds_og[bg.name] = true;
-                localStorage.setItem("ownedBackgrounds_og", JSON.stringify(ownedBackgrounds_og));
+                localStorage.setItem("ownedBackgrounds_for_model_OG", JSON.stringify(ownedBackgrounds_og));
                 updateShopDisplays_og();
                 updateBackgroundShop_og();
               };
@@ -605,7 +598,7 @@
               selectBtn.textContent = "Select";
               selectBtn.onclick = () => {
                 activeBackground_og = bg.name;
-                localStorage.setItem("activeBackground_og", bg.name);
+                localStorage.setItem("activeBackground_for_model_OG", bg.name);
                 document.body.style.background = bg.color;
               };
               li.appendChild(selectBtn);
@@ -615,22 +608,20 @@
         }
       });
     }
-    
     function purchaseBackground_og(bgName) {
       const bgData = backgrounds_og[bgName];
       if (!bgData || points_og < bgData.cost || !logHasRarity_og(bgData.requiredRarity)) return;
       points_og -= bgData.cost;
-      localStorage.setItem("points_og", points_og);
+      localStorage.setItem("points_for_model_OG", points_og);
       ownedBackgrounds_og[bgName] = true;
-      localStorage.setItem("ownedBackgrounds_og", JSON.stringify(ownedBackgrounds_og));
+      localStorage.setItem("ownedBackgrounds_for_model_OG", JSON.stringify(ownedBackgrounds_og));
       updateShopDisplays_og();
       updateBackgroundShop_og();
     }
-    
     function setBackground_og(bgName) {
       if (!ownedBackgrounds_og[bgName]) return;
       activeBackground_og = bgName;
-      localStorage.setItem("activeBackground_og", bgName);
+      localStorage.setItem("activeBackground_for_model_OG", bgName);
       if (bgName === "Rainbow") {
         document.body.style.background = "linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)";
       } else if (backgrounds_og[bgName]) {
@@ -655,7 +646,7 @@
     function resetGame_og() {
       if (confirm("Are you sure you want to reset the game? This will clear all progress.")) {
         points_og = 0;
-        localStorage.setItem("points_og", points_og);
+        localStorage.setItem("points_for_model_OG", points_og);
         autoClickersCount_og = 0;
         doublePointsActive_og = false;
         goldenClickReady_og = false;
@@ -664,10 +655,10 @@
         goldenModeActive_og = false;
         ownedBackgrounds_og = {};
         activeBackground_og = "Light Blue";
-        localStorage.removeItem("ownedBackgrounds_og");
-        localStorage.removeItem("activeBackground_og");
-        localStorage.removeItem("logData_og");
-        localStorage.removeItem("totalClicks_og");
+        localStorage.removeItem("ownedBackgrounds_for_model_OG");
+        localStorage.removeItem("activeBackground_for_model_OG");
+        localStorage.removeItem("logData_for_model_OG");
+        localStorage.removeItem("totalClicks_for_model_OG");
         logData_og = [];
         totalClicks_og = 0;
         if (autoInterval_og) {
@@ -681,7 +672,6 @@
         updateStats_og();
       }
     }
-    
     function setDefaultBackground_og() {
       if (activeBackground_og === "Light Blue") {
         document.body.style.background = "#e0f7fa";
