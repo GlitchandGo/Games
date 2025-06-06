@@ -54,7 +54,7 @@ let stabilizerActive = false;
 function updateTimer() {
   if (!timeFreezeActive) {
     const now = Date.now();
-    const elapsedSeconds = ((now - startTime) / 1000).toFixed(2);
+    const elapsedSeconds = ((now - startTime) / 1000).toFixed(1);
     const timerElem = document.getElementById("timer");
     if (timerElem) {
       timerElem.innerText = "Time: " + elapsedSeconds + "s";
