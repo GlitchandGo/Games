@@ -1,687 +1,653 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rarity Clicker – 78 Rarities Edition</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <!-- Header with timer (top left) and settings icon (top right) -->
-  <div id="header">
-    <div id="timer">Time: 0s</div>
-    <div id="settingsIcon" onclick="toggleSettingsModal()">⚙️</div>
-  </div>
-
-  <!-- SETTINGS Modal: Contains Shop Upgrades, Background Shop, Stats for Nerds, and a RESET button -->
-  <div id="settingsModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="toggleSettingsModal()">&times;</span>
-      <h3>Settings</h3>
-      
-      <!-- Shop Upgrades Section -->
-      <div class="shop-section">
-        <h4>Shop Upgrades</h4>
-        <p>Points: <span id="pointsDisplay">0</span></p>
-        <button id="autoClickerBtn" onclick="purchaseAutoClicker()">Buy Auto Clicker (50 pts)</button>
-        <button id="doublePointsBtn" onclick="purchaseDoublePoints()">Buy Double Points (150 pts)</button>
-        <button id="goldenClickBtn" onclick="purchaseGoldenClick()">Buy Golden Click (200 pts)</button>
-        <button id="luckBoostBtn" onclick="purchaseLuckBoost()">Buy Luck Boost (300 pts)</button>
-        <button id="timeFreezeBtn" onclick="purchaseTimeFreeze()">Buy Time Freeze (200 pts)</button>
-        <button id="goldenModeBtn" onclick="purchaseGoldenMode()">Buy Golden Mode (1000 pts)</button>
-        <p>Auto Clickers: <span id="autoCount">0</span></p>
-        <p>Double Points: <span id="doubleStatus">Off</span></p>
-        <p>Golden Click: <span id="goldenStatus">Not Ready</span></p>
-        <p>Luck Boost: <span id="luckBoostStatus">Inactive</span></p>
-        <p>Time Freeze: <span id="timeFreezeStatus">Inactive</span></p>
-        <p>Golden Mode: <span id="goldenModeStatus">Inactive</span></p>
-      </div>
-
-      <hr>
-
-      <!-- Background Shop Section -->
-      <div class="background-shop-section">
-        <h4>Background Shop</h4>
-        <ul id="backgroundShopList"></ul>
-      </div>
-
-      <hr>
-      
-      <!-- Stats for Nerds Section -->
-      <div class="stats-section">
-        <h4>Stats for Nerds</h4>
-        <p>Total Clicks: <span id="totalClicks">0</span></p>
-        <p>Rarest Find: <span id="rarestFind">None</span></p>
-        <div>
-          <h5>Rarity Chances:</h5>
-          <ul id="chancesList"></ul>
-        </div>
-      </div>
-
-      <hr>
-      
-      <!-- Reset Button -->
-      <button id="resetButton" onclick="resetGame()">RESET</button>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rarity Clicker – Bubblegum Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Import Bubblegum Sans font -->
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Header: Timer and Settings Icon -->
+    <div id="header">
+      <div id="timer">Time: 0.00s</div>
+      <div id="settingsIcon" onclick="toggleSettingsModal()">⚙️</div>
     </div>
-  </div>
 
-  <!-- Main Clickable Game Button -->
-  <button id="clickButton">Click Me!</button>
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="toggleSettingsModal()">&times;</span>
+        <h3>Settings</h3>
 
-  <!-- Container for the rarity result -->
-  <div id="resultContainer">
-    <p id="result"></p>
-  </div>
+        <!-- Shop Upgrades Section -->
+        <div class="shop-section">
+          <h4>Shop Upgrades</h4>
+          <p>Points: <span id="pointsDisplay">0</span></p>
+          <button id="autoClickerBtn" onclick="purchaseAutoClicker()">Buy Auto Clicker (50 pts)</button>
+          <button id="doublePointsBtn" onclick="purchaseDoublePoints()">Buy Double Points (150 pts)</button>
+          <button id="goldenClickBtn" onclick="purchaseGoldenClick()">Buy Golden Click (200 pts)</button>
+          <button id="luckBoostBtn" onclick="purchaseLuckBoost()">Buy Luck Boost (300 pts)</button>
+          <button id="timeFreezeBtn" onclick="purchaseTimeFreeze()">Buy Time Freeze (200 pts)</button>
+          <button id="goldenModeBtn" onclick="purchaseGoldenMode()">Buy Golden Mode (1500 pts)</button>
+          <!-- New Shop Items -->
+          <button id="timeWarpBtn" onclick="purchaseTimeWarp()">Buy Time Warp (500 pts)</button>
+          <button id="stabilizerBtn" onclick="purchaseStabilizer()">Buy Stabilizer (1200 pts)</button>
+          <p>Auto Clickers: <span id="autoCount">0</span></p>
+          <p>Double Points: <span id="doubleStatus">Off</span></p>
+          <p>Golden Click: <span id="goldenStatus">Not Ready</span></p>
+          <p>Luck Boost: <span id="luckBoostStatus">Inactive</span></p>
+          <p>Time Freeze: <span id="timeFreezeStatus">Inactive</span></p>
+          <p>Golden Mode: <span id="goldenModeStatus">Inactive</span></p>
+        </div>
 
-  <!-- Log of Unique Finds -->
-  <h2>Log of Finds</h2>
-  <ul id="log"></ul>
+        <!-- Upstage Button (if rarities up through Impossible are unlocked) -->
+        <button id="upstageButton" onclick="upstageGame()" style="display:none; background: orange;">UPSTAGE?</button>
+        <hr />
 
-  <!-- JavaScript Section -->
-  <script>
-    /* ============================================================
-       Expanded Rarity Definitions (78 items)
-       ============================================================ */
-    const rarities = [
-      // Group 1 (10 items – total 50%)
-      { name: "Utterly Mundane",       chance: 5 },
-      { name: "Extremely Common",      chance: 5 },
-      { name: "Very Common",           chance: 5 },
-      { name: "Common",                chance: 5 },
-      { name: "Ordinary",              chance: 5 },
-      { name: "Unremarkable",          chance: 5 },
-      { name: "Pedestrian",            chance: 5 },
-      { name: "Run-of-the-Mill",       chance: 5 },
-      { name: "Average",               chance: 5 },
-      { name: "Mediocre",              chance: 5 },
+        <!-- Background Shop Section -->
+        <div class="background-shop-section">
+          <h4>Background Shop</h4>
+          <ul id="backgroundShopList"></ul>
+        </div>
+        <hr />
 
-      // Group 2 (8 items – total 20%)
-      { name: "Slightly Uncommon",     chance: 2.5 },
-      { name: "Mildly Unusual",        chance: 2.5 },
-      { name: "Rare-ish",              chance: 2.5 },
-      { name: "Occasionally Unique",   chance: 2.5 },
-      { name: "Periodic Anomaly",      chance: 2.5 },
-      { name: "Infrequent",            chance: 2.5 },
-      { name: "Scarce",                chance: 2.5 },
-      { name: "Hidden Gem",            chance: 2.5 },
+        <!-- Stats for Nerds Section -->
+        <div class="stats-section">
+          <h4>Stats for Nerds</h4>
+          <p>Total Clicks: <span id="totalClicks">0</span></p>
+          <p>Rarest Find: <span id="rarestFind">None</span></p>
+          <div>
+            <h5>Rarity Chances:</h5>
+            <ul id="chancesList"></ul>
+          </div>
+          <p id="masteryMedals">Mastery Medals: </p>
+        </div>
+        <hr />
+        <button id="resetButton" onclick="resetGame()">RESET</button>
+      </div>
+    </div>
 
-      // Group 3 (8 items – total 10%)
-      { name: "Uncommon",              chance: 1.25 },
-      { name: "Notably Rare",          chance: 1.25 },
-      { name: "Distinctive",           chance: 1.25 },
-      { name: "Remarkably Rare",       chance: 1.25 },
-      { name: "Curious",               chance: 1.25 },
-      { name: "Peculiar",              chance: 1.25 },
-      { name: "Notable",               chance: 1.25 },
-      { name: "Singular",              chance: 1.25 },
+    <!-- Main Clickable Button -->
+    <button id="clickButton">Click Me!</button>
 
-      // Group 4 (8 items – total 6%)
-      { name: "Super Rare",            chance: 0.75 },
-      { name: "Ultra Rare",            chance: 0.75 },
-      { name: "Inconceivably Rare",    chance: 0.75 },
-      { name: "Extra Rare",            chance: 0.75 },
-      { name: "Scarce and Exquisite",  chance: 0.75 },
-      { name: "Limited Edition",       chance: 0.75 },
-      { name: "Rare Variant",          chance: 0.75 },
-      { name: "Exquisite",             chance: 0.75 },
+    <!-- Result Container -->
+    <div id="resultContainer">
+      <p id="result"></p>
+    </div>
 
-      // Group 5 (10 items – total 4%)
-      { name: "Epic",                  chance: 0.4 },
-      { name: "Very Epic",             chance: 0.4 },
-      { name: "Ultra Epic",            chance: 0.4 },
-      { name: "Legendary",             chance: 0.4 },
-      { name: "Hella Legendary",       chance: 0.4 },
-      { name: "Mythic",                chance: 0.4 },
-      { name: "Super Mythic",          chance: 0.4 },
-      { name: "Chroma",                chance: 0.4 },
-      { name: "Extreme Chroma",        chance: 0.4 },
-      { name: "Godly",                 chance: 0.4 },
+    <!-- Log of Unique Finds -->
+    <h2>Log of Finds</h2>
+    <ul id="log"></ul>
 
-      // Group 6 (8 items – total 2%)
-      { name: "Very Very Godly",       chance: 0.25 },
-      { name: "Not-so-Impossible",     chance: 0.25 },
-      { name: "Impossible",            chance: 0.25 },
-      { name: "Ethereal",              chance: 0.25 },
-      { name: "Extraordinary",         chance: 0.25 },
-      { name: "Unreal",                chance: 0.25 },
-      { name: "Secret",                chance: 0.25 },
-      { name: "Mystery",               chance: 0.25 },
+    <script>
+      /******** Global Variables & Persistent Storage ********/
+      let points = localStorage.getItem("points") ? parseInt(localStorage.getItem("points")) : 0;
+      let startTime = localStorage.getItem("startTime") ? parseInt(localStorage.getItem("startTime")) : Date.now();
+      localStorage.setItem("startTime", startTime);
+      let autoClickersCount = 0, autoInterval = null;
+      let doublePointsActive = false, goldenClickReady = false;
+      let luckBoostActive = false, timeFreezeActive = false, goldenModeActive = false;
+      let totalClicks = localStorage.getItem("totalClicks") ? parseInt(localStorage.getItem("totalClicks")) : 0;
+      let logData = JSON.parse(localStorage.getItem("logData")) || [];
+      let shopPriceMultiplier = localStorage.getItem("shopPriceMultiplier") ? parseFloat(localStorage.getItem("shopPriceMultiplier")) : 1;
+      let upstageCount = localStorage.getItem("upstageCount") ? parseInt(localStorage.getItem("upstageCount")) : 0;
 
-      // Group 7 (4 items – total 1.5%)
-      { name: "Divine",                chance: 0.375 },
-      { name: "Cosmic",                chance: 0.375 },
-      { name: "Unknown",               chance: 0.375 },
-      { name: "Glitched",              chance: 0.375 },
+      // New buff flags
+      let stabilizerActive = false;
+      let timeWarpActive = false;
 
-      // Group 8 (11 items – total ~3%)
-      { name: "Transcendent",          chance: 0.2727 },
-      { name: "Omnipotent",            chance: 0.2727 },
-      { name: "Infinite",              chance: 0.2727 },
-      { name: "Eternal",               chance: 0.2727 },
-      { name: "Supreme",               chance: 0.2727 },
-      { name: "Ascendant",             chance: 0.2727 },
-      { name: "Sovereign",             chance: 0.2727 },
-      { name: "Absolute",              chance: 0.2727 },
-      { name: "Cosmically Supreme",    chance: 0.2727 },
-      { name: "Beyond Comprehension",  chance: 0.2727 },
-      { name: "Limitless",             chance: 0.2727 },
+      /******** Rarity Definitions ********/
+      // 88 rarities across 9 tiers. Golden click/mode now guarantee selection from Tier 5 (Legendary) or higher.
+      const rarities = [
+        // Tier 1: Common (40%)
+        { name: "Dusty", chance: 15 },
+        { name: "Basic", chance: 8 },
+        { name: "Standard", chance: 6 },
+        { name: "Plain", chance: 4 },
+        { name: "Faded", chance: 3 },
+        { name: "Neutral", chance: 2 },
+        { name: "Average", chance: 1.5 },
+        { name: "Typical", chance: 0.5 },
+        // Tier 2: Uncommon (25%)
+        { name: "Uncommon", chance: 6 },
+        { name: "Distinct", chance: 4 },
+        { name: "Noticeable", chance: 3 },
+        { name: "Elevated", chance: 2.5 },
+        { name: "Unique", chance: 2 },
+        { name: "Rareish", chance: 1.5 },
+        { name: "Vibrant", chance: 1.2 },
+        { name: "Striking", chance: 1.1 },
+        { name: "Polished", chance: 1 },
+        { name: "Featured", chance: 0.7 },
+        { name: "Specialty", chance: 0.5 },
+        // Tier 3: Rare (14%)
+        { name: "Rare", chance: 3 },
+        { name: "Pristine", chance: 2.5 },
+        { name: "Hidden", chance: 2 },
+        { name: "Sleek", chance: 1.8 },
+        { name: "Shimmering", chance: 1.5 },
+        { name: "Vivid", chance: 1.2 },
+        { name: "Brilliant", chance: 1 },
+        { name: "Prominent", chance: 0.8 },
+        { name: "Gemlike", chance: 0.7 },
+        { name: "Exotic", chance: 0.5 },
+        // Tier 4: Epic (10%)
+        { name: "Epic", chance: 2.5 },
+        { name: "Dynamic", chance: 2 },
+        { name: "Complex", chance: 1.5 },
+        { name: "Unbelievable", chance: 1.2 },
+        { name: "Experimental", chance: 1 },
+        { name: "Transcendent", chance: 0.8 },
+        { name: "Phenomenal", chance: 0.7 },
+        { name: "Visionary", chance: 0.5 },
+        { name: "Supreme", chance: 0.3 },
+        { name: "Celestial", chance: 0.2 },
+        // Tier 5: Legendary (6%)
+        { name: "Legendary", chance: 1.5 },
+        { name: "Revered", chance: 1.2 },
+        { name: "Hallmarked", chance: 1.1 },
+        { name: "Fabled", chance: 1 },
+        { name: "Unmatched", chance: 0.7 },
+        { name: "Mythological", chance: 0.5 },
+        // Tier 6: Mythic (3%)
+        { name: "Astral", chance: 0.8 },
+        { name: "Cosmic", chance: 0.7 },
+        { name: "Hyper", chance: 0.6 },
+        { name: "Illusive", chance: 0.5 },
+        { name: "Ancient", chance: 0.4 },
+        // Tier 7: Impossible (1.5%)
+        { name: "Forbidden", chance: 0.5 },
+        { name: "Beyond", chance: 0.4 },
+        { name: "Paranormal", chance: 0.3 },
+        { name: "Supernatural", chance: 0.2 },
+        { name: "Enigmatic", chance: 0.1 },
+        // Tier 8: Ultra-Rare (0.5%)
+        { name: "Miraculous", chance: 0.1 },
+        { name: "Unattainable", chance: 0.08 },
+        { name: "Ethereal", chance: 0.07 },
+        { name: "Extraordinary", chance: 0.06 },
+        { name: "Stellar", chance: 0.05 },
+        // Tier 9: Beyond Reality (0.006%)
+        { name: "Glitched", chance: 0.001 },  // Hidden until unlocked
+        { name: "Unknown", chance: 0.002 },
+        { name: "Fractured", chance: 0.0015 },
+        { name: "Singularity", chance: 0.0012 },
+        { name: "Timeless", chance: 0.0003 }
+      ];
 
-      // Group 9 (11 items – total ~3.5%)
-      { name: "Mystical",              chance: 0.3182 },
-      { name: "Enigmatic",             chance: 0.3182 },
-      { name: "Arcane",                chance: 0.3182 },
-      { name: "Sorcerous",             chance: 0.3182 },
-      { name: "Magical",               chance: 0.3182 },
-      { name: "Phantasmal",            chance: 0.3182 },
-      { name: "Illusory",              chance: 0.3182 },
-      { name: "Spectral",              chance: 0.3182 },
-      { name: "Otherworldly",          chance: 0.3182 },
-      { name: "Celestial",             chance: 0.3182 },
-      { name: "Omniscient",            chance: 0.3182 }
-    ];
+      // Rarity Points used for filtering (Tier 5 or above must be Legendary or higher)
+      const rarityPoints = {
+        "Dusty": 0, "Basic": 0, "Standard": 0, "Plain": 0, "Faded": 0, "Neutral": 0, "Average": 0, "Typical": 0,
+        "Uncommon": 0, "Distinct": 0, "Noticeable": 0, "Elevated": 0, "Unique": 0, "Rareish": 0, "Vibrant": 0, "Striking": 0, "Polished": 0, "Featured": 0, "Specialty": 0,
+        "Rare": 1, "Pristine": 1, "Hidden": 1, "Sleek": 1, "Shimmering": 1, "Vivid": 1, "Brilliant": 1, "Prominent": 1, "Gemlike": 1, "Exotic": 1,
+        "Epic": 2, "Dynamic": 2, "Complex": 2, "Unbelievable": 2, "Experimental": 2, "Transcendent": 2, "Phenomenal": 2, "Visionary": 2, "Supreme": 2, "Celestial": 2,
+        "Legendary": 3, "Revered": 3, "Hallmarked": 3, "Fabled": 3, "Unmatched": 3, "Mythological": 3,
+        "Astral": 4, "Cosmic": 4, "Hyper": 4, "Illusive": 4, "Ancient": 4,
+        "Forbidden": 5, "Beyond": 5, "Paranormal": 5, "Supernatural": 5, "Enigmatic": 5,
+        "Miraculous": 6, "Unattainable": 6, "Ethereal": 6, "Extraordinary": 6, "Stellar": 6,
+        "Glitched": 7, "Unknown": 7, "Fractured": 7, "Singularity": 7, "Timeless": 7
+      };
 
-    /* ============================================================
-       Rarity Points Mapping
-       (Groups 1 & 2: 0 pts; Group 3: 1 pt; Group 4: 2 pts;
-        Group 5: 4 pts; Group 6: 6 pts; Group 7: 8 pts;
-        Group 8: 10 pts; Group 9: 12 pts)
-       ============================================================ */
-    const rarityPoints = {
-      // Group 1
-      "Utterly Mundane": 0,
-      "Extremely Common": 0,
-      "Very Common": 0,
-      "Common": 0,
-      "Ordinary": 0,
-      "Unremarkable": 0,
-      "Pedestrian": 0,
-      "Run-of-the-Mill": 0,
-      "Average": 0,
-      "Mediocre": 0,
+      // --- Background and Seasonal Data (omitted for brevity) ---
+      const backgroundsPermanent = {}; 
+      const seasonalMainBackgrounds = [];
+      const seasonalEventBackgrounds = [];
+      let ownedBackgrounds = JSON.parse(localStorage.getItem("ownedBackgrounds")) || {};
+      let activeBackground = localStorage.getItem("activeBackground") || "Light Blue";
+      let ownedSeasonalBackgrounds = JSON.parse(localStorage.getItem("ownedSeasonalBackgrounds")) || {};
+      let activeSeasonalBackground = localStorage.getItem("activeSeasonalBackground") || "";
 
-      // Group 2
-      "Slightly Uncommon": 0,
-      "Mildly Unusual": 0,
-      "Rare-ish": 0,
-      "Occasionally Unique": 0,
-      "Periodic Anomaly": 0,
-      "Infrequent": 0,
-      "Scarce": 0,
-      "Hidden Gem": 0,
-
-      // Group 3
-      "Uncommon": 1,
-      "Notably Rare": 1,
-      "Distinctive": 1,
-      "Remarkably Rare": 1,
-      "Curious": 1,
-      "Peculiar": 1,
-      "Notable": 1,
-      "Singular": 1,
-
-      // Group 4
-      "Super Rare": 2,
-      "Ultra Rare": 2,
-      "Inconceivably Rare": 2,
-      "Extra Rare": 2,
-      "Scarce and Exquisite": 2,
-      "Limited Edition": 2,
-      "Rare Variant": 2,
-      "Exquisite": 2,
-
-      // Group 5
-      "Epic": 4,
-      "Very Epic": 4,
-      "Ultra Epic": 4,
-      "Legendary": 4,
-      "Hella Legendary": 4,
-      "Mythic": 4,
-      "Super Mythic": 4,
-      "Chroma": 4,
-      "Extreme Chroma": 4,
-      "Godly": 4,
-
-      // Group 6
-      "Very Very Godly": 6,
-      "Not-so-Impossible": 6,
-      "Impossible": 6,
-      "Ethereal": 6,
-      "Extraordinary": 6,
-      "Unreal": 6,
-      "Secret": 6,
-      "Mystery": 6,
-
-      // Group 7
-      "Divine": 8,
-      "Cosmic": 8,
-      "Unknown": 8,
-      "Glitched": 8,
-
-      // Group 8
-      "Transcendent": 10,
-      "Omnipotent": 10,
-      "Infinite": 10,
-      "Eternal": 10,
-      "Supreme": 10,
-      "Ascendant": 10,
-      "Sovereign": 10,
-      "Absolute": 10,
-      "Cosmically Supreme": 10,
-      "Beyond Comprehension": 10,
-      "Limitless": 10,
-
-      // Group 9
-      "Mystical": 12,
-      "Enigmatic": 12,
-      "Arcane": 12,
-      "Sorcerous": 12,
-      "Magical": 12,
-      "Phantasmal": 12,
-      "Illusory": 12,
-      "Spectral": 12,
-      "Otherworldly": 12,
-      "Celestial": 12,
-      "Omniscient": 12
-    };
-
-    /* ============================================================
-       Background Shop Definitions (unchanged)
-       ============================================================ */
-    const backgrounds = {
-      "Light Yellow": { cost: 100, requiredRarity: "Legendary", color: "#fffacd" },
-      "Dark Green": { cost: 100, requiredRarity: "Epic", color: "#006400" },
-      "Light Purple": { cost: 100, requiredRarity: "Chroma", color: "#d8bfd8" },
-      "Light Red": { cost: 100, requiredRarity: "Mythic", color: "#ffcccb" },
-      "Dark Blue": { cost: 100, requiredRarity: "Godly", color: "#00008b" },
-      "Rainbow": { cost: 200, requiredRarity: "Impossible", color: "linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)" }
-    };
-
-    /* ============================================================
-       Luck Boost Odds (omitting any “Very Common” etc.)
-       ============================================================ */
-    const luckBoostChances = [
-      { name: "Uncommon", chance: 50 },
-      { name: "Rare-ish", chance: 25 },
-      { name: "Super Rare", chance: 12.5 },
-      { name: "Ultra Rare", chance: 6.25 },
-      { name: "Epic", chance: 3.125 },
-      { name: "Very Epic", chance: 1.56 },
-      { name: "Legendary", chance: 0.78 },
-      { name: "Mythic", chance: 0.39 },
-      { name: "Chroma", chance: 0.195 },
-      { name: "Godly", chance: 0.0975 },
-      { name: "Impossible", chance: 0.04875 },
-      { name: "Ethereal", chance: 0.024375 },
-      { name: "Extraordinary", chance: 0.0121875 },
-      { name: "Secret", chance: 0.00609375 },
-      { name: "Mystery", chance: 0.003 },
-      { name: "Divine", chance: 0.002 },
-      { name: "Cosmic", chance: 0.001 },
-      { name: "Unknown", chance: 0.0005 }
-      // Note: "Glitched" is never part of Luck Boost.
-    ];
-
-    /* ============================================================
-       Golden Mode Weighted Chances (Glitched not allowed)
-       ============================================================ */
-    const goldenModeChances = {
-      "Legendary": 50,
-      "Mythic": 25,
-      "Chroma": 15,
-      "Godly": 7,
-      "Impossible": 2.5,
-      "Ethereal": 0.5,
-      "Extraordinary": 0.3,
-      "Secret": 0.2,
-      "Mystery": 0.15,
-      "Divine": 0.1,
-      "Cosmic": 0.05,
-      "Unknown": 0.02
-      // "Glitched" is excluded
-    };
-
-    /* ============================================================
-       Global State Variables & Purchase Counters
-       ============================================================ */
-    let points = 0;
-    let autoClickersCount = 0;
-    let autoInterval = null;
-    let doublePointsActive = false;
-    let goldenClickReady = false;
-    let luckBoostActive = false;
-    let timeFreezeActive = false;
-    let goldenModeActive = false;
-
-    // Purchase counters (for conditions such as for Glitched)
-    let doublePointsPurchased = 0;
-    let goldenClickPurchased = 0;
-    let luckBoostPurchased = 0;
-    let timeFreezePurchased = 0;
-    let goldenModePurchased = 0;
-
-    // Persisted stats
-    let totalClicks = localStorage.getItem("totalClicks_for_model_Y") ? parseInt(localStorage.getItem("totalClicks_for_model_Y")) : 0;
-    // logData stores an array of unique rarities discovered
-    let logData = JSON.parse(localStorage.getItem("logData_for_model_Y")) || [];
-
-    function updateLogElement() {
-      const logElem = document.getElementById("log");
-      logElem.innerHTML = "";
-      logData.sort((a, b) => (rarityPoints[a] || 0) - (rarityPoints[b] || 0));
-      logData.forEach(rarity => {
-        let li = document.createElement("li");
-        li.textContent = rarity;
-        li.className = getClassName(rarity);
-        logElem.appendChild(li);
-      });
-    }
-    updateLogElement();
-
-    /* ============================================================
-       Background Shop State
-       ============================================================ */
-    let ownedBackgrounds = JSON.parse(localStorage.getItem("ownedBackgrounds_for_model_Y")) || {};
-    let activeBackground = localStorage.getItem("activeBackground_for_model_Y") || "Light Blue";
-
-    function setDefaultBackground() {
-      if (activeBackground === "Light Blue") {
-        document.body.style.background = "#e0f7fa";
-      } else if (backgrounds[activeBackground]) {
-        document.body.style.background = backgrounds[activeBackground].color;
-      }
-    }
-    setDefaultBackground();
-
-    /* ============================================================
-       Timer Functionality
-       ============================================================ */
-    let gameStartTime = Date.now();
-    function updateTimer() {
-      if (!timeFreezeActive) {
-        const now = Date.now();
-        const secondsElapsed = Math.floor((now - gameStartTime) / 1000);
-        document.getElementById("timer").innerText = "Time: " + secondsElapsed + "s";
-      }
-    }
-    setInterval(updateTimer, 1000);
-
-    /* ============================================================
-       UI Update Functions
-       ============================================================ */
-    function updateShopDisplays() {
-      document.getElementById("pointsDisplay").innerText = points;
-      document.getElementById("autoCount").innerText = autoClickersCount;
-      document.getElementById("doubleStatus").innerText = doublePointsActive ? "On" : "Off";
-      document.getElementById("goldenStatus").innerText = goldenClickReady ? "Ready" : "Not Ready";
-      document.getElementById("luckBoostStatus").innerText = luckBoostActive ? "Active" : "Inactive";
-      document.getElementById("timeFreezeStatus").innerText = timeFreezeActive ? "Active" : "Inactive";
-      document.getElementById("goldenModeStatus").innerText = goldenModeActive ? "Active" : "Inactive";
-    }
-
-    function updateStats() {
-      document.getElementById("totalClicks").textContent = totalClicks;
-      let rarestValue = 0, rarest = "None";
-      logData.forEach(rarityName => {
-        let value = rarityPoints[rarityName] || 0;
-        if (value > rarestValue) {
-          rarestValue = value;
-          rarest = rarityName;
-        }
-      });
-      document.getElementById("rarestFind").textContent = rarest;
-      
-      const chancesList = document.getElementById("chancesList");
-      chancesList.innerHTML = "";
-      rarities.forEach(rarity => {
-        // Omit "Secret" or "Glitched" if not unlocked (as per prior rules)
-        if ((rarity.name === "Secret" || rarity.name === "Glitched") && !logData.includes(rarity.name)) return;
-        let li = document.createElement("li");
-        li.textContent = logData.includes(rarity.name)
-          ? (rarity.name + ": " + rarity.chance + "%")
-          : "???";
-        chancesList.appendChild(li);
-      });
-    }
-
-    function getClassName(rarity) {
-      return rarity.toLowerCase().replace(/ /g, "-");
-    }
-
-    /* ============================================================
-       Glitched Eligibility Check
-       ============================================================ */
-    function glitchedAllowed() {
-      return (
-        !goldenModeActive &&
-        !goldenClickReady &&
-        autoClickersCount >= 2 &&
-        doublePointsPurchased >= 2 &&
-        goldenClickPurchased >= 2 &&
-        luckBoostPurchased >= 2 &&
-        timeFreezePurchased >= 2 &&
-        goldenModePurchased >= 2 &&
-        Object.keys(backgrounds).every(key => ownedBackgrounds[key])
-      );
-    }
-
-    /* ============================================================
-       Rarity Generation Function
-       ============================================================ */
-    function generateRarity(isManual = true) {
-      totalClicks++;
-      localStorage.setItem("totalClicks_for_model_Y", totalClicks);
-      
-      let foundRarity = "";
-      let multiplier = 1;
-      
-      if (isManual && goldenClickReady) {
-        // Golden Click: force a result of Legendary or above (and skip Glitched).
-        let eligible = rarities.filter(r => (rarityPoints[r.name] || 0) >= rarityPoints["Legendary"] && r.name !== "Glitched");
-        let totalChance = eligible.reduce((sum, r) => sum + r.chance, 0);
-        let roll = Math.random() * totalChance;
-        let cumulative = 0;
-        for (let r of eligible) {
-          cumulative += r.chance;
-          if (roll <= cumulative) {
-            foundRarity = r.name;
-            break;
-          }
-        }
-        goldenClickReady = false;
-        console.log("Golden Click applied – result guaranteed to be Legendary or above.");
-      } else if (goldenModeActive) {
-        // Golden Mode: use goldenModeChances weighted distribution (Glitched is excluded)
-        let totalChance = 0;
-        for (let rarity in goldenModeChances) { totalChance += goldenModeChances[rarity]; }
-        let roll = Math.random() * totalChance;
-        let cumulative = 0;
-        for (let rarity in goldenModeChances) {
-          cumulative += goldenModeChances[rarity];
-          if (roll <= cumulative) { foundRarity = rarity; break; }
-        }
-      } else if (luckBoostActive) {
-        // Luck Boost: use modified odds from luckBoostChances.
-        let totalChance = luckBoostChances.reduce((sum, r) => sum + r.chance, 0);
-        let roll = Math.random() * totalChance;
-        let cumulative = 0;
-        for (let r of luckBoostChances) {
-          cumulative += r.chance;
-          if (roll <= cumulative) { foundRarity = r.name; break; }
-        }
-          } else {
-      // Standard generation: calculate total weight, skipping Glitched if not allowed.
-      let effectiveTotal = 0;
-      for (let r of rarities) {
-        if (r.name === "Glitched" && !glitchedAllowed()) continue;
-        effectiveTotal += r.chance;
-      }
-      let roll = Math.random() * effectiveTotal;
-      let cumulative = 0;
-      for (let r of rarities) {
-        if (r.name === "Glitched" && !glitchedAllowed()) continue;
-        cumulative += r.chance;
-        if (roll <= cumulative) {
-          foundRarity = r.name;
-          break;
+      /******** Timer Update (every 100ms) ********/
+      function updateTimer() {
+        if (!timeFreezeActive) {
+          const now = Date.now();
+          const secondsElapsed = ((now - startTime) / 1000).toFixed(2);
+          document.getElementById("timer").innerText = "Time: " + secondsElapsed + "s";
+          localStorage.setItem("startTime", startTime);
         }
       }
-    }
-    
-    if (doublePointsActive) { 
-      multiplier *= 2; 
-    }
-    
-    let basePoints = rarityPoints[foundRarity] || 0;
-    let earned = basePoints * multiplier;
-    points += earned;
-    updateShopDisplays();
-    
-    const resultElem = document.getElementById("result");
-    resultElem.innerText = "You got: " + foundRarity + " (+" + earned + " pts)";
-    resultElem.className = getClassName(foundRarity);
-    
-    if (!logData.includes(foundRarity)) {
-      logData.push(foundRarity);
-      localStorage.setItem("logData_for_model_Y", JSON.stringify(logData));
+      setInterval(updateTimer, 100);
+
+      /******** Display Update Functions ********/
+      function updateShopDisplays() {
+        document.getElementById("pointsDisplay").innerText = points;
+        document.getElementById("autoCount").innerText = autoClickersCount;
+        document.getElementById("doubleStatus").innerText = doublePointsActive ? "On" : "Off";
+        document.getElementById("goldenStatus").innerText = goldenClickReady ? "Ready" : "Not Ready";
+        document.getElementById("luckBoostStatus").innerText = luckBoostActive ? "Active" : "Inactive";
+        document.getElementById("timeFreezeStatus").innerText = timeFreezeActive ? "Active" : "Inactive";
+        document.getElementById("goldenModeStatus").innerText = goldenModeActive ? "Active" : "Inactive";
+      }
+
+      function updateLogElement() {
+        const logElem = document.getElementById("log");
+        logElem.innerHTML = "";
+        logData.sort((a, b) => (rarityPoints[a] || 0) - (rarityPoints[b] || 0));
+        logData.forEach(rarity => {
+          let li = document.createElement("li");
+          li.textContent = rarity;
+          li.className = rarity.toLowerCase().replace(/ /g, "-");
+          logElem.appendChild(li);
+        });
+      }
       updateLogElement();
-    }
-  }
-  
-  /* --- Shop Purchase Functions --- */
-  
-  function purchaseAutoClicker() {
-    if (points >= 50) {
-      points -= 50;
-      autoClickersCount++;
-      updateShopDisplays();
-      if (autoClickersCount === 1 && !timeFreezeActive) {
-        autoInterval = setInterval(() => {
-          for (let i = 0; i < autoClickersCount; i++) {
-            generateRarity(false);
+
+      function updateStats() {
+        document.getElementById("totalClicks").textContent = totalClicks;
+        let rarestValue = 0, rarest = "None";
+        logData.forEach(rarityName => {
+          let value = rarityPoints[rarityName] || 0;
+          if (value > rarestValue) {
+            rarestValue = value;
+            rarest = rarityName;
           }
-        }, 2000);
+        });
+        document.getElementById("rarestFind").textContent = rarest;
+
+        const chancesList = document.getElementById("chancesList");
+        chancesList.innerHTML = "";
+        rarities.forEach(rarity => {
+          // Only display "Glitched" chance if already unlocked.
+          if (rarity.name === "Glitched" && !logData.includes("Glitched")) return;
+          let li = document.createElement("li");
+          li.textContent = logData.includes(rarity.name)
+            ? (rarity.name + ": " + rarity.chance + "%")
+            : "???";
+          chancesList.appendChild(li);
+        });
+
+        let medal1 = rarities.every(r => logData.includes(r.name)) ? "🏅" : "";
+        let permanentUnlocked = Object.keys(backgroundsPermanent).every(key => ownedBackgrounds[key]);
+        let seasonalMainUnlocked = seasonalMainBackgrounds.every(bg => ownedSeasonalBackgrounds[bg.name]);
+        let seasonalEventUnlocked = seasonalEventBackgrounds.every(bg => ownedSeasonalBackgrounds[bg.name]);
+        let medal2 = (permanentUnlocked && seasonalMainUnlocked && seasonalEventUnlocked) ? "🏅" : "";
+        let medal3 = (upstageCount > 0) ? "🏅" : "";
+        let medals = medal1 + medal2 + medal3;
+        document.getElementById("masteryMedals").innerText = "Mastery Medals: " + medals;
+
+        let indexImpossible = rarities.findIndex(r => r.name === "Impossible");
+        let raritiesUpToImpossible = rarities.filter((r, i) => i <= indexImpossible);
+        let unlockUpstage = raritiesUpToImpossible.every(r => logData.includes(r.name));
+        document.getElementById("upstageButton").style.display = unlockUpstage ? "block" : "none";
       }
-    } else {
-      alert("Not enough pts for Auto Clicker!");
-    }
-  }
-  
-  function purchaseDoublePoints() {
-    if (points >= 150) {
-      points -= 150;
-      doublePointsActive = true;
-      doublePointsPurchased++;
-      updateShopDisplays();
-      setTimeout(() => {
-        doublePointsActive = false;
-        updateShopDisplays();
-      }, 60000);
-    } else {
-      alert("Not enough pts for Double Points!");
-    }
-  }
-  
-  function purchaseGoldenClick() {
-    if (points >= 200) {
-      points -= 200;
-      goldenClickReady = true;
-      goldenClickPurchased++;
-      updateShopDisplays();
-    } else {
-      alert("Not enough pts for Golden Click!");
-    }
-  }
-  
-  function purchaseLuckBoost() {
-    if (points >= 300) {
-      points -= 300;
-      luckBoostActive = true;
-      luckBoostPurchased++;
-      updateShopDisplays();
-      setTimeout(() => {
-        luckBoostActive = false;
-        updateShopDisplays();
-      }, 60000);
-    } else {
-      alert("Not enough pts for Luck Boost!");
-    }
-  }
-  
-  function purchaseTimeFreeze() {
-    if (points >= 200) {
-      points -= 200;
-      timeFreezePurchased++;
-      updateShopDisplays();
-      if (!timeFreezeActive) {
-        timeFreezeActive = true;
-        let freezeStart = Date.now();
-        if (autoInterval) {
-          clearInterval(autoInterval);
-          autoInterval = null;
-        }
-        setTimeout(() => {
-          timeFreezeActive = false;
-          let freezeDuration = Date.now() - freezeStart;
-          gameStartTime += freezeDuration;
+      updateStats();
+
+      /******** Rarity Generation & Purchase Functions ********/
+      function generateRarity(isManual = true) {
+        totalClicks++;
+        localStorage.setItem("totalClicks", totalClicks);
+
+        // Glitched chance check (only if all non-Glitched rarities are unlocked)
+        let canGlitch = rarities.every(r => r.name === "Glitched" || logData.includes(r.name));
+        if (canGlitch && Math.random() < 0.00001) {
+          logData.push("Glitched");
+          points += rarityPoints["Glitched"];
+          localStorage.setItem("logData", JSON.stringify(logData));
+          updateLogElement();
+          updateStats();
+          document.getElementById("result").innerText = "You got: Glitched (+" + rarityPoints["Glitched"] + " pts)";
+          document.getElementById("result").className = "glitched";
+          localStorage.setItem("points", points);
           updateShopDisplays();
-          if (autoClickersCount > 0) {
+          return;
+        }
+
+        let foundRarity = "";
+        let multiplier = 1;
+        if (isManual && goldenClickReady) {
+          // For Golden Click, select only from Tier 5 (Legendary) or above.
+          let eligible = rarities.filter(r => (rarityPoints[r.name] || 0) >= rarityPoints["Legendary"]);
+          let totalChance = eligible.reduce((sum, r) => sum + r.chance, 0);
+          let roll = Math.random() * totalChance;
+          let cumulative = 0;
+          for (const r of eligible) {
+            cumulative += r.chance;
+            if (roll <= cumulative) {
+              foundRarity = r.name;
+              break;
+            }
+          }
+          goldenClickReady = false;
+          console.log("Golden Click applied – guaranteed Legendary or higher.");
+        } else if (goldenModeActive) {
+          let eligible = rarities.filter(r => (rarityPoints[r.name] || 0) >= rarityPoints["Legendary"]);
+          let totalChance = eligible.reduce((sum, r) => sum + r.chance, 0);
+          let roll = Math.random() * totalChance;
+          let cumulative = 0;
+          for (const r of eligible) {
+            cumulative += r.chance;
+            if (roll <= cumulative) {
+              foundRarity = r.name;
+              break;
+            }
+          }
+        } else if (luckBoostActive) {
+          let roll = Math.random() * 100;
+          let cumulative = 0;
+          for (const r of rarities) {
+            if (r.name === "Glitched") continue;
+            cumulative += r.chance;
+            if (roll <= cumulative) {
+              foundRarity = r.name;
+              break;
+            }
+          }
+        } else {
+          let roll = Math.random() * 100;
+          let cumulative = 0;
+          for (const r of rarities) {
+            if (r.name === "Glitched") continue;
+            cumulative += r.chance;
+            if (roll <= cumulative) {
+              foundRarity = r.name;
+              break;
+            }
+          }
+        }
+
+        if (doublePointsActive) multiplier *= 2;
+        let basePoints = rarityPoints[foundRarity] || 0;
+        let earned = basePoints * multiplier;
+        points += earned;
+        localStorage.setItem("points", points);
+        updateShopDisplays();
+
+        document.getElementById("result").innerText = "You got: " + foundRarity + " (+" + earned + " pts)";
+        document.getElementById("result").className = foundRarity.toLowerCase().replace(/ /g, "-");
+
+        if (!logData.includes(foundRarity)) {
+          logData.push(foundRarity);
+          localStorage.setItem("logData", JSON.stringify(logData));
+          updateLogElement();
+        }
+        updateStats();
+      }
+
+      function purchaseAutoClicker() {
+        const cost = 50 * shopPriceMultiplier;
+        if (autoClickersCount >= 6) {
+          alert("Auto Clickers Unavailable");
+          return;
+        }
+        if (points >= cost) {
+          points -= cost;
+          localStorage.setItem("points", points);
+          autoClickersCount++;
+          updateShopDisplays();
+          if (autoClickersCount === 1 && !timeFreezeActive) {
             autoInterval = setInterval(() => {
               for (let i = 0; i < autoClickersCount; i++) {
                 generateRarity(false);
               }
             }, 2000);
           }
-        }, 30000);
+        } else {
+          alert("Not enough pts for Auto Clicker!");
+        }
       }
-    } else {
-      alert("Not enough pts for Time Freeze!");
-    }
-  }
-  
-  function purchaseGoldenMode() {
-    if (points >= 1000) {
-      points -= 1000;
-      goldenModePurchased++;
-      updateShopDisplays();
-      if (!goldenModeActive) {
-        goldenModeActive = true;
-        let previousBackground = document.body.style.background;
-        document.body.style.background = "#FFD700"; // Deep gold
-        setTimeout(() => {
-          goldenModeActive = false;
-          setDefaultBackground();
+
+      function purchaseDoublePoints() {
+        const cost = 150 * shopPriceMultiplier;
+        if (points >= cost) {
+          points -= cost;
+          localStorage.setItem("points", points);
+          doublePointsActive = true;
           updateShopDisplays();
-        }, 5000);
+          setTimeout(() => {
+            doublePointsActive = false;
+            updateShopDisplays();
+          }, 30000);
+        } else {
+          alert("Not enough pts for Double Points!");
+        }
+      }
+
+      function purchaseGoldenClick() {
+        const cost = 200 * shopPriceMultiplier;
+        if (points >= cost) {
+          points -= cost;
+          localStorage.setItem("points", points);
+          goldenClickReady = true;
+          updateShopDisplays();
+        } else {
+          alert("Not enough pts for Golden Click!");
+        }
+      }
+
+      function purchaseLuckBoost() {
+        const cost = 300 * shopPriceMultiplier;
+        if (points >= cost) {
+          points -= cost;
+          localStorage.setItem("points", points);
+          luckBoostActive = true;
+          updateShopDisplays();
+          setTimeout(() => {
+            luckBoostActive = false;
+            updateShopDisplays();
+          }, 60000);
+        } else {
+          alert("Not enough pts for Luck Boost!");
+        }
+      }
+
+      function purchaseTimeFreeze() {
+        const cost = 200 * shopPriceMultiplier;
+        if (points >= cost) {
+          points -= cost;
+          localStorage.setItem("points", points);
+          updateShopDisplays();
+          if (!timeFreezeActive) {
+            timeFreezeActive = true;
+            let freezeStart = Date.now();
+            if (autoInterval) {
+              clearInterval(autoInterval);
+              autoInterval = null;
+            }
+            setTimeout(() => {
+              timeFreezeActive = false;
+              let freezeDuration = Date.now() - freezeStart;
+              startTime += freezeDuration;
+              localStorage.setItem("startTime", startTime);
+              updateShopDisplays();
+              if (autoClickersCount > 0) {
+                autoInterval = setInterval(() => {
+                  for (let i = 0; i < autoClickersCount; i++) {
+                    generateRarity(false);
+                  }
+                }, 2000);
+              }
+            }, 30000);
+          }
+        } else {
+          alert("Not enough pts for Time Freeze!");
+        }
+      }
+
+      function purchaseGoldenMode() {
+  const cost = 1500 * shopPriceMultiplier;
+  if (points >= cost) {
+    points -= cost;
+    localStorage.setItem("points", points);
+    updateShopDisplays();
+    if (!goldenModeActive) {
+      goldenModeActive = true;
+      document.body.style.background = "#FFD700"; // Temporary gold mode background
+      setTimeout(() => {
+        goldenModeActive = false;
+        setDefaultBackground();
+        updateShopDisplays();
+      }, 3000);
+    }
+  } else {
+    alert("Not enough pts for Golden Mode!");
+  }
+}
+
+function purchaseTimeWarp() {
+  const cost = 500 * shopPriceMultiplier;
+  if (points >= cost) {
+    points -= cost;
+    localStorage.setItem("points", points);
+    timeWarpActive = true;
+    updateShopDisplays();
+    // Speed up auto clickers by 50%
+    if (autoClickersCount > 0 && !timeFreezeActive) {
+      clearInterval(autoInterval);
+      autoInterval = setInterval(() => {
+        for (let i = 0; i < autoClickersCount; i++) {
+          generateRarity(false);
+        }
+      }, 1333);
+    }
+    setTimeout(() => {
+      timeWarpActive = false;
+      if (autoClickersCount > 0 && !timeFreezeActive) {
+        clearInterval(autoInterval);
+        autoInterval = setInterval(() => {
+          for (let i = 0; i < autoClickersCount; i++) {
+            generateRarity(false);
+          }
+        }, 2000);
+      }
+      updateShopDisplays();
+    }, 30000);
+  } else {
+    alert("Not enough pts for Time Warp!");
+  }
+}
+
+function purchaseStabilizer() {
+  const cost = 1200 * shopPriceMultiplier;
+  if (points >= cost) {
+    points -= cost;
+    localStorage.setItem("points", points);
+    stabilizerActive = true;
+    updateShopDisplays();
+    // Stabilizer: Prevent getting "Dusty", "Basic", or "Standard" for 3 minutes.
+    let originalGenerate = generateRarity;
+    generateRarity = function(isManual) {
+      let found = "";
+      while (true) {
+        originalGenerate(isManual);
+        found = logData[logData.length - 1];
+        if (["Dusty", "Basic", "Standard"].indexOf(found) === -1) break;
+      }
+    };
+    setTimeout(() => {
+      stabilizerActive = false;
+      generateRarity = originalGenerate;
+      updateShopDisplays();
+    }, 180000);
+  } else {
+    alert("Not enough pts for Stabilizer!");
+  }
+}
+
+function updateBackgroundShop() {
+  const list = document.getElementById("backgroundShopList");
+  list.innerHTML = "";
+
+  const headerFixed = document.createElement("h5");
+  headerFixed.textContent = "Permanent Backgrounds";
+  list.appendChild(headerFixed);
+
+  for (const bgName in backgroundsPermanent) {
+    const bgData = backgroundsPermanent[bgName];
+    const li = document.createElement("li");
+    li.style.background = bgData.color;
+    const textOverlay = document.createElement("div");
+    textOverlay.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
+    textOverlay.style.padding = "5px";
+    textOverlay.textContent = `${bgName} - ${bgData.cost} pts (Requires ${bgData.requiredRarity})`;
+    li.appendChild(textOverlay);
+
+    if (ownedBackgrounds[bgName]) {
+      if (activeBackground === bgName) {
+        const activeLabel = document.createElement("div");
+        activeLabel.textContent = "Active";
+        activeLabel.style.backgroundColor = "rgba(0,0,0,0.7)";
+        activeLabel.style.color = "white";
+        activeLabel.style.padding = "5px";
+        li.appendChild(activeLabel);
+      } else {
+        const selectBtn = document.createElement("button");
+        selectBtn.textContent = "Select";
+        selectBtn.onclick = () => setBackground(bgName);
+        li.appendChild(selectBtn);
       }
     } else {
-      alert("Not enough pts for Golden Mode!");
+      if (points >= bgData.cost && logHasRarity(bgData.requiredRarity)) {
+        const buyBtn = document.createElement("button");
+        buyBtn.textContent = "Buy";
+        buyBtn.onclick = () => purchaseBackground(bgName);
+        li.appendChild(buyBtn);
+      } else {
+        li.classList.add("disabled");
+      }
     }
+    list.appendChild(li);
   }
-  
-  /* --- Background Shop Functions --- */
-  function updateBackgroundShop() {
-    const list = document.getElementById("backgroundShopList");
-    list.innerHTML = "";
-    for (const bgName in backgrounds) {
-      const bgData = backgrounds[bgName];
+  updateSeasonalBackgroundShop();
+}
+
+function updateSeasonalBackgroundShop() {
+  const list = document.getElementById("backgroundShopList");
+  const headerMain = document.createElement("h5");
+  headerMain.textContent = "Seasonal Backgrounds";
+  list.appendChild(headerMain);
+
+  const now = new Date();
+  const currentMonth = now.getMonth();
+
+  seasonalMainBackgrounds.forEach(bg => {
+    let available = false;
+    if (bg.availableMonths) {
+      if (bg.availableMonths.includes(currentMonth)) {
+        available = true;
+      }
+    } else if (bg.availableDates) {
+      if (now >= bg.availableDates.start && now <= bg.availableDates.end) {
+        available = true;
+      }
+    }
+    if (available) {
       const li = document.createElement("li");
-      li.innerHTML = `<span>${bgName} - ${bgData.cost} pts (Requires ${bgData.requiredRarity})</span>`;
-      if (ownedBackgrounds[bgName]) {
-        if (activeBackground === bgName) {
-          const activeLabel = document.createElement("span");
-          activeLabel.textContent = " Active";
+      li.style.background = bg.color;
+      li.style.position = "relative";
+      const textOverlay = document.createElement("div");
+      textOverlay.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
+      textOverlay.style.padding = "5px";
+      textOverlay.textContent = `${bg.name} - ${bg.cost} pts`;
+      li.appendChild(textOverlay);
+
+      if (ownedSeasonalBackgrounds[bg.name]) {
+        if (activeSeasonalBackground === bg.name) {
+          const activeLabel = document.createElement("div");
+          activeLabel.textContent = "Active";
+          activeLabel.style.backgroundColor = "rgba(0,0,0,0.7)";
+          activeLabel.style.color = "white";
+          activeLabel.style.padding = "5px";
           li.appendChild(activeLabel);
         } else {
           const selectBtn = document.createElement("button");
           selectBtn.textContent = "Select";
-          selectBtn.onclick = () => setBackground(bgName);
+          selectBtn.onclick = () => setSeasonalBackground(bg.name, bg.color);
           li.appendChild(selectBtn);
         }
       } else {
-        if (points >= bgData.cost && logHasRarity(bgData.requiredRarity)) {
+        if (points >= bg.cost) {
           const buyBtn = document.createElement("button");
           buyBtn.textContent = "Buy";
-          buyBtn.onclick = () => purchaseBackground(bgName);
+          buyBtn.onclick = () => {
+            points -= bg.cost;
+            localStorage.setItem("points", points);
+            ownedSeasonalBackgrounds[bg.name] = true;
+            localStorage.setItem("ownedSeasonalBackgrounds", JSON.stringify(ownedSeasonalBackgrounds));
+            updateShopDisplays();
+            updateSeasonalBackgroundShop();
+          };
           li.appendChild(buyBtn);
         } else {
           li.classList.add("disabled");
@@ -689,76 +655,160 @@
       }
       list.appendChild(li);
     }
+  });
+
+  const headerEvent = document.createElement("h5");
+  headerEvent.textContent = "Special Event Backgrounds";
+  list.appendChild(headerEvent);
+
+  seasonalEventBackgrounds.forEach(bg => {
+    let available = false;
+    if (bg.availableDates) {
+      if (new Date() >= bg.availableDates.start && new Date() <= bg.availableDates.end) {
+        available = true;
+      }
+    } else if (bg.availableMonths) {
+      if (bg.availableMonths.includes(currentMonth)) {
+        available = true;
+      }
+    }
+    if (available) {
+      const li = document.createElement("li");
+      li.style.background = bg.color;
+      li.style.position = "relative";
+      const limitedIcon = document.createElement("div");
+      limitedIcon.textContent = "🕘";
+      limitedIcon.className = "seasonal-event-icon";
+      li.appendChild(limitedIcon);
+      const textOverlay = document.createElement("div");
+      textOverlay.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
+      textOverlay.style.padding = "5px";
+      textOverlay.textContent = `${bg.name} - ${bg.cost} pts`;
+      li.appendChild(textOverlay);
+
+      if (ownedSeasonalBackgrounds[bg.name]) {
+        if (activeSeasonalBackground === bg.name) {
+          const activeLabel = document.createElement("div");
+          activeLabel.textContent = "Active";
+          activeLabel.style.backgroundColor = "rgba(0,0,0,0.7)";
+          activeLabel.style.color = "white";
+          activeLabel.style.padding = "5px";
+          li.appendChild(activeLabel);
+        } else {
+          const selectBtn = document.createElement("button");
+          selectBtn.textContent = "Select";
+          selectBtn.onclick = () => setSeasonalBackground(bg.name, bg.color);
+          li.appendChild(selectBtn);
+        }
+      } else {
+        if (points >= bg.cost) {
+          const buyBtn = document.createElement("button");
+          buyBtn.textContent = "Buy";
+          buyBtn.onclick = () => {
+            points -= bg.cost;
+            localStorage.setItem("points", points);
+            ownedSeasonalBackgrounds[bg.name] = true;
+            localStorage.setItem("ownedSeasonalBackgrounds", JSON.stringify(ownedSeasonalBackgrounds));
+            updateShopDisplays();
+            updateSeasonalBackgroundShop();
+          };
+          li.appendChild(buyBtn);
+        } else {
+          li.classList.add("disabled");
+        }
+      }
+      list.appendChild(li);
+    }
+  });
+}
+
+function purchaseBackground(bgName) {
+  const bgData = backgroundsPermanent[bgName];
+  if (!bgData || points < bgData.cost || !logHasRarity(bgData.requiredRarity)) return;
+  points -= bgData.cost;
+  localStorage.setItem("points", points);
+  ownedBackgrounds[bgName] = true;
+  localStorage.setItem("ownedBackgrounds", JSON.stringify(ownedBackgrounds));
+  updateShopDisplays();
+  updateBackgroundShop();
+}
+
+function setBackground(bgName) {
+  if (!ownedBackgrounds[bgName]) return;
+  activeBackground = bgName;
+  localStorage.setItem("activeBackground", bgName);
+  if (bgName === "Rainbow") {
+    document.body.style.background = "linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)";
+  } else if (backgroundsPermanent[bgName]) {
+    document.body.style.background = backgroundsPermanent[bgName].color;
+  } else {
+    document.body.style.background = "";
   }
-  
-  function purchaseBackground(bgName) {
-    const bgData = backgrounds[bgName];
-    if (!bgData || points < bgData.cost || !logHasRarity(bgData.requiredRarity)) return;
-    points -= bgData.cost;
-    ownedBackgrounds[bgName] = true;
-    localStorage.setItem("ownedBackgrounds_for_model_Y", JSON.stringify(ownedBackgrounds));
+}
+
+function setSeasonalBackground(bgName, color) {
+  activeSeasonalBackground = bgName;
+  localStorage.setItem("activeSeasonalBackground", bgName);
+  document.body.style.background = color;
+}
+
+function logHasRarity(requiredRarity) {
+  return logData.includes(requiredRarity);
+}
+
+function toggleSettingsModal() {
+  const modal = document.getElementById("settingsModal");
+  modal.style.display = (modal.style.display === "block") ? "none" : "block";
+  updateShopDisplays();
+  updateBackgroundShop();
+  updateStats();
+}
+
+function resetGame() {
+  if (confirm("Are you sure you want to reset the game? This will clear all progress.")) {
+    points = 0;
+    localStorage.setItem("points", points);
+    autoClickersCount = 0;
+    doublePointsActive = false;
+    goldenClickReady = false;
+    luckBoostActive = false;
+    timeFreezeActive = false;
+    goldenModeActive = false;
+    ownedBackgrounds = {};
+    activeBackground = "Light Blue";
+    localStorage.removeItem("ownedBackgrounds");
+    localStorage.removeItem("activeBackground");
+    localStorage.removeItem("logData");
+    localStorage.removeItem("totalClicks");
+    logData = [];
+    totalClicks = 0;
+    ownedSeasonalBackgrounds = {};
+    localStorage.removeItem("ownedSeasonalBackgrounds");
+    activeSeasonalBackground = "";
+    localStorage.removeItem("activeSeasonalBackground");
+    if (autoInterval) {
+      clearInterval(autoInterval);
+      autoInterval = null;
+    }
+    document.getElementById("log").innerHTML = "";
     updateShopDisplays();
-    updateBackgroundShop();
-  }
-  function setBackground(bgName) {
-    if (!ownedBackgrounds[bgName]) return;
-    activeBackground = bgName;
-    localStorage.setItem("activeBackground_for_model_Y", bgName);
-    document.body.style.background = backgrounds[bgName].color;
-  }
-  
-  function logHasRarity(requiredRarity) {
-    return logData.includes(requiredRarity);
-  }
-  
-  /* --- Settings Modal & Reset Functionality --- */
-  function toggleSettingsModal() {
-    const modal = document.getElementById("settingsModal");
-    modal.style.display = (modal.style.display === "block") ? "none" : "block";
-    updateShopDisplays();
+    startTime = Date.now();
+    localStorage.setItem("startTime", startTime);
+    setDefaultBackground();
     updateBackgroundShop();
     updateStats();
   }
-  
-  function resetGame() {
-    if (confirm("Are you sure you want to reset the game? This will clear all progress.")) {
-      points = 0;
-      autoClickersCount = 0;
-      doublePointsActive = false;
-      goldenClickReady = false;
-      luckBoostActive = false;
-      timeFreezeActive = false;
-      goldenModeActive = false;
-      ownedBackgrounds = {};
-      activeBackground = "Light Blue";
-      /* Reset purchase counters */
-      doublePointsPurchased = 0;
-      goldenClickPurchased = 0;
-      luckBoostPurchased = 0;
-      timeFreezePurchased = 0;
-      goldenModePurchased = 0;
-      localStorage.removeItem("ownedBackgrounds_for_model_Y");
-      localStorage.removeItem("activeBackground_for_model_Y");
-      localStorage.removeItem("logData_for_model_Y");
-      localStorage.removeItem("totalClicks_for_model_Y");
-      logData = [];
-      totalClicks = 0;
-      if (autoInterval) {
-        clearInterval(autoInterval);
-        autoInterval = null;
-      }
-      document.getElementById("log").innerHTML = "";
-      updateShopDisplays();
-      setDefaultBackground();
-      updateBackgroundShop();
-      updateStats();
-    }
+}
+
+function setDefaultBackground() {
+  if (activeBackground === "Light Blue") {
+    document.body.style.background = "#e0f7fa";
+  } else if (backgroundsPermanent[activeBackground]) {
+    document.body.style.background = backgroundsPermanent[activeBackground].color;
+  } else if (activeBackground === "Rainbow") {
+    document.body.style.background = "linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)";
   }
-  
-  /* --- Main Click Handling --- */
-  document.getElementById("clickButton").addEventListener("click", function() {
-    generateRarity(true);
-  });
+}
 </script>
-</body>
+  </body>
 </html>
