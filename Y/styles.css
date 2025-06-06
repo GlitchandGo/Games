@@ -7,7 +7,6 @@ body {
   margin: 0;
 }
 
-/* HEADER & MODAL */
 #header {
   display: flex;
   justify-content: space-between;
@@ -130,7 +129,7 @@ button {
   box-shadow: 0 8px 15px rgba(0,0,0,0.2);
 }
 
-/* New Shop Item Buttons */
+/* New Shop Items */
 #timeWarpBtn {
   background: linear-gradient(145deg, #6a5acd, #483d8b);
   color: white;
@@ -182,7 +181,7 @@ button {
 }
 
 /* Rarity Color Classes */
-/* Tier 1: Common */
+/* Tier 1 – Common (0 pts) */
 .dusty { background-color: #f4a460; color: white; }
 .basic { background-color: #d3d3d3; color: black; }
 .standard { background-color: #87cefa; color: black; }
@@ -192,32 +191,32 @@ button {
 .average { background-color: #c0c0c0; color: black; }
 .typical { background-color: #fafad2; color: black; }
 
-/* Tier 2: Uncommon */
+/* Tier 2 – Uncommon (1-3 pts) */
 .uncommon { background-color: #98fb98; color: black; }
-.distinct { background-color: #00fa9a; color: black; }
-.noticeable { background-color: #7fffd4; color: black; }
-.elevated { background-color: #3cb371; color: white; }
-.unique { background-color: #32cd32; color: white; }
-.rareish { background-color: #9acd32; color: black; }
+.distinct { background-color: #90ee90; color: black; }
+.noticeable { background-color: #7ccd7c; color: black; }
+.elevated { background-color: #66cdaa; color: black; }
+.unique { background-color: #3cb371; color: white; }
+.rareish { background-color: #2e8b57; color: white; }
 .vibrant { background-color: #00ff7f; color: black; }
-.striking { background-color: #adff2f; color: black; }
-.polished { background-color: #7fff00; color: black; }
-.featured { background-color: #7cfc00; color: black; }
-.specialty { background-color: #66cdaa; color: black; }
+.striking { background-color: #32cd32; color: white; }
+.polished { background-color: #228b22; color: white; }
+.featured { background-color: #006400; color: white; }
+.specialty { background-color: #004d00; color: white; }
 
-/* Tier 3: Rare */
+/* Tier 3 – Rare (4-6 pts) */
 .rare { background-color: #add8e6; color: black; }
 .pristine { background-color: #b0e0e6; color: black; }
 .hidden { background-color: #87ceeb; color: black; }
 .sleek { background-color: #00bfff; color: black; }
 .shimmering { background-color: #1e90ff; color: white; }
-.vivid { background-color: #6495ed; color: white; }
+.vivid { background-color: #4169e1; color: white; }
 .brilliant { background-color: #4682b4; color: white; }
-.prominent { background-color: #4169e1; color: white; }
-.gemlike { background-color: #0000ff; color: white; }
-.exotic { background-color: #00008b; color: white; }
+.prominent { background-color: #5f9ea0; color: white; }
+.gemlike { background-color: #6495ed; color: white; }
+.exotic { background-color: #0000cd; color: white; }
 
-/* Tier 4: Epic */
+/* Tier 4 – Epic (7-10 pts) */
 .epic { background-color: #dda0dd; color: black; }
 .dynamic { background-color: #ee82ee; color: black; }
 .complex { background-color: #da70d6; color: white; }
@@ -229,41 +228,56 @@ button {
 .supreme { background-color: #ba55d3; color: white; }
 .celestial { background-color: #8a2be2; color: white; }
 
-/* Tier 5: Legendary */
+/* Tier 5 – Legendary (11-15 pts) */
 .legendary { background-color: #ffffe0; color: black; }
 .revered { background-color: #f0e68c; color: black; }
 .hallmarked { background-color: #ffdab9; color: black; }
 .fabled { background-color: #ffe4b5; color: black; }
 .unmatched { background-color: #ffd700; color: black; }
-.mythological { background-color: #fffacd; color: black; }
 
-/* Tier 6: Mythic */
-.astral { background-color: #ffdead; color: black; }
-.cosmic { background-color: #ffe4c4; color: black; }
-.hyper { background-color: #ff8c00; color: white; }
-.illusive { background-color: #ff6347; color: white; }
-.ancient { background-color: #ff4500; color: white; }
+/* Tier 6 – Mythic (16-20 pts) */
+.mythic { background-color: #ffdead; color: black; }
+.astral { background-color: #ffe4c4; color: black; }
+.cosmic { background-color: #ff8c00; color: white; }
+.hyper { background-color: #ff6347; color: white; }
+.illusive { background-color: #ff4500; color: white; }
+.ancient { background-color: #ff0000; color: white; }
 
-/* Tier 7: Impossible */
+/* Tier 7 – Impossible (21-40 pts) */
 .forbidden { background-color: #8b0000; color: white; }
 .beyond { background-color: #a52a2a; color: white; }
 .paranormal { background-color: #800080; color: white; }
 .supernatural { background-color: #4b0082; color: white; }
-.enigmatic { background-color: #2f4f4f; color: white; }
+.impossible { background-color: #2f4f4f; color: white; }
+.chroma { background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet); color: white; }
 
-/* Tier 8: Ultra-Rare */
+/* Tier 8 – Ultra-Rare (41-60 pts) */
 .miraculous { background-color: #ffd700; color: black; }
 .unattainable { background-color: #b0c4de; color: black; }
 .ethereal { background-color: #e6e6fa; color: black; }
 .extraordinary { background-color: #fff0f5; color: black; }
 .stellar { background-color: #f0fff0; color: black; }
 
-/* Tier 9: Beyond Reality */
-.glitched { background-color: #006400; color: white; }    /* Hidden until unlocked */
-.unknown { background-color: #000000; color: white; }
-.fractured { background-color: #2f4f4f; color: white; }
-.singularity { background-color: #191970; color: white; }
-.timeless { background-color: #000080; color: white; }
+/* Tier 9 – Beyond Reality (special fixed values) */
+.glitched { background-color: #006400; color: white; }  /* 666 pts, hidden until unlocked */
+.unknown { background-color: #000000; color: white; }   /* 100 pts */
+.fractured { background-color: #2f4f4f; color: white; }  /* 120 pts */
+.singularity { background-color: #191970; color: white; } /* 150 pts */
+.timeless { background-color: #000080; color: white; }    /* 2025 pts */
+
+/* Seasonal Rarity Classes (spawn only during season & worth 50 pts) */
+.spring { background: linear-gradient(135deg, #FFC0CB, #FFB6C1); color: white; }
+.summer { background: linear-gradient(135deg, #FFD700, #FFA500); color: black; }
+.autumn { background: linear-gradient(135deg, #F4A460, #D2691E); color: white; }
+.winter { background: linear-gradient(135deg, #ADD8E6, #87CEFA); color: black; }
+
+/* Holiday Rarity Classes (spawn only in holiday month & worth 80 pts) */
+.christmas { background: linear-gradient(135deg, #FF0000, #008000); color: white; }
+.easter { background: linear-gradient(135deg, #FFB6C1, #FFF0F5); color: black; }
+.halloween { background: linear-gradient(135deg, #000000, #FF8C00); color: white; }
+.valentines { background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; }
+.july4 { background: linear-gradient(135deg, #FFFFFF, #0000FF); color: black; }
+.newyear { background: linear-gradient(135deg, #FFD700, #FF4500); color: black; }
 
 /* Log Styling */
 #log {
