@@ -1,14 +1,13 @@
-/* ============================================================
-   Global Styles & Layout
-   ============================================================ */
+/* Use Bubblegum Sans for all text */
 body {
+  font-family: 'Bubblegum Sans', cursive;
   text-align: center;
-  font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #e0f7fa, #fce4ec);
   padding: 20px;
   margin: 0;
 }
 
+/* HEADER & MODAL */
 #header {
   display: flex;
   justify-content: space-between;
@@ -27,9 +26,7 @@ body {
   margin: 10px;
 }
 
-/* ============================================================
-   Modal Styles
-   ============================================================ */
+/* Modal Styles */
 .modal {
   display: none;
   position: fixed;
@@ -38,7 +35,8 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content {
@@ -64,85 +62,117 @@ body {
 
 .close:hover,
 .close:focus {
-  color: #000;
+  color: black;
 }
 
-/* ============================================================
-   Button Styles
-   ============================================================ */
+/* Shop Upgrade Buttons */
 button {
   font-size: 18px;
   padding: 10px 20px;
-  margin: 10px;
+  cursor: pointer;
   border: none;
   border-radius: 10px;
-  cursor: pointer;
+  margin: 10px;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* Shop Upgrade Button Colors */
 #autoClickerBtn {
   background: linear-gradient(145deg, #e53935, #d32f2f);
   color: white;
 }
+#autoClickerBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
 #doublePointsBtn {
   background: linear-gradient(145deg, #1e88e5, #1565c0);
   color: white;
 }
+#doublePointsBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
 #goldenClickBtn {
   background: linear-gradient(145deg, #ffeb3b, #fbc02d);
   color: black;
 }
+#goldenClickBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
 #luckBoostBtn {
   background: linear-gradient(145deg, #7b1fa2, #6a1b9a);
   color: white;
 }
+#luckBoostBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
 #timeFreezeBtn {
   background: linear-gradient(145deg, #00897b, #00695c);
   color: white;
 }
+#timeFreezeBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
 #goldenModeBtn {
   background: linear-gradient(145deg, #ffb300, #ffa000);
   color: black;
 }
-#resetButton {
-  background: #ff4d4d;
+#goldenModeBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+/* New Shop Item Buttons */
+#timeWarpBtn {
+  background: linear-gradient(145deg, #6a5acd, #483d8b);
   color: white;
 }
-
-button:hover {
+#timeWarpBtn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
 }
 
-/* Main Game Button */
+#stabilizerBtn {
+  background: linear-gradient(145deg, #ff7f50, #ff6347);
+  color: white;
+}
+#stabilizerBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+/* Main Click Button */
 #clickButton {
   font-size: 32px;
   padding: 20px 40px;
+  cursor: pointer;
   border: none;
   border-radius: 20px;
   background: linear-gradient(145deg, #ffeb3b, #fbc02d);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   margin-bottom: 20px;
 }
-
 #clickButton:hover {
   transform: scale(1.05);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 20px rgba(0,0,0,0.15);
 }
-
 #clickButton:active {
   transform: scale(0.98);
 }
 
-/* ============================================================
-   Result & Log Styles
-   ============================================================ */
+/* Result Container */
 #resultContainer {
   margin-top: 20px;
 }
-
 #result {
   font-size: 36px;
   font-weight: bold;
@@ -151,13 +181,97 @@ button:hover {
   border-radius: 10px;
 }
 
+/* Rarity Color Classes */
+/* Tier 1: Common */
+.dusty { background-color: #f4a460; color: white; }
+.basic { background-color: #d3d3d3; color: black; }
+.standard { background-color: #87cefa; color: black; }
+.plain { background-color: #f5f5dc; color: black; }
+.faded { background-color: #deb887; color: black; }
+.neutral { background-color: #808080; color: white; }
+.average { background-color: #c0c0c0; color: black; }
+.typical { background-color: #fafad2; color: black; }
+
+/* Tier 2: Uncommon */
+.uncommon { background-color: #98fb98; color: black; }
+.distinct { background-color: #00fa9a; color: black; }
+.noticeable { background-color: #7fffd4; color: black; }
+.elevated { background-color: #3cb371; color: white; }
+.unique { background-color: #32cd32; color: white; }
+.rareish { background-color: #9acd32; color: black; }
+.vibrant { background-color: #00ff7f; color: black; }
+.striking { background-color: #adff2f; color: black; }
+.polished { background-color: #7fff00; color: black; }
+.featured { background-color: #7cfc00; color: black; }
+.specialty { background-color: #66cdaa; color: black; }
+
+/* Tier 3: Rare */
+.rare { background-color: #add8e6; color: black; }
+.pristine { background-color: #b0e0e6; color: black; }
+.hidden { background-color: #87ceeb; color: black; }
+.sleek { background-color: #00bfff; color: black; }
+.shimmering { background-color: #1e90ff; color: white; }
+.vivid { background-color: #6495ed; color: white; }
+.brilliant { background-color: #4682b4; color: white; }
+.prominent { background-color: #4169e1; color: white; }
+.gemlike { background-color: #0000ff; color: white; }
+.exotic { background-color: #00008b; color: white; }
+
+/* Tier 4: Epic */
+.epic { background-color: #dda0dd; color: black; }
+.dynamic { background-color: #ee82ee; color: black; }
+.complex { background-color: #da70d6; color: white; }
+.unbelievable { background-color: #ff69b4; color: white; }
+.experimental { background-color: #ff1493; color: white; }
+.transcendent { background-color: #c71585; color: white; }
+.phenomenal { background-color: #db7093; color: white; }
+.visionary { background-color: #ffd700; color: black; }
+.supreme { background-color: #ba55d3; color: white; }
+.celestial { background-color: #8a2be2; color: white; }
+
+/* Tier 5: Legendary */
+.legendary { background-color: #ffffe0; color: black; }
+.revered { background-color: #f0e68c; color: black; }
+.hallmarked { background-color: #ffdab9; color: black; }
+.fabled { background-color: #ffe4b5; color: black; }
+.unmatched { background-color: #ffd700; color: black; }
+.mythological { background-color: #fffacd; color: black; }
+
+/* Tier 6: Mythic */
+.astral { background-color: #ffdead; color: black; }
+.cosmic { background-color: #ffe4c4; color: black; }
+.hyper { background-color: #ff8c00; color: white; }
+.illusive { background-color: #ff6347; color: white; }
+.ancient { background-color: #ff4500; color: white; }
+
+/* Tier 7: Impossible */
+.forbidden { background-color: #8b0000; color: white; }
+.beyond { background-color: #a52a2a; color: white; }
+.paranormal { background-color: #800080; color: white; }
+.supernatural { background-color: #4b0082; color: white; }
+.enigmatic { background-color: #2f4f4f; color: white; }
+
+/* Tier 8: Ultra-Rare */
+.miraculous { background-color: #ffd700; color: black; }
+.unattainable { background-color: #b0c4de; color: black; }
+.ethereal { background-color: #e6e6fa; color: black; }
+.extraordinary { background-color: #fff0f5; color: black; }
+.stellar { background-color: #f0fff0; color: black; }
+
+/* Tier 9: Beyond Reality */
+.glitched { background-color: #006400; color: white; }    /* Hidden until unlocked */
+.unknown { background-color: #000000; color: white; }
+.fractured { background-color: #2f4f4f; color: white; }
+.singularity { background-color: #191970; color: white; }
+.timeless { background-color: #000080; color: white; }
+
+/* Log Styling */
 #log {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
   max-width: 500px;
   margin: 20px auto;
 }
-
 #log li {
   margin: 5px 0;
   font-size: 20px;
@@ -165,562 +279,72 @@ button:hover {
   border-radius: 5px;
 }
 
-/* ============================================================
-   Background Shop Styles
-   ============================================================ */
+/* Background Shop Section */
 .background-shop-section {
   text-align: left;
-  margin-top: 10px;
+  margin: 10px 0;
 }
-
 #backgroundShopList {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
   margin-top: 10px;
 }
-
 #backgroundShopList li {
   margin: 10px 0;
   padding: 10px;
-  background: #f2f2f2;
   border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
 }
-
-#backgroundShopList li.disabled {
-  opacity: 0.5;
-}
-
-#backgroundShopList li span {
-  font-size: 16px;
-}
-
 #backgroundShopList li button {
   font-size: 14px;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
   background: #1e88e5;
   color: white;
-  cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 5px;
 }
-
 #backgroundShopList li button:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.2);
 }
 
-/* ============================================================
-   Stats for Nerds Styles
-   ============================================================ */
+/* Seasonal Event Icon */
+.seasonal-event-icon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 18px;
+}
+
+/* Stats Section */
 .stats-section {
   text-align: left;
-  margin-top: 10px;
+  margin: 10px 0;
 }
-
 .stats-section h5 {
   margin-bottom: 5px;
 }
-
 .stats-section ul {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
 }
 
-/* ============================================================
-   Expanded Rarity Classes (78 Rarities)
-   ============================================================ */
-
-/* Group 1: (10 items) */
-.utterly-mundane {
-  background-color: #fafafa;
-  color: #333;
-  padding: 5px;
-  border-radius: 3px;
+/* RESET Button */
+#resetButton {
+  background: #ff4d4d;
+  color: white;
+  font-size: 18px;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#resetButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
 }
-.extremely-common {
-  background-color: #f0f0f0;
-  color: #333;
-  padding: 5px;
-  border-radius: 3px;
-}
-.very-common {
-  background-color: #e0e0e0;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.common {
-  background-color: #dddddd;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.ordinary {
-  background-color: #d4d4d4;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.unremarkable {
-  background-color: #cccccc;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.pedestrian {
-  background-color: #c4c4c4;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.run-of-the-mill {
-  background-color: #bababa;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.average {
-  background-color: #b0b0b0;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.mediocre {
-  background-color: #a6a6a6;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-/* Group 2: (8 items) */
-.slightly-uncommon {
-  background-color: #d0f0c0;
-  color: #336600;
-  padding: 5px;
-  border-radius: 3px;
-}
-.mildly-unusual {
-  background-color: #c0e0b0;
-  color: #336600;
-  padding: 5px;
-  border-radius: 3px;
-}
-.rare-ish {
-  background-color: #b0d0a0;
-  color: #335500;
-  padding: 5px;
-  border-radius: 3px;
-}
-.occasionally-unique {
-  background-color: #a0c090;
-  color: #334400;
-  padding: 5px;
-  border-radius: 3px;
-}
-.periodic-anomaly {
-  background-color: #90b080;
-  color: #223300;
-  padding: 5px;
-  border-radius: 3px;
-}
-.infrequent {
-  background-color: #80a070;
-  color: #112200;
-  padding: 5px;
-  border-radius: 3px;
-}
-.scarce {
-  background-color: #709060;
-  color: #001122;
-  padding: 5px;
-  border-radius: 3px;
-}
-.hidden-gem {
-  background-color: #608050;
-  color: #001100;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-/* Group 3: (8 items) */
-.uncommon {
-  background-color: #e6ffe6;
-  color: #006600;
-  padding: 5px;
-  border-radius: 3px;
-}
-.notably-rare {
-  background-color: #d6ffd6;
-  color: #005500;
-  padding: 5px;
-  border-radius: 3px;
-}
-.distinctive {
-  background-color: #c6ffc6;
-  color: #004400;
-  padding: 5px;
-  border-radius: 3px;
-}
-.remarkably-rare {
-  background-color: #b6ffb6;
-  color: #003300;
-  padding: 5px;
-  border-radius: 3px;
-}
-.curious {
-  background-color: #a6ffa6;
-  color: #002200;
-  padding: 5px;
-  border-radius: 3px;
-}
-.peculiar {
-  background-color: #96ff96;
-  color: #001100;
-  padding: 5px;
-  border-radius: 3px;
-}
-.notable {
-  background-color: #86ff86;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.singular {
-  background-color: #76ff76;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-/* Group 4: (8 items) */
-.super-rare {
-  background-color: #fff0e0;
-  color: #663300;
-  padding: 5px;
-  border-radius: 3px;
-}
-.ultra-rare {
-  background-color: #ffe0d0;
-  color: #662200;
-  padding: 5px;
-  border-radius: 3px;
-}
-.inconceivably-rare {
-  background-color: #ffd0c0;
-  color: #661100;
-  padding: 5px;
-  border-radius: 3px;
-}
-.extra-rare {
-  background-color: #ffc0b0;
-  color: #660000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.scarce-and-exquisite {
-  background-color: #ffb0a0;
-  color: #550000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.limited-edition {
-  background-color: #ffa090;
-  color: #440000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.rare-variant {
-  background-color: #ff9080;
-  color: #330000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.exquisite {
-  background-color: #ff8070;
-  color: #220000;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-/* Group 5: (10 items) */
-.epic {
-  background-color: #ffe680;
-  color: #665500;
-  padding: 5px;
-  border-radius: 3px;
-}
-.very-epic {
-  background-color: #ffdf80;
-  color: #664400;
-  padding: 5px;
-  border-radius: 3px;
-}
-.ultra-epic {
-  background-color: #ffd980;
-  color: #663300;
-  padding: 5px;
-  border-radius: 3px;
-}
-.legendary {
-  background-color: #ffd080;
-  color: #662200;
-  padding: 5px;
-  border-radius: 3px;
-}
-.hella-legendary {
-  background-color: #ffc880;
-  color: #661100;
-  padding: 5px;
-  border-radius: 3px;
-}
-.mythic {
-  background-color: #ffc080;
-  color: #660000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.super-mythic {
-  background-color: #ffb780;
-  color: #550000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.chroma {
-  background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
-  color: #fff;
-  padding: 5px;
-  border-radius: 3px;
-}
-.extreme-chroma {
-  background: linear-gradient(45deg, #ff1744, #f50057, #d500f9, #651fff, #3d5afe);
-  color: #fff;
-  padding: 5px;
-  border-radius: 3px;
-}
-.godly {
-  background-color: #c5e1a5;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-/* Group 6: (8 items) */
-.very-very-godly {
-  background-color: #aed581;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.not-so-impossible {
-  background-color: #81c784;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.impossible {
-  background-color: #4caf50;
-  color: #fff;
-  padding: 5px;
-  border-radius: 3px;
-}
-.ethereal {
-  background-color: #81d4fa;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.extraordinary {
-  background-color: #4fc3f7;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.unreal {
-  background-color: #29b6f6;
-  color: #fff;
-  padding: 5px;
-  border-radius: 3px;
-}
-.secret {
-  background-color: #ffebee;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.mystery {
-  background-color: #f8bbd0;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-/* Group 7: (4 items) */
-.divine {
-  background-color: #e1bee7;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.cosmic {
-  background-color: #c5cae9;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.unknown {
-  background-color: #b3e5fc;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.glitched {
-  background-color: #000;
-  color: #0f0;
-  font-weight: bold;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-/* Group 8: (11 items) */
-.transcendent {
-  background-color: #ffe0b2;
-  color: #663300;
-  padding: 5px;
-  border-radius: 3px;
-}
-.omnipotent {
-  background-color: #ffcc80;
-  color: #662200;
-  padding: 5px;
-  border-radius: 3px;
-}
-.infinite {
-  background-color: #ffc966;
-  color: #661100;
-  padding: 5px;
-  border-radius: 3px;
-}
-.eternal {
-  background-color: #ffc34d;
-  color: #660000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.supreme {
-  background-color: #ffbf33;
-  color: #550000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.ascendant {
-  background-color: #ffbb1a;
-  color: #440000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.sovereign {
-  background-color: #ffb300;
-  color: #330000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.absolute {
-  background-color: #ffa800;
-  color: #220000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.cosmically-supreme {
-  background-color: #ff9e00;
-  color: #110000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.beyond-comprehension {
-  background-color: #ff9400;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-.limitless {
-  background-color: #ff8a00;
-  color: #000;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-/* Group 9: (11 items) */
-.mystical {
-  background-color: #ede7f6;
-  color: #311b92;
-  padding: 5px;
-  border-radius: 3px;
-}
-.enigmatic {
-  background-color: #d1c4e9;
-  color: #4527a0;
-  padding: 5px;
-  border-radius: 3px;
-}
-.arcane {
-  background-color: #b39ddb;
-  color: #512da8;
-  padding: 5px;
-  border-radius: 3px;
-}
-.sorcerous {
-  background-color: #9575cd;
-  color: #673ab7;
-  padding: 5px;
-  border-radius: 3px;
-}
-.magical {
-  background-color: #7e57c2;
-  color: #5e35b1;
-  padding: 5px;
-  border-radius: 3px;
-}
-.phantasmal {
-  background-color: #673ab7;
-  color: #512da8;
-  padding: 5px;
-  border-radius: 3px;
-}
-.illusory {
-  background-color: #5e35b1;
-  color: #4527a0;
-  padding: 5px;
-  border-radius: 3px;
-}
-.spectral {
-  background-color: #512da8;
-  color: #311b92;
-  padding: 5px;
-  border-radius: 3px;
-}
-.otherworldly {
-  background-color: #4527a0;
-  color: #1a237e;
-  padding: 5px;
-  border-radius: 3px;
-}
-.celestial {
-  background-color: #3949ab;
-  color: #fff;
-  padding: 5px;
-  border-radius: 3px;
-}
-.omniscient {
-  background-color: #303f9f;
-  color: #fff;
-  padding: 5px;
-  border-radius: 3px;
-}
-
-/* ============================================================
-   End of Expanded Rarity Classes
-   ============================================================ */
