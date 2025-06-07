@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hidden Identity</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Welcome Screen -->
+  <div id="welcome-screen" class="screen">
+    <h1>Welcome to Hidden Identity</h1>
+    <button id="start-btn" class="action-btn">START</button>
+  </div>
+
+  <!-- Menu Screen (Join or Create) -->
+  <div id="menu-screen" class="screen hidden">
+    <h2>Join or Create</h2>
+    <div class="button-group">
+      <button id="create-btn" class="action-btn">Create Lobby</button>
+      <button id="join-btn" class="action-btn">Join Lobby</button>
+    </div>
+  </div>
+
+  <!-- Lobby Screen with list of lobbies -->
+  <div id="lobby-screen" class="screen hidden">
+    <h2>Select a Berwyn Lobby</h2>
+    <div id="lobby-list"></div>
+  </div>
+
+  <!-- Waiting Lobby Screen (after selecting a lobby) -->
+  <div id="waiting-lobby-screen" class="screen hidden">
+    <h2>Lobby Waiting Room</h2>
+    <p id="lobby-status">Waiting for players...</p>
+  </div>
+
+  <!-- Countdown Screen -->
+  <div id="countdown-screen" class="screen hidden">
+    <h1 id="countdown-text"></h1>
+  </div>
+
+  <!-- Game Screen / Investigation Screen -->
+  <div id="investigation-screen" class="screen hidden">
+    <h2 id="role-display"></h2>
+    <div id="investigation-panel">
+      <p>Choose a room to investigate:</p>
+      <div id="room-buttons">
+        <button class="room-btn" data-room="1">Room 1</button>
+        <button class="room-btn" data-room="2">Room 2</button>
+        <button class="room-btn" data-room="3">Room 3</button>
+        <button class="room-btn" data-room="4">Room 4</button>
+        <button class="room-btn" data-room="5">Room 5</button>
+      </div>
+      <div id="investigation-result"></div>
+    </div>
+  </div>
+
+  <!-- Meeting Screen -->
+  <div id="meeting-screen" class="screen hidden">
+    <h2>Meeting Time</h2>
+    <div id="player-list">
+      <!-- List of player usernames for chat context -->
+    </div>
+    <div id="chat-section">
+      <div id="chat-box"></div>
+      <input type="text" id="chat-input" placeholder="Type your clue..." />
+      <button id="send-chat" class="action-btn">Send</button>
+    </div>
+    <button id="vote-btn" class="action-btn">Vote Out</button>
+  </div>
+
+  <!-- Voting Screen -->
+  <div id="voting-screen" class="screen hidden">
+    <h2>Voting Phase: Select 2 players to vote out</h2>
+    <div id="voting-player-list"></div>
+    <button id="submit-vote-btn" class="action-btn">Submit Votes</button>
+  </div>
+
+  <!-- Result Screen -->
+  <div id="result-screen" class="screen hidden">
+    <h1 id="result-message"></h1>
+    <button id="restart-btn" class="action-btn">Restart</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
