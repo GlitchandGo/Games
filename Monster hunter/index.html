@@ -2,50 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dungeon of Doom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Monster Hunter</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-  <div class="topbar">
-    <div id="stats">HP: 100 / 100 | Gold: 0</div>
-    <div id="world">World 1</div>
-    <div id="sword">Sword: Basic Sword</div>
+  <header>
+    <h1>Monster Hunter</h1>
+    <div id="shop-icon" title="Open Shop">🛍️</div>
+  </header>
+  
+  <div id="stats">
+    <p><strong>World:</strong> <span id="world">1</span></p>
+    <p><strong>Position:</strong> <span id="position">0</span> / 10</p>
+    <p><strong>HP:</strong> <span id="hp">100</span> / <span id="max-hp">100</span></p>
+    <p><strong>Gold:</strong> <span id="gold">0</span></p>
+    <p><strong>Sword:</strong> <span id="sword">Wood (80% damage taken)</span></p>
+    <p><strong>Dice Item:</strong> <span id="dice-item">None</span></p>
   </div>
-
-  <div class="board" id="board"></div>
-
-  <div class="controls">
-    <div id="die" class="dice" onclick="rollDice()">🎲</div>
-    <div id="last-roll"></div>
-    <div id="message-log"></div>
+  
+  <div id="board-container">
+    <div id="board"></div>
   </div>
-
-  <div class="inventory">
-    <h3>Inventory</h3>
-    <ul id="inventory-list"></ul>
+  
+  <div id="controls">
+    <button id="roll-button">Roll Dice</button>
   </div>
-
-  <div class="shop">
-    <h3>Shop</h3>
-    <button onclick="buyHealingPotion()">Buy Healing Potion (10g)</button>
-    <button onclick="useHealingPotion()">Use Healing Potion</button>
-    <button onclick="buyMaxHP()">Max HP Booster (150g, 3 max)</button>
-    <button onclick="buySword()">Upgrade Sword</button>
-    <button onclick="buyItem('golden')">Buy Golden Roll (20g)</button>
-    <button onclick="buyItem('picky')">Buy Picky Roll (35g)</button>
-    <button onclick="buyItem('doubler')">Buy Doubler (25g)</button>
+  
+  <!-- Shop Modal -->
+  <div id="shop-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Shop</h2>
+      <div id="shop-items"></div>
+    </div>
   </div>
-
-  <div class="background-shop">
-    <h3>Background Shop</h3>
-    <button onclick="changeBackground('lightgreen', 0)">Light Green (Default)</button>
-    <button onclick="changeBackground('lightyellow', 10)">Light Yellow (10g)</button>
-    <button onclick="changeBackground('lightpink', 10)">Light Pink (10g)</button>
-    <button onclick="changeBackground('lightorange', 15)">Light Orange (15g)</button>
-    <button onclick="changeBackground('white', 20)">White (20g)</button>
+  
+  <!-- Picky Die Modal -->
+  <div id="picky-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-picky">&times;</span>
+      <h2>Choose Your Dice Number</h2>
+      <input type="number" id="picky-input" min="1" max="6">
+      <button id="picky-confirm">Confirm</button>
+    </div>
   </div>
-
-  <script src="game.js"></script>
+  
+  <script src="script.js"></script>
+  <script src="ui-logic.js"></script>
 </body>
 </html>
