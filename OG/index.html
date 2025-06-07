@@ -187,7 +187,7 @@
     function updateTimer() {
       if (!timeFreezeActive) {
         const now = Date.now();
-        const secondsElapsed = ((now - startTime) / 1000).toFixed(2);
+        const secondsElapsed = ((now - startTime) / 1000).toFixed(1);
         document.getElementById("timer").innerText = "Time: " + secondsElapsed + "s";
         localStorage.setItem("startTime", startTime);
       }
