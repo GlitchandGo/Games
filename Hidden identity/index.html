@@ -10,6 +10,11 @@
   <!-- Welcome Screen -->
   <div id="welcome-screen" class="screen">
     <h1>Welcome to Hidden Identity</h1>
+    <input
+      type="text"
+      id="username-input"
+      placeholder="Enter your username"
+    />
     <button id="start-btn" class="action-btn">START</button>
   </div>
 
@@ -45,11 +50,11 @@
     <div id="investigation-panel">
       <p>Choose a room to investigate:</p>
       <div id="room-buttons">
-        <button class="room-btn" data-room="1">Room 1</button>
-        <button class="room-btn" data-room="2">Room 2</button>
-        <button class="room-btn" data-room="3">Room 3</button>
-        <button class="room-btn" data-room="4">Room 4</button>
-        <button class="room-btn" data-room="5">Room 5</button>
+        <button class="room-btn" data-room="Basement">Basement</button>
+        <button class="room-btn" data-room="Garage">Garage</button>
+        <button class="room-btn" data-room="Attic">Attic</button>
+        <button class="room-btn" data-room="Kitchen">Kitchen</button>
+        <button class="room-btn" data-room="Library">Library</button>
       </div>
       <div id="investigation-result"></div>
     </div>
@@ -79,9 +84,18 @@
   <!-- Result Screen -->
   <div id="result-screen" class="screen hidden">
     <h1 id="result-message"></h1>
-    <button id="restart-btn" class="action-btn">Restart</button>
+    <button id="restart-btn" class="action-btn">Play Again</button>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Ban Modal (shown if the username is deemed inappropriate or banned) -->
+  <div id="ban-modal" class="modal hidden">
+    <div class="modal-content">
+      <p>You have been banned for 1 day.</p>
+    </div>
+  </div>
+
+  <script src="utils.js"></script>
+  <script src="lobby.js"></script>
+  <script src="game.js"></script>
 </body>
 </html>
