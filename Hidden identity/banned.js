@@ -24,12 +24,13 @@ document.addEventListener("DOMContentLoaded", function () {
     "nuts",
     "shi"
   ];
+
   const severeBannedWords = [
-    "nig",
+    "n#####", // was "nig" or similar
     "cunt",
-    "nij",
+    "n#####", // was "nij"
     "jew",
-    "kike",
+    "k#####", // was "kike"
     "hitler",
     "kik"
   ];
@@ -69,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
-  // Retrieve and increment offence counts in localStorage.
+  // Retrieve and increment offense counts in localStorage.
   function getOffenseCount(key) {
     return Number(localStorage.getItem(key)) || 0;
   }
@@ -105,18 +106,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Process an offense for a given context ("username" or "chat").
   function processOffense(contextKey, text) {
-    // For usernames, enforce the allowed characters and length.
+    // For usernames, enforce allowed characters and maximum length.
     if (contextKey === "username") {
       if (!usernameAllowedRegex.test(text) || text.length > MAX_USERNAME_LENGTH) {
         alert("Only letters and a maximum of 10 letters are allowed in usernames");
+        // Automatically change the username input value to "Player"
+        const usernameInput = document.getElementById("username-input");
+        if (usernameInput) { usernameInput.value = "Player"; }
         return { banned: true };
       }
-      // Now check if the username includes any banned term.
+      // Then check if the username includes any banned term.
       const lowerText = text.toLowerCase();
       for (let term of [...sanitizedMildWords, ...sanitizedSevereWords]) {
         if (lowerText.includes(term)) {
           alert("Your username contains prohibited content");
-          // Immediately treat as offense.
+          // Automatically change the username to "Player"
+          const usernameInput = document.getElementById("username-input");
+          if (usernameInput) { usernameInput.value = "Player"; }
+          // Immediately treat as an offense.
           const localKey = contextKey + "_auto_offense";
           let count = incrementOffenseCount(localKey);
           // For an auto-ban due to inclusion, treat it as severe.
