@@ -10,11 +10,7 @@
   <!-- Welcome Screen -->
   <div id="welcome-screen" class="screen">
     <h1>Welcome to Hidden Identity</h1>
-    <input
-      type="text"
-      id="username-input"
-      placeholder="Enter your username"
-    />
+    <input type="text" id="username-input" placeholder="Enter your username" />
     <button id="start-btn" class="action-btn">START</button>
   </div>
 
@@ -33,7 +29,7 @@
     <div id="lobby-list"></div>
   </div>
 
-  <!-- Waiting Lobby Screen (after selecting a lobby) -->
+  <!-- Waiting Lobby Screen -->
   <div id="waiting-lobby-screen" class="screen hidden">
     <h2>Lobby Waiting Room</h2>
     <p id="lobby-status">Waiting for players...</p>
@@ -44,7 +40,7 @@
     <h1 id="countdown-text"></h1>
   </div>
 
-  <!-- Game Screen / Investigation Screen -->
+  <!-- Investigation/Game Screen -->
   <div id="investigation-screen" class="screen hidden">
     <h2 id="role-display"></h2>
     <div id="investigation-panel">
@@ -58,13 +54,15 @@
       </div>
       <div id="investigation-result"></div>
     </div>
+    <!-- Call Meeting button fixed to bottom right -->
+    <button id="call-meeting-btn" class="action-btn">Call Meeting</button>
   </div>
 
   <!-- Meeting Screen -->
   <div id="meeting-screen" class="screen hidden">
     <h2>Meeting Time</h2>
     <div id="player-list">
-      <!-- List of player usernames for chat context -->
+      <!-- List of players will be populated here -->
     </div>
     <div id="chat-section">
       <div id="chat-box"></div>
@@ -87,15 +85,17 @@
     <button id="restart-btn" class="action-btn">Play Again</button>
   </div>
 
-  <!-- Ban Modal (shown if the username is deemed inappropriate or banned) -->
+  <!-- Ban Modal -->
   <div id="ban-modal" class="modal hidden">
     <div class="modal-content">
-      <p>You have been banned for 1 day.</p>
+      <p>You have been banned.</p>
     </div>
   </div>
 
   <script src="utils.js"></script>
   <script src="lobby.js"></script>
   <script src="game.js"></script>
+  <!-- banned.js remains unchanged -->
+  <script src="banned.js"></script>
 </body>
 </html>
