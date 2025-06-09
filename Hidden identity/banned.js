@@ -26,11 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
 
   const severeBannedWords = [
-    "n#####", // was "nig" or similar
+    "nig",
     "cunt",
-    "n#####", // was "nij"
+    "nij",
     "jew",
-    "k#####", // was "kike"
     "hitler",
     "kik"
   ];
